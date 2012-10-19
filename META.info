@@ -3,6 +3,6 @@
     "version"     : "0.01",
     "description" : "Perl 6 in-browser experimental Editor",
     "author"      : "Ahmad M. Zawawi",
-    "depends"     : [ "HTTP::Server::Simple" ],
+    "depends"     : [ "HTTP::Easy" ],
     "source-url"  : "git://github.com/azawawi/farabi6.git"
 }
