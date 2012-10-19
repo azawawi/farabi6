@@ -1,5 +1,10 @@
 #!/usr/bin/env perl6
 use v6;
 
+BEGIN { @*INC.push('./lib') }
+
 use Farabi6;
-Farabi6.new.run;
+
+my $port = 3000;
+say "Farabi is opening a webserver at http://127.0.0.1:$port";
+Farabi6.new.run($port);
