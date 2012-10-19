@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 use v6;
 
-use Farabi;
+use Farabi6;
 
-Farabi.run();
+Farabi6.run();

@@ -1,7 +1,7 @@
-Farabi
-======
+Farabi6
+=======
 
-This is a fun port of the Farabi Modern Perl Editor from CPAN:
+This is a fun Perl 6 port of the Farabi Modern Perl Editor:
 http://metacpan.org/module/Farabi
 
 The idea here is to experiment with a Perl 6 in-browser editor running over Rakudo Perl 6. 
