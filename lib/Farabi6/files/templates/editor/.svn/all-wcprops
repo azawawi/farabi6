@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/244/trunk/lib/Farabi/files/templates/editor
+END
+sample_script.html.ep
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/186/trunk/lib/Farabi/files/templates/editor/sample_script.html.ep
+END
+critic_severity_selector.html.ep
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/149/trunk/lib/Farabi/files/templates/editor/critic_severity_selector.html.ep
+END
+theme_selector.html.ep
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/219/trunk/lib/Farabi/files/templates/editor/theme_selector.html.ep
+END
+default.html.ep
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/244/trunk/lib/Farabi/files/templates/editor/default.html.ep
+END
+mode_selector.html.ep
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/220/trunk/lib/Farabi/files/templates/editor/mode_selector.html.ep
+END
