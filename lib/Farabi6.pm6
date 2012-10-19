@@ -38,24 +38,24 @@ method run($port) {
 		my Str $mime-type = self.find-mime-type($filename);
 	
 		my Int $status;
-		my @content;
+		my @contents;
 		if ($filename.IO ~~ :e) {
-			if (my $fh = open $filename ) {
+			if (my $fh = open $filename, :bin ) {
 				$status = 200;
-				@content = $fh.slurp;
+				@contents = $fh.slurp;
 				$fh.close;
 			}
 		} 
 
-		if (!@content) {
+		if (!@contents) {
 			$status = 404;
 			$mime-type = 'text/plain';
-			@content = "Not found $uri";	
+			@contents = "Not found $uri";	
 		}
 		return [ 
 			$status, 
 			[ 'Content-Type' => $mime-type ], 
-			[ @content ] 
+			[ @contents ] 
 		];
 	}
  	$http.handle($app);
