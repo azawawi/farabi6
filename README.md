@@ -15,6 +15,7 @@ To run it without installing it:
     PERL6LIB=lib perl6 bin/farabi6
 
 To install it using Panda:
+
     panda install Farabi6
 
 
