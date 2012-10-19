@@ -19,3 +19,7 @@ To install it using Panda:
     panda install Farabi6
 
 
+
+Author:
+=======
+Ahmad M. Zawawi
