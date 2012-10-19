@@ -1,8 +1,6 @@
 use v6;
 
-class Farabi;
-
-use HTTP::Server::Simple;
+module Farabi;
 
 method run {
 	require HTTP::Server::Simple;
