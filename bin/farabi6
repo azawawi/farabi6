@@ -2,5 +2,4 @@
 use v6;
 
 use Farabi6;
-
-Farabi6.run();
+Farabi6.new.run;
