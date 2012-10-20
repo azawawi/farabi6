@@ -31,8 +31,7 @@ for $response.lines -> $line {
 
 use JSON::Tiny;
 my %o = from-json($json);
-say $json;
-say %o{'query'}{'categorymembers'}[0].perl;
-#say $json;
-#say %o[0][0];
-#say $_.perl for @o;
+my $members = %o{'query'}{'categorymembers'};
+for @$members -> $member {
+	say $member{'title'};
+}
