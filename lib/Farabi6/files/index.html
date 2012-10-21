@@ -67,8 +67,7 @@ say "Hello world from Perl 6!"</textarea>
 							<button class="btn" type="button">Search</button>
 						</div>
 						<div class="btn-group">
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								Local Help <span class="caret"></span>
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Local Help <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Local Help</a></li>
@@ -84,16 +83,41 @@ say "Hello world from Perl 6!"</textarea>
 				<div class="tab-pane fade" id="options-tab">
 					<table>
 						<tr>
-							<td><strong>Mode:</strong><br><%= include
-								"editor/mode_selector"%></td>
+							<td><strong>Mode:</strong><br>
+								<select id="mode_selector" class="input-medium">
+								        <option value="clike">C, C++, C#</option>
+								        <option value="css">CSS</option>
+									<option value="diff">Diff</option>
+								        <option value="javascript">JavaScript</option>
+								        <option value="markdown">Github Markdown</option>
+								        <option value="perl" selected>Perl</option>
+								        <option value="plsql">PL/SQL</option>
+								        <option value="properties">Properties file</option>
+								        <option value="shell">Shell</option>
+									<option value="stex">sTeX, LaTeX</option>
+								        <option value="xml">XML/HTML</option>
+								        <option value="yaml">YAML</option>
+								</select>
+							</td>
 						</tr>
 						<tr>
-							<td><strong>Theme:<strong><br><%=
-										include "editor/theme_selector"%></td>
-						</tr>
-						<tr>
-							<td><strong>Critic Severity:</strong><br><%= include
-								"editor/critic_severity_selector"%></td>
+							<td><strong>Theme:<strong><br>
+								<select id="theme_selector" class="input-medium">
+								        <option value="default" selected>Default</option>
+									<option value="blackboard">Black Board</option>
+								        <option value="cobalt">Cobalt</option>
+								        <option value="eclipse">Eclipse</option>
+								        <option value="elegant">Elegant</option>
+								        <option value="erlang-dark">Erlang Dark</option>
+								        <option value="lesser-dark">Lesser Dark</option>
+								        <option value="monokai">Monokai</option>
+								        <option value="neat">Neat</option>
+								        <option value="night">Night</option>
+								        <option value="rubyblue">Ruby Blue</option>
+								        <option value="vibrant-ink">Vibrant Ink</option>
+								        <option value="xq-dark">XQ Dark</option>
+								</select>
+							</td>
 						</tr>
 						<tr>
 							<td><label class="checkbox"> <input
