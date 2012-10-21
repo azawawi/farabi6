@@ -1,4 +1,6 @@
 use v6;
+
+use File::Spec;
 use HTTP::Easy::PSGI;
 
 class Farabi6;
@@ -22,6 +24,10 @@ method find-mime-type(Str $filename) {
 }
 
 method run($port) {
+
+	my @dirs = File::Spec.splitdir($?FILE);
+        my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
+
 	my $http = HTTP::Easy::PSGI.new(:port($port));
 	my $app = sub (%env)
 	{
@@ -32,9 +38,8 @@ method run($port) {
 		} else {
 			$filename = $uri.substr(1);
 		}
-		$filename = "lib/Farabi6/files/$filename";
 
-		
+		$filename = File::Spec.catdir($files-dir, $filename);
 		my Str $mime-type = self.find-mime-type($filename);
 	
 		my Int $status;
