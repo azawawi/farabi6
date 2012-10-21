@@ -14,7 +14,7 @@ Have fun!
 
 To run it from the local directory:
 
-    PERL6LIB=lib perl6 bin/farabi6
+    bin/farabi6
     # Open http://localhost:3000 in your browser
 
 To install it using Panda:
