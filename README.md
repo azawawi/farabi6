@@ -10,16 +10,23 @@ Please Note that this project is highly **experimental** and may explode in your
 
 Have fun!
 
-To run it without installing it:
+## Installation
+
+To run it from the local directory:
 
     PERL6LIB=lib perl6 bin/farabi6
+    # Open http://localhost:3000 in your browser
 
 To install it using Panda:
 
     panda install Farabi6
+    farabi6
+    # Open http://localhost:3030 in your browser
 
+## Author
 
+Ahmad M. Zawawi, azawawi on #perl6, https://github.com/azawawi/
 
-Author:
-=======
-Ahmad M. Zawawi
+## License
+
+Artistic License 2.0
