@@ -36,7 +36,6 @@ method run($port) {
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
 		$uri ~~= s/\?.*$//;
-		say $uri;
 		if ($uri eq '/') {
 			$filename = 'index.html';
 		} else {
