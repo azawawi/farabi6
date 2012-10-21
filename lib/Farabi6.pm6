@@ -35,10 +35,16 @@ method run($port) {
 	{
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
+		if ($uri eq '') {
+			say "Empty request!";
+			return [404, ['Content-Type' => 'text/plain' ],['Not found!']];
+		}
 		$uri ~~= s/\?.*$//;
 		if ($uri eq '/') {
 			$filename = 'index.html';
-		} else {
+		} elsif ($uri eq '/pod2html') { 
+			return self.pod2html(%env<psgi.input>);
+		}else {
 			$filename = $uri.substr(1);
 		}
 
@@ -68,5 +74,24 @@ method run($port) {
 	}
  	$http.handle($app);
 
+}
+
+
+method pod2html(Buf $input) {
+
+	my $source =  $input.decode;
+	$source ~~ s/^source\=//;
+        say $source;
+	$source = $source.subst: :g, /'%'(<:hexdigit>**2)/, ->  ($ord) { chr(:16(~$ord)) }
+	
+	say "source = '$source'";
+
+	my $content = '<b>Hello</b>';
+
+	return [
+		200,
+		[ 'Content-Type' => 'text/plain' ],
+		[ $content ],
+	];
 }
 
