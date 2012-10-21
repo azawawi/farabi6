@@ -15,7 +15,7 @@ method find-mime-type(Str $filename) {
 			$mime-type = 'text/javascript';
 		} elsif ($filename ~~ /\.png$/) {
 			$mime-type = 'image/png';		
-		} elsif ($filename ~~ /\.ico$) {
+		} elsif ($filename ~~ /\.ico$/) {
                 	$mime-type = 'image/vnd.microsoft.icon';
 		} else {
 			$mime-type = 'text/plain';
