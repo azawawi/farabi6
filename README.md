@@ -21,9 +21,9 @@ To install it using Panda:
     farabi6
     # Open http://localhost:3030 in your browser
 
-You can also change the port using the following command:
+You can also change the hostname and/or port using the following command:
 
-    farabi6 --port=4040
+    farabi6 --hostname=localhost --port=4040
 
 ## Testing
 
