@@ -83,9 +83,18 @@ method pod2html(Buf $input) {
 	$source ~~ s/^source\=//;
 	$source = uri_unescape($source);
 
-	my $contents = qx/perl6 --doc=HTML test_io.p6/;
+	# TODO use File::Temp once it is usable
+	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-pod2html.tmp');
+	my $fh = open $filename, :w;
+	$fh.print($source);	
+	$fh.close;
+	
+	my $contents = qqx/perl6 --doc=HTML $filename/;
 	$contents ~~ s/^.+\<body.+?\>(.+)\<\/body\>.+$/$0/;
 	
+	# TODO more robust cleanup
+	unlink $filename;
+
 	return [
 		200,
 		[ 'Content-Type' => 'text/plain' ],
