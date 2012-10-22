@@ -1,7 +1,12 @@
 use v6;
 
+# External
 use File::Spec;
 use HTTP::Easy::PSGI;
+use Pod::To::HTML;
+
+# Core
+use URI::Escape;
 
 class Farabi6;
 
@@ -35,10 +40,6 @@ method run($port) {
 	{
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
-		if ($uri eq '') {
-			say "Empty request!";
-			return [404, ['Content-Type' => 'text/plain' ],['Not found!']];
-		}
 		$uri ~~= s/\?.*$//;
 		if ($uri eq '/') {
 			$filename = 'index.html';
@@ -79,19 +80,15 @@ method run($port) {
 
 method pod2html(Buf $input) {
 
+	# TODO more generic parameter parsing
 	my $source =  $input.decode;
 	$source ~~ s/^source\=//;
-        say $source;
-	$source = $source.subst: :g, /'%'(<:hexdigit>**2)/, ->  ($ord) { chr(:16(~$ord)) }
+	$source = uri_unescape($source);
 	
-	say "source = '$source'";
-
-	my $content = '<b>Hello</b>';
-
 	return [
 		200,
 		[ 'Content-Type' => 'text/plain' ],
-		[ $content ],
+		[ Pod::To::HTML.render($source) ],
 	];
 }
 
