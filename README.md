@@ -27,6 +27,12 @@ You can also change the port using the following command:
 
     farabi6 --port=4040
 
+## Tests
+
+To run tests:
+
+    prove -e perl6
+
 ## Author
 
 Ahmad M. Zawawi, azawawi on #perl6, https://github.com/azawawi/

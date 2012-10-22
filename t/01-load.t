@@ -2,10 +2,11 @@ use v6;
 
 BEGIN { @*INC.push('lib') };
 
-use Farabi6;
 use Test;
 
-plan 1;
+plan 2;
 
-my $editor = Farabi6.new;
-ok $editor, "Farabi6.new worked";
+use Farabi6;
+
+ok 1, "use Farabi6 worked!";
+ok Farabi6.new, "Farabi6.new worked";
