@@ -3,7 +3,6 @@ use v6;
 # External
 use File::Spec;
 use HTTP::Easy::PSGI;
-use Pod::To::HTML;
 
 # Core
 use URI::Escape;
@@ -11,23 +10,22 @@ use URI::Escape;
 class Farabi6;
 
 method find-mime-type(Str $filename) {
+	my %mime-types = ( 
+		'html' => 'text/html',
+		'css'  => 'text/css',
+		'js'   => 'text/javascript',
+		'png'  => 'image/png',
+		'ico'  => 'image/vnd.microsoft.icon',
+	);
+	
 	my $mime-type;
-	if ($filename ~~ /\.html$/) {
-			$mime-type = 'text/html';
-		} elsif ($filename ~~ /\.css$/) {
-			$mime-type = 'text/css';
-		} elsif ($filename ~~ /\.js$/) {
-			$mime-type = 'text/javascript';
-		} elsif ($filename ~~ /\.png$/) {
-			$mime-type = 'image/png';		
-		} elsif ($filename ~~ /\.ico$/) {
-                	$mime-type = 'image/vnd.microsoft.icon';
-		} else {
-			$mime-type = 'text/plain';
-			warn "Cannot handle $filename";
-		}
-	$mime-type;
+	if ($filename ~~ /\.(.+?)$/) {
+		$mime-type = %mime-types{$0} // 'text/plain';
+	} else {
+		$mime-type = 'text/plain';
+	}
 
+	$mime-type;
 }
 
 method run($port) {
@@ -84,11 +82,15 @@ method pod2html(Buf $input) {
 	my $source =  $input.decode;
 	$source ~~ s/^source\=//;
 	$source = uri_unescape($source);
-	
+
+#use Pod::To::HTML;	
+#	my $content = Pod::To::HTML.render($source);
+	my $content = qx/ls/;
+
 	return [
 		200,
 		[ 'Content-Type' => 'text/plain' ],
-		[ Pod::To::HTML.render($source) ],
+		[ $content ],
 	];
 }
 
