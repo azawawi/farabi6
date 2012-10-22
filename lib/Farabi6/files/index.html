@@ -54,11 +54,11 @@ say "Hello world from Farabi, Perlito and Perl 6 :)" for 1..5;
 
 =begin pod
 
-=head1 Help
+=head1 Heading 1
 
-Type here and watch the POD view dynamically update itself.
+=head2 Heading 2
 
-=head2 Run
+=head3 Heading 3
 
 Press F5 to run your script using Perlito 6
 
@@ -85,8 +85,6 @@ Press F5 to run your script using Perlito 6
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Local Help</a></li>
-								<li><a href="#">MetaCPAN.org</a></li>
-								<li><a href="#">CPAN Search</a></li>
 							</ul>
 						</div>
 					</div>
@@ -134,11 +132,24 @@ Press F5 to run your script using Perlito 6
 							</td>
 						</tr>
 						<tr>
-							<td><label class="checkbox"> <input
-									id="line_numbers_checkbox" type="checkbox" value="" checked>
+							<td>
+								<label class="checkbox"> 
+									<input id="line_numbers_checkbox" type="checkbox"
+										value="" checked>
 									<strong>Line Numbers?</strong>
-							</label></td>
+								</label>
+							</td>
 						</tr>
+						<tr>
+                                                        <td>
+                                                                <label class="checkbox"> 
+                                                                        <input id="auto_update_pod_view_checkbox" type="checkbox"
+                                                                                value="">
+                                                                        <strong>Auto Update POD View?</strong>
+                                                                </label>
+                                                        </td>
+                                                </tr>
+
 						<tr>
 							<td>
 								<div class="control-group">
