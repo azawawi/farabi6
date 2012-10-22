@@ -19,7 +19,7 @@ method find-mime-type(Str $filename) {
 	);
 	
 	my $mime-type;
-	if ($filename ~~ /\.(.+?)$/) {
+	if ($filename ~~ /\.(\w+)$/) {
 		$mime-type = %mime-types{$0} // 'text/plain';
 	} else {
 		$mime-type = 'text/plain';
@@ -83,14 +83,13 @@ method pod2html(Buf $input) {
 	$source ~~ s/^source\=//;
 	$source = uri_unescape($source);
 
-#use Pod::To::HTML;	
-#	my $content = Pod::To::HTML.render($source);
-	my $content = qx/ls/;
-
+	my $contents = qx/perl6 --doc=HTML test_io.p6/;
+	$contents ~~ s/^.+\<body.+?\>(.+)\<\/body\>.+$/$0/;
+	
 	return [
 		200,
 		[ 'Content-Type' => 'text/plain' ],
-		[ $content ],
+		[ $contents ],
 	];
 }
 
