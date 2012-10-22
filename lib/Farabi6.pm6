@@ -43,7 +43,7 @@ method run(Str $host, Int $port) {
 			$filename = 'index.html';
 		} elsif ($uri eq '/pod2html') { 
 			return self.pod2html(%env<psgi.input>);
-		}else {
+		} else {
 			$filename = $uri.substr(1);
 		}
 
@@ -74,7 +74,6 @@ method run(Str $host, Int $port) {
  	$http.handle($app);
 
 }
-
 
 method pod2html(Buf $input) {
 
