@@ -27,7 +27,7 @@ You can also change the port using the following command:
 
     farabi6 --port=4040
 
-## Tests
+## Testing
 
 To run tests:
 
