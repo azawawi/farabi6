@@ -3,8 +3,6 @@ use v6;
 # External
 use File::Spec;
 use HTTP::Easy::PSGI;
-
-# Core
 use URI::Escape;
 
 class Farabi6;
