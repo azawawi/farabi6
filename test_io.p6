@@ -1,6 +1,8 @@
 use v6;
 
 use URI;
+use URI::Escape;
+use JSON::Tiny;
 
 sub post-request($url, $payload) {
 	constant $CRLF = "\x0D\x0A";
@@ -12,7 +14,7 @@ sub post-request($url, $payload) {
 	"Host: {$host}{$CRLF}" ~
 	"Content-Length: {$payload.chars}{$CRLF}" ~ 
 	"Content-Type: application/x-www-form-urlencoded{$CRLF}{$CRLF}{$payload}"; 
-say $req;
+	
 	my $client = IO::Socket::INET.new( :$host, :$port );
 	$client.send( $req );
 	my $response = '';
@@ -36,12 +38,13 @@ say $req;
 	$body;
 }
 
+my $language = "Python";
+my $escaped-title = uri_escape("Category:Perl 6");
 my $json = post-request(
         'http://rosettacode.org/mw/api.php',
-        'format=json&action=query&cmtitle=Category%3APerl&cmlimit=max&list=categorymembers'
+        "format=json&action=query&cmtitle={$escaped-title}&cmlimit=max&list=categorymembers"
 );
 
-use JSON::Tiny;
 my %o = from-json($json);
 my $members = %o{'query'}{'categorymembers'};
 for @$members -> $member {
