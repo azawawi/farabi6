@@ -15,7 +15,7 @@ Have fun!
 To run it from the local directory:
 
     bin/farabi6
-    # Open http://localhost:3000 in your browser
+    # Open http://localhost:3030 in your browser
 
 To install it using Panda:
 
