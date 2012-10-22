@@ -5,6 +5,7 @@ BEGIN { @*INC.unshift('./lib'); }
 
 use Farabi6;
 
-my $port = 3000;
-say "Farabi is opening a webserver at http://127.0.0.1:$port";
-Farabi6.new.run($port);
+sub MAIN(Int :$port = 3030) {
+	say "Farabi is opening a webserver at http://127.0.0.1:$port";
+	Farabi6.new.run($port);
+}
