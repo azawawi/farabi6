@@ -5,7 +5,7 @@ BEGIN { @*INC.unshift('./lib'); }
 
 use Farabi6;
 
-sub MAIN(Str :$host = '127.0.0.1', Int :$port = 3030) {
-	say "Farabi6 is opening a webserver at http://$hostname:$port";
+sub MAIN(Str :$host = '', Int :$port = 3030) {
+	say "Start Listening at http://$host:$port";
 	Farabi6.new.run($host, $port);
 }
