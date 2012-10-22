@@ -23,6 +23,16 @@ To install it using Panda:
     farabi6
     # Open http://localhost:3030 in your browser
 
+## Running
+
+Run the following command after installing using Panda
+
+    farabi6
+
+You can also change the port using the following command:
+
+    farabi6 --port=4040
+
 ## Author
 
 Ahmad M. Zawawi, azawawi on #perl6, https://github.com/azawawi/
