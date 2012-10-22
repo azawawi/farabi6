@@ -2,6 +2,6 @@
     "name"        : "Farabi6",
     "version"     : "*",
     "description" : "Perl 6 in-browser experimental Editor",
-    "depends"     : [ "File::Spec", "HTTP::Easy", "JSON::Tiny", "URI::Escape" ],
+    "depends"     : [ "File::Spec", "HTTP::Easy", "JSON::Tiny", "URI" ],
     "source-url"  : "git://github.com/azawawi/farabi6.git"
 }
