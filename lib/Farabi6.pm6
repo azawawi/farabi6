@@ -28,12 +28,12 @@ method find-mime-type(Str $filename) {
 	$mime-type;
 }
 
-method run(Str $hostname, Int $port) {
+method run(Str $host, Int $port) {
 
 	my @dirs = File::Spec.splitdir($?FILE);
         my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
 
-	my $http = HTTP::Easy::PSGI.new(:hostname($hostname), :port($port));
+	my $http = HTTP::Easy::PSGI.new(:$host, :$port);
 	my $app = sub (%env)
 	{
 		my Str $filename;
