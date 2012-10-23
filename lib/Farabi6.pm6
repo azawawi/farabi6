@@ -4,6 +4,7 @@ use v6;
 use File::Spec;
 use HTTP::Easy::PSGI;
 use URI::Escape;
+use URI;
 
 class Farabi6;
 
@@ -75,6 +76,36 @@ method run(Str $host, Int $port) {
 
 }
 
+method get-request(Str $url) {
+        constant $CRLF = "\x0D\x0A";
+
+        my $o = URI.new($url);
+        my $host = $o.host;
+        my $port = $o.port;
+        my $req = "GET {$o.path} HTTP/1.1{$CRLF}";
+
+        my $client = IO::Socket::INET.new( :$host, :$port );
+        $client.send( $req );
+        my $response = '';
+        while (my $buffer = $client.recv) {
+                $response ~= $buffer;
+        }
+        $client.close;
+
+        my $http_body;
+        my $body = '';
+        for $response.lines -> $line {
+
+                if ($http_body) {
+                        $body ~= $line;
+                } elsif ($line.chars == 1) {
+                        $http_body = 1;
+                        say "Found HTTP Body";
+                }
+        }
+
+        $body;
+}
 
 method open-url(Buf $input) {
 	# TODO more generic parameter parsing
@@ -83,11 +114,12 @@ method open-url(Buf $input) {
         $url = uri_unescape($url);
 
 	say "URL: $url";
+	my $contents = self.get-request($url);
 
 	return [
         	 200,
                 [ 'Content-Type' => 'text/plain' ],
-                [ $url ],
+                [ $contents ],
         ];
 }
 
