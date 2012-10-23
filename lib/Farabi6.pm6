@@ -39,8 +39,10 @@ method run(Str $host, Int $port) {
 		$uri ~~= s/\?.*$//;
 		if ($uri eq '/') {
 			$filename = 'index.html';
-		} elsif ($uri eq '/pod2html') { 
-			return self.pod2html(%env<psgi.input>);
+		} elsif ($uri eq '/pod_to_html') { 
+			return self.pod-to-html(%env<psgi.input>);
+		} elsif ($uri eq '/open_url') {
+			return self.open-url(%env<psgi.input>);
 		} else {
 			$filename = $uri.substr(1);
 		}
@@ -73,7 +75,23 @@ method run(Str $host, Int $port) {
 
 }
 
-method pod2html(Buf $input) {
+
+method open-url(Buf $input) {
+	# TODO more generic parameter parsing
+        my $url =  $input.decode;
+        $url ~~ s/^url\=//;
+        $url = uri_unescape($url);
+
+	say "URL: $url";
+
+	return [
+        	 200,
+                [ 'Content-Type' => 'text/plain' ],
+                [ $url ],
+        ];
+}
+
+method pod-to-html(Buf $input) {
 
 	# TODO more generic parameter parsing
 	my $source =  $input.decode;
