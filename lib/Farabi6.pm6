@@ -30,7 +30,12 @@ method find-mime-type(Str $filename) {
 method run(Str $host, Int $port) {
 
 	my @dirs = File::Spec.splitdir($?FILE);
-        my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
+	my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
+	unless (File::Spec.catdir($files-dir, 'farabi.js').IO ~ :e) {
+		# Workaround for panda not installing non-perl files in ~/.perl6
+		$files-dir = File::Spec.catdir(%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
+		say "Panda installation found. Switching to {$files-dir}";
+	}
 
 	my $http = HTTP::Easy::PSGI.new(:$host, :$port);
 	my $app = sub (%env)
@@ -60,8 +65,7 @@ method run(Str $host, Int $port) {
 				$fh.close;
 			}
 		} 
-
-		if (!@contents) {
+		unless (@contents) {
 			$status = 404;
 			$mime-type = 'text/plain';
 			@contents = "Not found $uri";	
@@ -109,18 +113,18 @@ method get-request(Str $url) {
 
 method open-url(Buf $input) {
 	# TODO more generic parameter parsing
-        my $url =  $input.decode;
-        $url ~~ s/^url\=//;
-        $url = uri_unescape($url);
+	my $url =  $input.decode;
+    $url ~~ s/^url\=//;
+    $url = uri_unescape($url);
 
 	say "URL: $url";
 	my $contents = self.get-request($url);
 
 	return [
-        	 200,
-                [ 'Content-Type' => 'text/plain' ],
-                [ $contents ],
-        ];
+      	 200,
+         [ 'Content-Type' => 'text/plain' ],
+         [ $contents ],
+    ];
 }
 
 method pod-to-html(Buf $input) {
