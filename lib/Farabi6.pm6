@@ -31,6 +31,7 @@ method run(Str $host, Int $port) {
 
 	my @dirs = File::Spec.splitdir($?FILE);
 	my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
+	say "files directory contains: " . $files-dir;
 	unless (File::Spec.catdir($files-dir, 'farabi.js').IO ~ :e) {
 		# Workaround for panda not installing non-perl files in ~/.perl6
 		$files-dir = File::Spec.catdir(%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
