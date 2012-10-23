@@ -28,16 +28,17 @@ method find-mime-type(Str $filename) {
 }
 
 method run(Str $host, Int $port) {
-
+	
 	my @dirs = File::Spec.splitdir($?FILE);
 	my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
-	say "files directory contains: " . $files-dir;
 	unless (File::Spec.catdir($files-dir, 'farabi.js').IO ~ :e) {
 		# Workaround for panda not installing non-perl files in ~/.perl6
 		$files-dir = File::Spec.catdir(%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
 		say "Panda installation found. Switching to {$files-dir}";
 	}
+	say "Farabi6 is going to serve files *insecurely* from {$files-dir} :)";
 
+	say "Farabi6 listens carefully at http://$host:$port";
 	my $http = HTTP::Easy::PSGI.new(:$host, :$port);
 	my $app = sub (%env)
 	{
