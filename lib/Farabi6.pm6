@@ -50,6 +50,8 @@ method run(Str $host, Int $port) {
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
 		$uri ~~= s/\?.*$//;
+		
+		# Handle files and routes :)
 		if ($uri eq '/') {
 			$filename = 'index.html';
 		} elsif ($uri eq '/pod_to_html') { 
@@ -60,6 +62,8 @@ method run(Str $host, Int $port) {
 			$filename = $uri.substr(1);
 		}
 
+		# Get the real file from the local filesystem
+		#TODO more robust and secure way of getting files. We could easily be attacked from here
 		$filename = File::Spec.catdir($files-dir, $filename);
 		my Str $mime-type = self.find-mime-type($filename);
 	
