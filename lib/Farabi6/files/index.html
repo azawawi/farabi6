@@ -52,7 +52,9 @@
 							<textarea id="editor" name="editor" class="editor">
 use v6;
 
-say "Hello world from Farabi, Perlito and Perl 6 :)" for 1..5;
+my $farabi = "Farabi 6";
+my Str $message = "Hello world from {$farabi}";
+$message.say for 1..5;
 
 =begin pod
 
