@@ -3,6 +3,7 @@ use v6;
 # External
 use File::Spec;
 use HTTP::Easy::PSGI;
+use JSON::Tiny;
 use URI::Escape;
 use URI;
 
@@ -58,6 +59,10 @@ method run(Str $host, Int $port) {
 			return self.pod-to-html(%env<psgi.input>);
 		} elsif ($uri eq '/open_url') {
 			return self.open-url(%env<psgi.input>);
+		} elsif ($uri eq '/rosettacode_rebuild_index') {
+			return self.rosettacode-rebuild-index;
+		} elsif ($uri eq '/rosettacode_search') {
+			return self.rosettacode-search(%env<psgi.input>);
 		} else {
 			$filename = $uri.substr(1);
 		}
@@ -162,5 +167,62 @@ method pod-to-html(Buf $input) {
 		[ 'Content-Type' => 'text/plain' ],
 		[ $contents ],
 	];
+}
+
+
+method post-request($url, $payload) {
+	constant $CRLF = "\x0D\x0A";
+
+	my $o = URI.new($url);
+	my $host = $o.host;
+	my $port = $o.port;
+	my $req = "POST {$o.path} HTTP/1.0{$CRLF}" ~
+	"Host: {$host}{$CRLF}" ~
+	"Content-Length: {$payload.chars}{$CRLF}" ~ 
+	"Content-Type: application/x-www-form-urlencoded{$CRLF}{$CRLF}{$payload}"; 
+	
+	my $client = IO::Socket::INET.new( :$host, :$port );
+	$client.send( $req );
+	my $response = '';
+	while (my $buffer = $client.recv) {
+		$response ~= $buffer;
+	}
+	$client.close;
+
+	my $http_body;
+	my $body = '';
+	for $response.lines -> $line {
+	
+		if ($http_body) {
+			$body ~= $line;
+		} elsif ($line.chars == 1) {
+			$http_body = 1;
+			say "Found HTTP Body";
+		}
+	}
+
+	$body;
+}
+
+method rosettacode-rebuild-index(Str $language) {
+
+	my $escaped-title = uri_escape("Category:{$language}");
+	my $json = self.post-request(
+        'http://rosettacode.org/mw/api.php',
+       	"format=json&action=query&cmtitle={$escaped-title}&cmlimit=max&list=categorymembers"
+	);
+
+	my $filename = 'farabi-rosettacode-cache';
+	my %o = from-json($json);
+	my $members = %o{'query'}{'categorymembers'};
+	my $fh = open "rosettacode-index.cache", :w;
+	for @$members -> $member {
+		$fh.say($member{'title'});
+	}
+	$fh.close;
+}
+
+method rosettacode-search(Buf $input) {
+	...
 }
 
