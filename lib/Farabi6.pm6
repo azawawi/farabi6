@@ -58,6 +58,7 @@ method run(Str $host, Int $port) {
 		} elsif ($uri eq '/pod_to_html') { 
 			return self.pod-to-html(%env<psgi.input>);
 		} elsif ($uri eq '/open_url') {
+			say %env<psgi.input>.decode;
 			return self.open-url(%env<psgi.input>);
 		} elsif ($uri eq '/rosettacode_rebuild_index') {
 			return self.rosettacode-rebuild-index;
@@ -130,17 +131,19 @@ method get-request(Str $url) {
 method open-url(Buf $input) {
 	# TODO more generic parameter parsing
 	my $url =  $input.decode;
-    $url ~~ s/^url\=//;
-    $url = uri_unescape($url);
+	say "url:'$url'";
+	$url ~~ s/^url\=//;
+    	$url = uri_unescape($url);
 
-	say "URL: $url";
-	my $contents = self.get-request($url);
+say "url: $url";
+	# TODO use HTTP::Client once it is stable and HTTPS requests are usable
+	my $output = qqx/wget -qO- $url/;
 
 	return [
-      	 200,
-         [ 'Content-Type' => 'text/plain' ],
-         [ $contents ],
-    ];
+      		200,
+        	[ 'Content-Type' => 'text/plain' ],
+        	[ $output ],
+	];
 }
 
 method pod-to-html(Buf $input) {
