@@ -7,7 +7,7 @@
 		"HTTP::Easy", 
 		"JSON::Tiny", 
 		"Pod::To::HTML",
-		"URI",
+		"URI"
 	],
 	"source-url"  : "git://github.com/azawawi/farabi6.git"
 }
