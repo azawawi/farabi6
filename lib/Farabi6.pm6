@@ -50,19 +50,21 @@ method run(Str $host, Int $port) {
 	{
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
-		$uri ~~= s/\?.*$//;
+		$uri = $uri ~~ s/\?.*$//;
 		
 		# Handle files and routes :)
 		if ($uri eq '/') {
 			$filename = 'index.html';
 		} elsif ($uri eq '/pod_to_html') { 
-			return self.pod-to-html(%env<psgi.input>);
+			return self.pod-to-html(self.get-parameter(%env<psgi.input>, 'source'));
+		} elsif ($uri eq '/syntax_check') {
+			return self.syntax-check(self.get-parameter(%env<psgi.input>, 'source')); 
 		} elsif ($uri eq '/open_url') {
-			return self.open-url(%env<psgi.input>);
+			return self.open-url(self.get-parameter(%env<psgi.input>, 'url'));
 		} elsif ($uri eq '/rosettacode_rebuild_index') {
 			return self.rosettacode-rebuild-index;
 		} elsif ($uri eq '/rosettacode_search') {
-			return self.rosettacode-search(%env<psgi.input>);
+			return self.rosettacode-search(self.get-parameter(%env<psgi.input>, 'something'));
 		} else {
 			$filename = $uri.substr(1);
 		}
@@ -96,43 +98,29 @@ method run(Str $host, Int $port) {
 
 }
 
-method get-request(Str $url) {
-        constant $CRLF = "\x0D\x0A";
-
-        my $o = URI.new($url);
-        my $host = $o.host;
-        my $port = $o.port;
-        my $req = "GET {$o.path} HTTP/1.1{$CRLF}";
-
-        my $client = IO::Socket::INET.new( :$host, :$port );
-        $client.send( $req );
-        my $response = '';
-        while (my $buffer = $client.recv) {
-                $response ~= $buffer;
-        }
-        $client.close;
-
-        my $http_body;
-        my $body = '';
-        for $response.lines -> $line {
-
-                if ($http_body) {
-                        $body ~= $line;
-                } elsif ($line.chars == 1) {
-                        $http_body = 1;
-                        say "Found HTTP Body";
-                }
-        }
-
-        $body;
+=begin pod
+Syntax checks the current editor document for any problems using
+std viv
+=end pod
+sub syntax-check(Str $source) {
+    return [
+		200,
+		[ 'Content-Type' => 'text/plain' ],
+        [ '[]' ],
+	];
 }
 
-method open-url(Buf $input) {
+method get-parameter(Buf $input, $name) {
 	# TODO more generic parameter parsing
-	my $url =  $input.decode;
-	$url ~~ s/^url\=//;
-   	$url = uri_unescape($url);
+	my $value =  $input.decode;
+	$value ~~ s/^$name\=//;
+	uri_unescape($value);
+}
 
+=begin pod
+Returns the contents of the URL provided from the web
+=end pod
+method open-url($url) {
 	return [
       		200,
         	[ 'Content-Type' => 'text/plain' ],
@@ -231,7 +219,7 @@ method rosettacode-rebuild-index(Str $language) {
 	$fh.close;
 }
 
-method rosettacode-search(Buf $input) {
+method rosettacode-search(Str something) {
 	...
 }
 
