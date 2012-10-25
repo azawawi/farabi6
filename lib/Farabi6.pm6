@@ -50,7 +50,7 @@ method run(Str $host, Int $port) {
 	{
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
-		$uri = $uri ~~ s/\?.*$//;
+		$uri ~~= s/\?.*$//;
 		
 		# Handle files and routes :)
 		if ($uri eq '/') {
@@ -103,8 +103,21 @@ method run(Str $host, Int $port) {
 Syntax checks the current editor document for any problems using
 std/viv
 =end pod
-sub syntax-check(Str $source) {
-    [
+method syntax-check(Str $source) {
+
+	# TODO use File::Temp once it is usable
+	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-syntax-check.tmp');
+	my $fh = open $filename, :w;
+	$fh.print($source);
+	$fh.close;	
+
+	#TODO more portable version for win32 in the future
+	my $viv = File::Spec.catdir(%*ENV{'HOME'}, 'std', 'viv');
+    my $viv-output = qqx{$viv $filename};
+	
+	#TODO parse viv output
+
+	[
 		200,
 		[ 'Content-Type' => 'text/plain' ],
         [ '[]' ],
@@ -135,21 +148,16 @@ it is uses wget since it is the most reliable at this time
 Both LWP::Simple and  suffers from installation and bugs
 =end pod 
 method http-get(Str $url) {
-#TODO investigate whether LWP::Simple is installable and workable again
-#TODO investigate whether HTTP::Client after the promised big refactor works or not
+    #TODO investigate whether LWP::Simple is installable and workable again
+    #TODO investigate whether HTTP::Client after the promised big refactor works or not
 	die "URL is not defined!" unless $url; 
 	qqx/wget -qO- $url/;
 }
 
-method pod-to-html(Buf $input) {
-
-	# TODO more generic parameter parsing
-	my $source =  $input.decode;
-	$source ~~ s/^source\=//;
-	$source = uri_unescape($source);
+method pod-to-html(Str $source) {
 
 	# TODO use File::Temp once it is usable
-	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-pod2html.tmp');
+	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-pod-to-html.tmp');
 	my $fh = open $filename, :w;
 	$fh.print($source);	
 	$fh.close;
@@ -167,7 +175,7 @@ method pod-to-html(Buf $input) {
 	];
 }
 
-
+#TODO use LWP::Simple.post if it works?
 method post-request($url, $payload) {
 	constant $CRLF = "\x0D\x0A";
 
@@ -220,7 +228,7 @@ method rosettacode-rebuild-index(Str $language) {
 	$fh.close;
 }
 
-method rosettacode-search(Str something) {
+method rosettacode-search(Str $something) {
 	...
 }
 
