@@ -9,25 +9,11 @@ use URI;
 
 class Farabi6;
 
-method find-mime-type(Str $filename) {
-	my %mime-types = ( 
-		'html' => 'text/html',
-		'css'  => 'text/css',
-		'js'   => 'text/javascript',
-		'png'  => 'image/png',
-		'ico'  => 'image/vnd.microsoft.icon',
-	);
-	
-	my $mime-type;
-	if ($filename ~~ /\.(\w+)$/) {
-		$mime-type = %mime-types{$0} // 'text/plain';
-	} else {
-		$mime-type = 'text/plain';
-	}
+=begin pod
 
-	$mime-type;
-}
+Runs the Farabi webserver at host:port
 
+=end pod
 method run(Str $host, Int $port) {
 	
 	my @dirs = File::Spec.splitdir($?FILE);
@@ -100,8 +86,10 @@ method run(Str $host, Int $port) {
 }
 
 =begin pod
+
 Syntax checks the current editor document for any problems using
 std/viv
+
 =end pod
 method syntax-check(Str $source) {
 
@@ -112,15 +100,27 @@ method syntax-check(Str $source) {
 	$fh.close;	
 
 	#TODO more portable version for win32 in the future
-	my $viv = File::Spec.catdir(%*ENV{'HOME'}, 'std', 'viv');
-    my $viv-output = qqx{$viv $filename};
-	
-	#TODO parse viv output
+	my Str $viv = File::Spec.catdir(%*ENV{'HOME'}, 'std', 'viv');
+    my Str $output = qqx{$viv -c $filename};
+
+	my @problems;
+	for $output.lines -> $line {
+		if ($line ~~ /^(.+)\ at\ .+\ line\ (\d+)\:$/ ) {
+			push @problems, {
+				'description'   => ~$0,
+				'line_number'   => ~$1,
+			}
+		}
+	}
+
+	my %result = 
+		'problems' => @problems,
+		'output'   => $output;
 
 	[
 		200,
-		[ 'Content-Type' => 'text/plain' ],
-        [ '[]' ],
+		[ 'Content-Type' => 'application/json' ],
+        [ to-json(%result) ],
 	];
 }
 
@@ -143,9 +143,11 @@ method open-url($url) {
 }
 
 =begin pod
+
 This serves as a utility for getting an HTTP request
 it is uses wget since it is the most reliable at this time
 Both LWP::Simple and  suffers from installation and bugs
+
 =end pod 
 method http-get(Str $url) {
     #TODO investigate whether LWP::Simple is installable and workable again
@@ -231,4 +233,25 @@ method rosettacode-rebuild-index(Str $language) {
 method rosettacode-search(Str $something) {
 	...
 }
+
+#TODO refactor into Farabi::Types (like Mojo::Types)
+method find-mime-type(Str $filename) {
+	my %mime-types = ( 
+		'html' => 'text/html',
+		'css'  => 'text/css',
+		'js'   => 'text/javascript',
+		'png'  => 'image/png',
+		'ico'  => 'image/vnd.microsoft.icon',
+	);
+	
+	my $mime-type;
+	if ($filename ~~ /\.(\w+)$/) {
+		$mime-type = %mime-types{$0} // 'text/plain';
+	} else {
+		$mime-type = 'text/plain';
+	}
+
+	$mime-type;
+}
+
 
