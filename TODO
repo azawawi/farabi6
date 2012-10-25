@@ -1,2 +1,5 @@
+Delayed initial sample loading
+pod2html and syntax check should work on the current document. no need to transfer it back and forthy
+session management... 
 Rosetta code browser!
 Analyze stack trace through projects.json and META.info through http://paste.debian.net/202822/
