@@ -58,7 +58,6 @@ method run(Str $host, Int $port) {
 		} elsif ($uri eq '/pod_to_html') { 
 			return self.pod-to-html(%env<psgi.input>);
 		} elsif ($uri eq '/open_url') {
-			say %env<psgi.input>.decode;
 			return self.open-url(%env<psgi.input>);
 		} elsif ($uri eq '/rosettacode_rebuild_index') {
 			return self.rosettacode-rebuild-index;
@@ -131,19 +130,26 @@ method get-request(Str $url) {
 method open-url(Buf $input) {
 	# TODO more generic parameter parsing
 	my $url =  $input.decode;
-	say "url:'$url'";
 	$url ~~ s/^url\=//;
-    	$url = uri_unescape($url);
-
-say "url: $url";
-	# TODO use HTTP::Client once it is stable and HTTPS requests are usable
-	my $output = qqx/wget -qO- $url/;
+   	$url = uri_unescape($url);
 
 	return [
       		200,
         	[ 'Content-Type' => 'text/plain' ],
-        	[ $output ],
+        	[ self.http-get($url) ],
 	];
+}
+
+=begin pod
+This serves as a utility for getting an HTTP request
+it is uses wget since it is the most reliable at this time
+Both LWP::Simple and  suffers from installation and bugs
+=end pod 
+method http-get(Str $url) {
+#TODO investigate whether LWP::Simple is installable and workable again
+#TODO investigate whether HTTP::Client after the promised big refactor works or not
+	die "URL is not defined!" unless $url; 
+	qqx/wget -qO- $url/;
 }
 
 method pod-to-html(Buf $input) {
