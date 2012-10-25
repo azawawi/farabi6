@@ -88,7 +88,8 @@ method run(Str $host, Int $port) {
 			$mime-type = 'text/plain';
 			$contents = "Not found $uri";	
 		}
-		return [ 
+		
+		[ 
 			$status, 
 			[ 'Content-Type' => $mime-type ], 
 			[ $contents ] 
@@ -100,10 +101,10 @@ method run(Str $host, Int $port) {
 
 =begin pod
 Syntax checks the current editor document for any problems using
-std viv
+std/viv
 =end pod
 sub syntax-check(Str $source) {
-    return [
+    [
 		200,
 		[ 'Content-Type' => 'text/plain' ],
         [ '[]' ],
@@ -121,10 +122,10 @@ method get-parameter(Buf $input, $name) {
 Returns the contents of the URL provided from the web
 =end pod
 method open-url($url) {
-	return [
-      		200,
-        	[ 'Content-Type' => 'text/plain' ],
-        	[ self.http-get($url) ],
+	[
+		200,
+        [ 'Content-Type' => 'text/plain' ],
+        [ self.http-get($url) ],
 	];
 }
 
@@ -159,7 +160,7 @@ method pod-to-html(Buf $input) {
 	# TODO more robust cleanup
 	unlink $filename;
 
-	return [
+	[
 		200,
 		[ 'Content-Type' => 'text/plain' ],
 		[ $contents ],
