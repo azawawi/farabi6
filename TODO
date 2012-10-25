@@ -1,3 +1,4 @@
+open with autocomplete-style history and save functionality  is next
 Delayed initial sample loading
 pod2html and syntax check should work on the current document. no need to transfer it back and forthy
 session management... 
