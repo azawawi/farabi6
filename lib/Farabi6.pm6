@@ -85,12 +85,12 @@ method run(Str $host, Int $port) {
 
 }
 
-=begin pod
+=begin comment
 
 Syntax checks the current editor document for any problems using
 std/viv
 
-=end pod
+=end comment
 method syntax-check(Str $source) {
 
 	# TODO use File::Temp once it is usable
@@ -131,9 +131,12 @@ method get-parameter(Buf $input, $name) {
 	uri_unescape($value);
 }
 
-=begin pod
-Returns the contents of the URL provided from the web
-=end pod
+=begin comment
+
+Returns a PSGI response that contains the contents of the URL
+provided
+
+=end comment
 method open-url($url) {
 	[
 		200,
@@ -142,13 +145,13 @@ method open-url($url) {
 	];
 }
 
-=begin pod
+=begin comment
 
-This serves as a utility for getting an HTTP request
+This is a utility for sending a GET HTTP request. Right now
 it is uses wget since it is the most reliable at this time
 Both LWP::Simple and  suffers from installation and bugs
 
-=end pod 
+=end comment
 method http-get(Str $url) {
     #TODO investigate whether LWP::Simple is installable and workable again
     #TODO investigate whether HTTP::Client after the promised big refactor works or not
@@ -156,12 +159,17 @@ method http-get(Str $url) {
 	qqx/wget -qO- $url/;
 }
 
-method pod-to-html(Str $source) {
+=begin comment
+
+Returns a PSGI response containing a rendered POD HTML string
+
+=end comment
+method pod-to-html(Str $pod) {
 
 	# TODO use File::Temp once it is usable
 	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-pod-to-html.tmp');
 	my $fh = open $filename, :w;
-	$fh.print($source);	
+	$fh.print($pod);	
 	$fh.close;
 	
 	my $contents = qqx/perl6 --doc=HTML $filename/;
