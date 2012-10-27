@@ -11,7 +11,8 @@ class Farabi6;
 
 =begin pod
 
-Runs the Farabi webserver at host:port
+Runs the Farabi webserver at host:port. If host is empty
+then it listens on all interfaces
 
 =end pod
 method run(Str $host, Int $port) {
