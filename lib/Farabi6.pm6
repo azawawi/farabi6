@@ -3,9 +3,9 @@ use v6;
 # External
 use File::Spec;
 use HTTP::Easy::PSGI;
-use JSON::Tiny;
-use URI::Escape;
 use URI;
+
+# Internal
 use Farabi6::Editor;
 use Farabi6::Util;
 
