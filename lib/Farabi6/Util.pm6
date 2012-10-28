@@ -1,6 +1,4 @@
-package Farabi6;
-
-module Util;
+module Farabi6::Util;
 
 sub get-parameter(Buf $input, $name) {
 	# TODO more generic parameter parsing

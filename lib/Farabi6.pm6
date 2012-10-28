@@ -6,6 +6,8 @@ use HTTP::Easy::PSGI;
 use JSON::Tiny;
 use URI::Escape;
 use URI;
+use Farabi6::Editor;
+use Farabi6::Util;
 
 class Farabi6;
 
@@ -43,15 +45,19 @@ method run(Str $host, Int $port) {
 		if ($uri eq '/') {
 			$filename = 'index.html';
 		} elsif ($uri eq '/pod_to_html') { 
-			return self.pod-to-html(self.get-parameter(%env<psgi.input>, 'source'));
+			return Farabi6::Editor.pod-to-html(
+				Farabi6::Util.get-parameter(%env<psgi.input>, 'source'));
 		} elsif ($uri eq '/syntax_check') {
-			return self.syntax-check(self.get-parameter(%env<psgi.input>, 'source')); 
+			return Farabi6::Editor.syntax-check(
+				Farabi6::Util.get-parameter(%env<psgi.input>, 'source')); 
 		} elsif ($uri eq '/open_url') {
-			return self.open-url(self.get-parameter(%env<psgi.input>, 'url'));
+			return Farabi6::Editor.open-url(
+				Farabi6::Util.get-parameter(%env<psgi.input>, 'url'));
 		} elsif ($uri eq '/rosettacode_rebuild_index') {
-			return self.rosettacode-rebuild-index;
+			return Farabi6::Editor.rosettacode-rebuild-index;
 		} elsif ($uri eq '/rosettacode_search') {
-			return self.rosettacode-search(self.get-parameter(%env<psgi.input>, 'something'));
+			return Farabi6::Editor.rosettacode-search(
+				Farabi6::Util.get-parameter(%env<psgi.input>, 'something'));
 		} else {
 			$filename = $uri.substr(1);
 		}
@@ -59,7 +65,7 @@ method run(Str $host, Int $port) {
 		# Get the real file from the local filesystem
 		#TODO more robust and secure way of getting files. We could easily be attacked from here
 		$filename = File::Spec.catdir($files-dir, $filename);
-		my Str $mime-type = self.find-mime-type($filename);
+		my Str $mime-type = Farabi6::Editor.find-mime-type($filename);
 	
 		my Int $status;
 		my $contents;
