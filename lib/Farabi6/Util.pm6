@@ -1,6 +1,8 @@
-class Farabi6::Util;
+module Farabi6::Util;
 
 use URI::Escape;
+
+class Farabi::Util {
 
 sub get-parameter(Buf $input, $name) is export {
 	# TODO more generic parameter parsing
@@ -59,7 +61,7 @@ sub post-request($url, $payload) is export {
 }
 
 #TODO refactor into Farabi::Types (like Mojo::Types)
-method find-mime-type(Str $filename) is export {
+sub find-mime-type(Str $filename) is export {
 	my %mime-types = ( 
 		'html' => 'text/html',
 		'css'  => 'text/css',
@@ -78,3 +80,5 @@ method find-mime-type(Str $filename) is export {
 	$mime-type;
 }
 
+
+}

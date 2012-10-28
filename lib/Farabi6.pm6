@@ -4,7 +4,7 @@ class Farabi6;
 
 # External
 use File::Spec;
-use HTTP::Easy::PSGI;
+use HTTP::Server::Simple::PSGI;
 use URI;
 
 # Internal
@@ -35,7 +35,6 @@ method run(Str $host, Int $port) {
 	say "Farabi6 is going to serve files *insecurely* from {$files-dir} :)";
 	
 	say "Farabi6 listens carefully at http://$host:$port";
-	my $http = HTTP::Easy::PSGI.new(:$host, :$port);
 	my $app = sub (%env)
 	{
 		my Str $filename;
@@ -88,8 +87,11 @@ method run(Str $host, Int $port) {
 			[ $contents ] 
 		];
 	}
- 	$http.handle($app);
 
+	my $server = HTTP::Server::Simple::PSGI.new($port);
+	$server.host = $host;
+	$server.app($app);
+ 	$server.run;
 }
 
 
