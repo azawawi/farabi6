@@ -1,4 +1,4 @@
-module Farabi6::Util;
+class Farabi6::Util;
 
 use URI::Escape;
 
@@ -7,7 +7,7 @@ sub get-parameter(Buf $input, $name) is export {
 	my $value =  $input.decode;
 	$value ~~ s/^$name\=//;
 	uri_unescape($value);
-};
+}
 
 =begin comment
 
@@ -21,7 +21,7 @@ sub http-get(Str $url) is export {
     #TODO investigate whether HTTP::Client after the promised big refactor works or not
 	die "URL is not defined!" unless $url; 
 	qqx/wget -qO- $url/;
-};
+}
 
 #TODO use LWP::Simple.post if it works?
 sub post-request($url, $payload) is export {
@@ -56,10 +56,10 @@ sub post-request($url, $payload) is export {
 	}
 
 	$body;
-};
+}
 
 #TODO refactor into Farabi::Types (like Mojo::Types)
-sub find-mime-type(Str $filename) is export {
+method find-mime-type(Str $filename) is export {
 	my %mime-types = ( 
 		'html' => 'text/html',
 		'css'  => 'text/css',
@@ -76,5 +76,5 @@ sub find-mime-type(Str $filename) is export {
 	}
 
 	$mime-type;
-};
+}
 

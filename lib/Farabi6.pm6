@@ -1,5 +1,7 @@
 use v6;
 
+class Farabi6;
+
 # External
 use File::Spec;
 use HTTP::Easy::PSGI;
@@ -8,8 +10,6 @@ use URI;
 # Internal
 use Farabi6::Editor;
 use Farabi6::Util;
-
-class Farabi6;
 
 =begin pod
 
@@ -23,7 +23,8 @@ method run(Str $host, Int $port) {
 	my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
 	unless (File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e) {
 		# Workaround for panda not installing non-perl files in ~/.perl6
-		$files-dir = File::Spec.catdir(%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
+		$files-dir = File::Spec.catdir(
+			%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
 		say "Panda installation found. Switching to {$files-dir}";
 	}
 
@@ -40,7 +41,7 @@ method run(Str $host, Int $port) {
 		my Str $filename;
    		my Str $uri = %env<REQUEST_URI>;
 		$uri ~~= s/\?.*$//;
-		
+	
 		# Handle files and routes :)
 		if ($uri eq '/') {
 			$filename = 'index.html';
@@ -65,8 +66,7 @@ method run(Str $host, Int $port) {
 		# Get the real file from the local filesystem
 		#TODO more robust and secure way of getting files. We could easily be attacked from here
 		$filename = File::Spec.catdir($files-dir, $filename);
-		my Str $mime-type = Farabi6::Editor.find-mime-type($filename);
-	
+		my Str $mime-type = Farabi6::Util.find-mime-type($filename);
 		my Int $status;
 		my $contents;
 		if ($filename.IO ~~ :e) {
