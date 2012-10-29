@@ -6,6 +6,8 @@ use File::Spec;
 use JSON::Tiny;
 use URI::Escape;
 
+use Farabi6::Util;
+
 =begin comment
 
 Syntax checks the current editor document for any problems using
@@ -84,7 +86,7 @@ method open-url(Str $url) {
 	[
 		200,
         [ 'Content-Type' => 'text/plain' ],
-        [ self.http-get($url) ],
+        [ Farabi6::Util.http-get($url) ],
 	];
 }
 
