@@ -15,7 +15,7 @@ To run it from the local directory:
     bin/farabi6
     # Open http://localhost:3030 in your browser
 
-To install it using Panda:
+To install it using Panda (a module management tool bundled with Rakudo Star):
 
     panda install Farabi6
     farabi6
