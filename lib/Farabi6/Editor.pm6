@@ -43,7 +43,36 @@ method syntax-check(Str $source) {
 		[ 'Content-Type' => 'application/json' ],
         [ to-json(%result) ],
 	];
-};
+}
+
+=begin comment
+
+Returns the 'file-name' file contents as a PSGI response
+
+=end comment
+method open-file(Str $file-name) {
+
+	# Assert that filename is defined 
+	die "Undefined file-name" unless $file-name;
+
+	# Open filename
+	my ($status, $text);
+	if ( my $fh = open $file-name, :bin) {
+		$text = $fh.slurp;
+		$fh.close;
+		$status = 200;
+	} else {
+		$status = 404;
+		$text = 'Not found';
+	}
+
+	# Return the PSGI response
+	[
+		$status,
+		[ 'Content-Type' => 'text/plain' ],
+		[ $text ],
+	];
+}
 
 =begin comment
 
@@ -51,13 +80,13 @@ Returns a PSGI response that contains the contents of the URL
 provided
 
 =end comment
-method open-url($url) {
+method open-url(Str $url) {
 	[
 		200,
         [ 'Content-Type' => 'text/plain' ],
-        [ Farabi6::Editor.http-get($url) ],
+        [ self.http-get($url) ],
 	];
-};
+}
 
 =begin comment
 
@@ -83,7 +112,7 @@ method pod-to-html(Str $pod) {
 		[ 'Content-Type' => 'text/plain' ],
 		[ $contents ],
 	];
-};
+}
 
 method rosettacode-rebuild-index(Str $language) {
 
@@ -101,7 +130,7 @@ method rosettacode-rebuild-index(Str $language) {
 		$fh.say($member{'title'});
 	}
 	$fh.close;
-};
+}
 
 method rosettacode-search(Str $something) {
 	...
