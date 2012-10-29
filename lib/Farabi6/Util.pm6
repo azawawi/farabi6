@@ -4,9 +4,9 @@ class Farabi6::Util {
 
 use URI::Escape;
 
-method get-parameter(Buf $input, Str $name) {
+method get-parameter(Str $input, Str $name) {
 	# TODO more generic parameter parsing
-	my $value =  $input.decode;
+	my $value = $input;
 	$value ~~ s/^$name\=//;
 	uri_unescape($value);
 }
