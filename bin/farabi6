@@ -6,5 +6,5 @@ BEGIN { @*INC.unshift('./lib'); }
 use Farabi6;
 
 sub MAIN(Str :$host = '', Int :$port = 3030) {
-	Farabi6.new.run($host, $port);
+	Farabi6.run($host, $port);
 }

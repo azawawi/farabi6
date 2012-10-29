@@ -1,4 +1,6 @@
-module Farabi6::Editor;
+use v6;
+
+class Farabi6::Editor {
 
 use JSON::Tiny;
 use URI::Escape;
@@ -9,7 +11,7 @@ Syntax checks the current editor document for any problems using
 std/viv
 
 =end comment
-sub syntax-check(Str $source) is export {
+method syntax-check(Str $source) {
 
 	# TODO use File::Temp once it is usable
 	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-syntax-check.tmp');
@@ -48,7 +50,7 @@ Returns a PSGI response that contains the contents of the URL
 provided
 
 =end comment
-sub open-url($url) is export {
+method open-url($url) {
 	[
 		200,
         [ 'Content-Type' => 'text/plain' ],
@@ -61,7 +63,7 @@ sub open-url($url) is export {
 Returns a PSGI response containing a rendered POD HTML string
 
 =end comment
-sub pod-to-html(Str $pod) is export {
+method pod-to-html(Str $pod) {
 
 	# TODO use File::Temp once it is usable
 	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-pod-to-html.tmp');
@@ -82,7 +84,7 @@ sub pod-to-html(Str $pod) is export {
 	];
 };
 
-sub rosettacode-rebuild-index(Str $language) is export {
+method rosettacode-rebuild-index(Str $language) {
 
 	my $escaped-title = uri_escape("Category:{$language}");
 	my $json = Farabi6::Util.post-request(
@@ -100,7 +102,9 @@ sub rosettacode-rebuild-index(Str $language) is export {
 	$fh.close;
 };
 
-sub rosettacode-search(Str $something) is export {
+method rosettacode-search(Str $something) {
 	...
-};
+}
+
+}
 

@@ -1,6 +1,6 @@
 use v6;
 
-class Farabi6;
+class Farabi6 {
 
 # External
 use File::Spec;
@@ -17,11 +17,11 @@ Runs the Farabi webserver at host:port. If host is empty
 then it listens on all interfaces
 
 =end pod
-method run(Str $host, Int $port) {
+method run(Str $host, Int $port) is export {
 	
 	my @dirs = File::Spec.splitdir($?FILE);
 	my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
-	unless (File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e) {
+	unless File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e {
 		# Workaround for panda not installing non-perl files in ~/.perl6
 		$files-dir = File::Spec.catdir(
 			%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
@@ -30,7 +30,7 @@ method run(Str $host, Int $port) {
 
 	# Make sure files contains farabi.js
 	die "farabi.js is not found in {$files-dir}" 
-		unless (File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e);
+		unless File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e;
 
 	say "Farabi6 is going to serve files *insecurely* from {$files-dir} :)";
 	
@@ -95,4 +95,4 @@ method run(Str $host, Int $port) {
 }
 
 
-
+}

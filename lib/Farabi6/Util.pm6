@@ -1,10 +1,10 @@
-module Farabi6::Util;
+use v6;
+
+class Farabi6::Util {
 
 use URI::Escape;
 
-class Farabi::Util {
-
-sub get-parameter(Buf $input, $name) is export {
+method get-parameter(Buf $input, Str $name) {
 	# TODO more generic parameter parsing
 	my $value =  $input.decode;
 	$value ~~ s/^$name\=//;
@@ -18,7 +18,7 @@ it is uses wget since it is the most reliable at this time
 Both LWP::Simple and  suffers from installation and bugs
 
 =end comment
-sub http-get(Str $url) is export {
+method http-get(Str $url) {
     #TODO investigate whether LWP::Simple is installable and workable again
     #TODO investigate whether HTTP::Client after the promised big refactor works or not
 	die "URL is not defined!" unless $url; 
@@ -26,7 +26,7 @@ sub http-get(Str $url) is export {
 }
 
 #TODO use LWP::Simple.post if it works?
-sub post-request($url, $payload) is export {
+method post-request($url, $payload) {
 	constant $CRLF = "\x0D\x0A";
 
 	my $o = URI.new($url);
@@ -61,7 +61,7 @@ sub post-request($url, $payload) is export {
 }
 
 #TODO refactor into Farabi::Types (like Mojo::Types)
-sub find-mime-type(Str $filename) is export {
+method find-mime-type(Str $filename) {
 	my %mime-types = ( 
 		'html' => 'text/html',
 		'css'  => 'text/css',
