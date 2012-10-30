@@ -52,7 +52,7 @@ method syntax-check(Str $source) {
 Returns the 'file-name' file contents as a PSGI response
 
 =end comment
-method open-file(Str $file-name) {
+method open-file(Str $file-name is copy) {
 
 	# Assert that filename is defined 
 	return [500, ['Content-Type' => 'text/plain'], ['file name is not defined!']] unless $file-name;
@@ -60,6 +60,8 @@ method open-file(Str $file-name) {
 	# Open filename
 	my ($status, $text);
 	try {
+		# expand ~ into $HOME
+		$file-name  ~~= s/\~/{%*ENV{'HOME'}}/;
 		my $fh = open $file-name, :bin;
 		$text = $fh.slurp;
 		$fh.close;
