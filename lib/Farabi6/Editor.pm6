@@ -55,17 +55,20 @@ Returns the 'file-name' file contents as a PSGI response
 method open-file(Str $file-name) {
 
 	# Assert that filename is defined 
-	die "Undefined file-name" unless $file-name;
+	return [500, ['Content-Type' => 'text/plain'], ['file name is not defined!']] unless $file-name;
 
 	# Open filename
 	my ($status, $text);
-	if ( my $fh = open $file-name, :bin) {
+	try {
+		my $fh = open $file-name, :bin;
 		$text = $fh.slurp;
 		$fh.close;
 		$status = 200;
-	} else {
-		$status = 404;
-		$text = 'Not found';
+
+		CATCH {
+			$status = 404;
+			$text = 'Not found';
+		}
 	}
 
 	# Return the PSGI response
