@@ -4,3 +4,7 @@ pod2html and syntax check should work on the current document. no need to transf
 session management... 
 Rosetta code browser!
 Analyze stack trace through projects.json and META.info through http://paste.debian.net/202822/
+
+Highlight PIR code http://code.metager.de/source/xref/parrot/editor/pir_vim.in
+
+Show PIR code for selected Perl 6 module
