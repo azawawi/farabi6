@@ -68,8 +68,10 @@ method open-file(Str $file-name is copy) {
 		$status = 200;
 
 		CATCH {
-			$status = 404;
-			$text = 'Not found';
+			default {
+				$status = 404;
+				$text = 'Not found';
+			}
 		}
 	}
 
