@@ -25,23 +25,10 @@ span.CodeMirror-matchhighlight {
          background-position: right;
          background-repeat: no-repeat;
 }
-.tab-pane textarea {
-	width: 98%;
+#output-tab textarea {
+	width: 99%;
 }
 
-#help_search_dialog .preview {
-	width: 100%;
-	height: 300px;
-	overflow: auto;
-}
-#perl_critic_dialog .results {
-	width: 100%;
-	height: 300px;
-	overflow: auto;
-}
-.typeahead {
-	z-index: 1051;
-}
 .farabi-centered {
 	text-align: center;
 }
