@@ -39,14 +39,55 @@
 			<div id="outputTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="edit-tab">
 					<div>
+
+			<div id="navbar-example" class="navbar navbar-static">
+              <div class="navbar-inner">
+                <div class="container" style="width: auto;">
+                  <a class="brand" href="#">Project FaRaBi6</a>
+                  <ul class="nav" role="navigation">
+                    <li class="dropdown">
+                      <a id="file-dropdown" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">File Room <b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="file-dropdown">
+                        <li><a tabindex="-1" class="open_file_button" href="#">Open File (Ctrl-O)</a></li>
+                        <li><a tabindex="-1" class="save_file_button" href="#">Save File (Ctrl-S)</a></li>
+                        <li><a tabindex="-1" class="save_as_file_button" href="#">Save As File</a></li>
+                        <li><a tabindex="-1" class="open_url_button" href="#">Open URL (Experimento)</a></li>
+                        <li><a tabindex="-1" class="close_file_button" href="#">Close</a></li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#">Exit (I dare ya)</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" id="build-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Build Factory <b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="build-drop">
+                        <li><a tabindex="-1" class="syntax_check_button" href="#">Syntax Check (F6)</a></li>
+                        <li><a tabindex="-1" class="run_in_browser_button" href="#">Run (F5)</a></li>
+                        <li><a tabindex="-1" class="update_pod_button" href="#">Update POD</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" id="tools-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Me Tools <b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="tools-dropdown">
+                        <li><a tabindex="-1" class="syntax_check_button" href="#">Options</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul class="nav pull-right">
+                    <li id="fat-menu" class="dropdown">
+                      <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Help Center <b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+                        <li><a tabindex="-1" href="#">Action</a></li>
+                        <li><a tabindex="-1" href="#">Another action</a></li>
+                        <li><a tabindex="-1" href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#">Separated link</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 						<div class="form-inline">
-							<a href="#" class="open_file_button">Open File (Ctrl-O)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="#" class="save_file_button">Save File (Ctrl-S)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="#" class="save_as_file_button">Save As File</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="#" class="open_url_button">Open URL (Experimental)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                         	<a href="#" class="syntax_check_button">Syntax Check (F6)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="#" class="run_in_browser_button"></i>Run (F5)</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="#" class="update_pod_button"></i>Update POD</a>&nbsp;&nbsp;&nbsp;&nbsp;
 
                         	 <div class="input-append pull-right">
                             	 <input type="text" class="x-large topic" data-provide=""
@@ -240,6 +281,28 @@ Press F5 to run your script using Perlito 6
 				<dt>Shift-Ctrl-R</dt>
 				<dd>Replace all</dd>
 			</dl>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+	<!-- Open file dialog -->
+	<div class="modal" id="open_file_dialog" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true"></button>
+			<h3 id="myModalLabel">Open File...</h3>
+		</div>
+		<div class="modal-body">
+			File: <input id="file">
+			<div class="results">
+				Results<br>
+				Are<br>
+				Shown<br>
+				Here
+			</div>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
