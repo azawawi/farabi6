@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Farabi: Modern Perl Editor</title>
+<title>Farabi6: The Perl 6 Editor</title>
 
 <!-- The jQuery -->
 <script src="jquery-1.8.2.min.js"></script>
@@ -32,10 +32,10 @@
 			<div id="navbar-example" class="navbar navbar-static">
               <div class="navbar-inner">
                 <div class="container" style="width: auto;">
-                  <a class="brand" href="#">Project FaRaBi6</a>
+                  <a class="brand" href="#">Farabi6: The Perl 6 Editor</a>
                   <ul class="nav" role="navigation">
                     <li class="dropdown">
-                      <a id="file-dropdown" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">File Room <b class="caret"></b></a>
+                      <a id="file-dropdown" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="file-dropdown">
                         <li><a tabindex="-1" class="new_file_button" href="#">New (Ctrl-N)</a></li>
                         <li><a tabindex="-1" class="open_file_button" href="#">Open File (Ctrl-O)</a></li>
@@ -43,29 +43,28 @@
                         <li><a tabindex="-1" class="save_as_file_button" href="#">Save As File</a></li>
                         <li><a tabindex="-1" class="open_url_button" href="#">Open URL (Experimento)</a></li>
                         <li><a tabindex="-1" class="close_file_button" href="#">Close</a></li>
-                        <li class="divider"></li>
-                        <li><a tabindex="-1" href="#">Exit (I dare ya)</a></li>
                       </ul>
                     </li>
                     <li class="dropdown">
-                      <a href="#" id="build-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Build Factory <b class="caret"></b></a>
+                      <a href="#" id="build-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Build <b class="caret"></b></a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="build-drop">
                         <li><a tabindex="-1" class="syntax_check_button" href="#">Syntax Check (F6)</a></li>
                         <li><a tabindex="-1" class="run_in_browser_button" href="#">Run (F5)</a></li>
-                        <li><a tabindex="-1" class="update_pod_button" href="#">Update POD</a></li>
                       </ul>
                     </li>
                     <li class="dropdown">
-                      <a href="#" id="tools-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Me Tools <b class="caret"></b></a>
+                      <a href="#" id="tools-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="tools-dropdown">
+                        <li><a tabindex="-1" class="update_pod_button" href="#">Update POD</a></li>
+						<li class="divider"></li>
                         <li><a tabindex="-1" class="options_button" href="#">Options</a></li>
                       </ul>
                     </li>
                   </ul>
                   <ul class="nav pull-right">
-                    <li id="fat-menu" class="dropdown">
-                      <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Help Center <b class="caret"></b></a>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+                    <li id="help-menu" class="dropdown">
+                      <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="help-menu">
 						<li><a tabindex="-1" class="help_button" href="#">Getting Started</a></li>
                         <li><a tabindex="-1" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a></li>
                         <li><a tabindex="-1" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a></li>
