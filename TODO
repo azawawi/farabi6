@@ -8,3 +8,12 @@ Analyze stack trace through projects.json and META.info through http://paste.deb
 Highlight PIR code http://code.metager.de/source/xref/parrot/editor/pir_vim.in
 
 Show PIR code for selected Perl 6 module
+
+Use Markdown for TODOs... Rename TODO into TODO.md
+
+Farabi6 must start to load the correct mode for the filename loaded.. i.e. mime-type detection based on filename
+
+Options dim-screen should be lighter to show the changes in the UI
+
+use JQuery Hotkeys or ask why CodeMirror does not support Al-F on chromium?
+
