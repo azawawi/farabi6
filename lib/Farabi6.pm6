@@ -32,9 +32,7 @@ method run(Str $host, Int $port) is export {
 	die "farabi.js is not found in {$files-dir}" 
 		unless File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e;
 
-	say "Farabi6 is going to serve files *insecurely* from {$files-dir} :)";
-	
-	say "Farabi6 listens carefully at http://$host:$port";
+	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
 	{
 		my Str $filename;
