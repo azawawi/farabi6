@@ -15,4 +15,7 @@ Farabi6 must start to load the correct mode for the filename loaded.. i.e. mime-
 
 Options dim-screen should be lighter to show the changes in the UI
 
+Open file is like open resource in Padre and contains
+use File::Find; find(dir => cwd, name => /\.pm6/, type => 'file')
+
 Add perl6 book to Help menu
