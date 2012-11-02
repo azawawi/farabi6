@@ -15,6 +15,4 @@ Farabi6 must start to load the correct mode for the filename loaded.. i.e. mime-
 
 Options dim-screen should be lighter to show the changes in the UI
 
-use JQuery Hotkeys or ask why CodeMirror does not support Al-F on chromium?
-
 Add perl6 book to Help menu
