@@ -2,7 +2,6 @@ use v6;
 
 class Farabi6::Editor {
 
-use File::Find;
 use File::Spec;
 use JSON::Tiny;
 use URI::Escape;
