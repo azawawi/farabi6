@@ -199,16 +199,30 @@ Press F5 to run your script using Perlito 6
 			<h3 id="myModalLabel">Open File...</h3>
 		</div>
 		<div class="modal-body">
-			File: <input id="file">
-			<div class="results">
-				Results<br>
-				Are<br>
-				Shown<br>
-				Here
-			</div>
+
+<div class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="file">File</label>
+    <div class="controls">
+      <input type="text" id="file" placeholder="File">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="search-results">Search Results</label>
+    <div class="controls">
+			<select id="search-results" size="5">
+    			<option>1</option>
+    			<option>2</option>
+    			<option>3</option>
+			</select>
+		</div>
+  </div>
+</div>
+
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button id="ok-button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button>
+			<button id="cancel-button" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 		</div>
 	</div>
 
