@@ -11,5 +11,3 @@ Show PIR code for selected Perl 6 module
 
 Farabi6 must start to load the correct mode for the filename loaded.. i.e. mime-type detection based on filename
 
-Options dim-screen should be lighter to show the changes in the UI
-
