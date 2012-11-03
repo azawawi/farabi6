@@ -9,13 +9,8 @@ Highlight PIR code http://code.metager.de/source/xref/parrot/editor/pir_vim.in
 
 Show PIR code for selected Perl 6 module
 
-Use Markdown for TODOs... Rename TODO into TODO.md
-
 Farabi6 must start to load the correct mode for the filename loaded.. i.e. mime-type detection based on filename
 
 Options dim-screen should be lighter to show the changes in the UI
-
-Open file is like open resource in Padre and contains
-use File::Find; find(dir => cwd, name => /\.pm6/, type => 'file')
 
 Add perl6 book to Help menu
