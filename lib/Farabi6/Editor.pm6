@@ -2,6 +2,7 @@ use v6;
 
 class Farabi6::Editor {
 
+use File::Find;
 use File::Spec;
 use JSON::Tiny;
 use URI::Escape;
@@ -44,6 +45,31 @@ method syntax-check(Str $source) {
 		200,
 		[ 'Content-Type' => 'application/json' ],
         [ to-json(%result) ],
+	];
+}
+
+=begin comment
+
+Returns the 'file-name' file searchs as a PSGI response
+
+=end comment
+method search-file(Str $file-name) {
+
+	# Assert that filename is defined 
+	return [500, ['Content-Type' => 'text/plain'], ['file name is not defined!']] unless $file-name;
+
+	# Open filename
+	my ($status, $results);
+	$status = 200;
+	#TODO quotemeta filename
+	my @results = find(dir => cwd, name => /$file-name/, type => 'file');
+	say @results;
+
+	# Return the PSGI response
+	[
+		$status,
+		[ 'Content-Type' => 'text/plain' ],
+		[ $results ],
 	];
 }
 
@@ -96,6 +122,8 @@ method open-url(Str $url) {
         [ Farabi6::Util.http-get($url) ],
 	];
 }
+
+
 
 =begin comment
 

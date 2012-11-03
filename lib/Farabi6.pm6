@@ -53,6 +53,9 @@ method run(Str $host, Int $port) is export {
 		} elsif ($uri eq '/open_file') {
 			return Farabi6::Editor.open-file(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'filename')); 
+		} elsif ($uri eq '/search_file') {
+			return Farabi6::Editor.search-file(
+				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'filename')); 
 		} elsif ($uri eq '/open_url') {
 			return Farabi6::Editor.open-url(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'url'));
