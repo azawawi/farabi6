@@ -72,3 +72,7 @@ span.CodeMirror-matchhighlight {
 	padding: 0 3px; 
 	margin-right: 7px;
 }
+
+.modal-backdrop {
+	opacity: 0.1 !important;
+}
