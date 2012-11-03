@@ -55,21 +55,18 @@ Returns the 'file-name' file searchs as a PSGI response
 =end comment
 method search-file(Str $file-name) {
 
-	# Assert that filename is defined 
-	return [500, ['Content-Type' => 'text/plain'], ['file name is not defined!']] unless $file-name;
-
-	# Open filename
-	my ($status, $results);
-	$status = 200;
-	#TODO quotemeta filename
-	my @results = find(dir => cwd, name => /$file-name/, type => 'file');
-	say @results;
+	# Find file inside current directory exluding usual excluded stuff
+	my @search-results = Farabi6::Util.find-file(
+		cwd,
+		$file-name, 
+		['.svn', '.git']
+	);
 
 	# Return the PSGI response
 	[
-		$status,
-		[ 'Content-Type' => 'text/plain' ],
-		[ $results ],
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[ to-json(@search-results) ],
 	];
 }
 

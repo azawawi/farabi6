@@ -80,5 +80,26 @@ method find-mime-type(Str $filename) {
 	$mime-type;
 }
 
+=begin comment
+	Finds a file inside a directory excluding list of files/directories
+=end comment
+method find-file($dir, $pattern, @excluded) {
+	my @files = dir($dir);
+	gather {
+		for @files -> $file {
+			my $path = "$dir/$file";
+			if $file.Str eq any(@excluded) {
+				 # Ignore excluded file or directory
+			} elsif $file.IO ~~ :d {
+				take self.find-file($path, $pattern, @excluded);
+			} else {
+				take { 
+					'file' => $path,
+					'name' => $file.Str	
+				} if $file.Str ~~ /$pattern/;
+			}
+		}
+	}
+}
 
 }
