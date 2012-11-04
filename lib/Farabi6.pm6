@@ -64,6 +64,15 @@ method run(Str $host, Int $port) is export {
 		} elsif ($uri eq '/rosettacode_search') {
 			return Farabi6::Editor.rosettacode-search(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'something'));
+		} elsif ($uri eq '/run/rakudo') {
+			return Farabi6::Editor.run-code(
+				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'source'),
+				'rakudo'); 		
+		} elsif ($uri eq '/run/niecza') {
+			return Farabi6::Editor.run-code(
+				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'source'),
+				'niecza',
+			); 
 		} else {
 			$filename = $uri.substr(1);
 		}

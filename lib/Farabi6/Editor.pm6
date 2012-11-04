@@ -169,5 +169,43 @@ method rosettacode-search(Str $something) {
 	...
 }
 
+=begin comment
+
+Runs code using the requested runtime and returns the output
+
+=end comment
+method run-code(Str $source, Str $runtime) {
+
+	# TODO use File::Temp once it is usable
+	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-run.tmp');
+	my $fh = open $filename, :w;
+	$fh.print($source);
+	$fh.close;	
+
+	#TODO more portable version for win32 in the future
+	my Str $cmd;
+	#TODO configurable from runtime configuratooor :)
+	#TODO safe command argument...
+	#TODO safe runtime arguments...
+	if $runtime eq 'niecza' {
+		# Niecza
+		$cmd = '/usr/bin/env mono ' ~ %*ENV{'HOME'} ~ ' run/Niecza.exe';
+	} else {
+		# Default to Rakudo Perl 6 for now
+		$cmd = '/usr/bin/env perl6';
+	}
+    my Str $output = qqx{$cmd $filename};
+
+	my %result = 
+		'output'   => $output;
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+        [ to-json(%result) ],
+	];
+}
+
+
 }
 
