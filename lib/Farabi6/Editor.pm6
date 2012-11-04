@@ -189,7 +189,7 @@ method run-code(Str $source, Str $runtime) {
 	#TODO safe runtime arguments...
 	if $runtime eq 'niecza' {
 		# Niecza
-		$cmd = '/usr/bin/env mono ' ~ %*ENV{'HOME'} ~ ' run/Niecza.exe';
+		$cmd = '/usr/bin/env Niecza.exe';
 	} else {
 		# Default to Rakudo Perl 6 for now
 		$cmd = '/usr/bin/env perl6';
