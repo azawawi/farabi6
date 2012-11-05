@@ -1,5 +1,7 @@
 .CodeMirror {
-	min-height: 450px;
+	min-height     : 450px;
+	border-bottom  : 1px solid #DDD !important;
+	border-right   : 1px solid #DDD !important;
 }
 .CodeMirror-scroll {
 	min-height: 450px;
@@ -7,6 +9,7 @@
 .CodeMirror-gutter {
 	width: 3em;
 	background: white;
+	border-left    : 1px solid #DDD;
 }
 .farabi-bordered {
 	border: 1px solid #DDD !important;
@@ -75,4 +78,20 @@ span.CodeMirror-matchhighlight {
 
 .modal-backdrop {
 	opacity: 0.1 !important;
+}
+
+/* Minimal editor tabs */
+.nav-tabs > li > a {
+	padding-top         : 0px;
+	padding-bottom      : 0px;
+	border-bottom-color : #DDD !important;
+}
+
+.nav {
+	margin-bottom  : 0px;
+}
+
+/* Minimal top navigation bar (i.e. menubar) */
+.navbar {
+	margin-bottom  : 5px;
 }
