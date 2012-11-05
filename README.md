@@ -23,6 +23,11 @@ You can also change the host name and port using the following command:
 
     farabi6 --host=localhost --port=4040
 
+## Environment Variables
+
+	# Enable unsafe mode which includes running unsafe code on local system
+	FARABI6_UNSAFE=1 farabi6
+
 ## Testing
 
 To run tests:
