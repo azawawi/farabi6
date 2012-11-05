@@ -176,6 +176,17 @@ Runs code using the requested runtime and returns the output
 =end comment
 method run-code(Str $source, Str $runtime) {
 
+	unless %*ENV{'FARABI6_UNSAFE'} {
+		# Safety first	
+		my %result = 
+			'output' => 'ENV{FARABI6_UNSAFE} is not enabled';
+		return [
+			200,
+			[ 'Content-Type' => 'application/json' ],
+        	[ to-json(%result) ],
+		];
+	}
+
 	# TODO use File::Temp once it is usable
 	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-run.tmp');
 	my $fh = open $filename, :w;
