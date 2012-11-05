@@ -1,86 +1,151 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-<title>Farabi6: The Perl 6 Editor</title>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
 
-<!-- The jQuery -->
-<script src="jquery-1.8.2.min.js"></script>
+  <title>Farabi6: The Perl 6 Editor</title><!-- The jQuery -->
 
-<!-- Bootstrap -->
-<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-
-<!-- Farabi -->
-<link rel="stylesheet" href="farabi.css" type="text/css" />
-<script src="farabi.js"></script>
-
-<!-- CodeMirror editor -->
-<link rel="stylesheet" href="assets/codemirror/codemirror.css"
-	type="text/css" />
-<link rel="stylesheet" href="assets/codemirror/util/dialog.css" />
-<script src="assets/codemirror/codemirror.js"></script>
-<script src="assets/codemirror/util/loadmode.js"></script>
-<script src="assets/codemirror/util/searchcursor.js"></script>
-<script src="assets/codemirror/util/match-highlighter.js"></script>
-<script src="assets/codemirror/util/search.js"></script>
-<script src="assets/codemirror/util/dialog.js"></script>
-
+  <script src="jquery-1.8.2.min.js" type="text/javascript">
+</script><!-- Bootstrap -->
+  <link href="assets/bootstrap/css/bootstrap.min.css" rel=
+  "stylesheet" type="text/css">
+  <script src="assets/bootstrap/js/bootstrap.min.js" type=
+  "text/javascript">
+</script><!-- Farabi -->
+  <link rel="stylesheet" href="farabi.css" type="text/css">
+  <script src="farabi.js" type="text/javascript">
+</script><!-- CodeMirror editor -->
+  <link rel="stylesheet" href="assets/codemirror/codemirror.css"
+  type="text/css">
+  <link rel="stylesheet" href="assets/codemirror/util/dialog.css"
+  type="text/css">
+  <script src="assets/codemirror/codemirror.js" type=
+  "text/javascript">
+</script>
+  <script src="assets/codemirror/util/loadmode.js" type=
+  "text/javascript">
+</script>
+  <script src="assets/codemirror/util/searchcursor.js" type=
+  "text/javascript">
+</script>
+  <script src="assets/codemirror/util/match-highlighter.js" type=
+  "text/javascript">
+</script>
+  <script src="assets/codemirror/util/search.js" type=
+  "text/javascript">
+</script>
+  <script src="assets/codemirror/util/dialog.js" type=
+  "text/javascript">
+</script>
 </head>
+
 <body>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div id="navbar-example" class="navbar navbar-static">
-              <div class="navbar-inner">
-                <div class="container" style="width: auto;">
-                  <a class="brand" href="#">Farabi6: The Perl 6 Editor</a>
-                  <ul class="nav" role="navigation">
-                    <li class="dropdown">
-                      <a id="file-dropdown" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="file-dropdown">
-                        <li><a tabindex="-1" class="new_file_button" href="#">New (Ctrl-N)</a></li>
-                        <li><a tabindex="-1" class="open_file_button" href="#">Open File (Ctrl-O)</a></li>
-                        <li><a tabindex="-1" class="save_file_button" href="#">Save File (Ctrl-S)</a></li>
-                        <li><a tabindex="-1" class="save_as_file_button" href="#">Save As File</a></li>
-                        <li><a tabindex="-1" class="open_url_button" href="#">Open URL (Experimento)</a></li>
-                        <li><a tabindex="-1" class="close_file_button" href="#">Close</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" id="build-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Build <b class="caret"></b></a>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="build-dropdown">
-                        <li><a tabindex="-1" class="syntax_check_button" href="#">Syntax Check (F6)</a></li>
-                        <li><a tabindex="-1" class="run-button" href="#">Run... (F5)</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" id="tools-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="tools-dropdown">
-                        <li><a tabindex="-1" class="show_pod_button" href="#">Update POD (F9)</a></li>
-						<li class="divider"></li>
-                        <li><a tabindex="-1" class="options_button" href="#">Options</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <ul class="nav pull-right">
-                    <li class="dropdown">
-                      <a href="#" id="help-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="help-dropdown">
-						<li><a tabindex="-1" class="help_button" href="#">Getting Started</a></li>
-                        <li><a tabindex="-1" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a></li>
-                        <li><a tabindex="-1" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a></li>
-                        <li><a tabindex="-1" href="http://modules.perl6.org" target="_blank">Perl 6 Modules</a></li>
-			 			<li><a tabindex="-1" href="http://perlcabal.org/syn/Differences.html" target="_blank">Perl5::Perl6::Differences</a></li>
-						<li class="divider"></li>
-                        <li><a tabindex="-1" class="about_button" href="#">About Farabi</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-					<div class="row-fluid">
-						<div class="span12 farabi-bordered">
-							<textarea id="editor" name="editor" class="editor">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div id="navbar-example" class="navbar navbar-static">
+        <div class="navbar-inner">
+          <div class="container" style="width: auto;">
+            <a class="brand" href="#">Farabi6: The Perl 6
+            Editor</a>
+
+            <ul class="nav" role="navigation">
+              <li class="dropdown">
+                <a id="file-dropdown" href="#" role="button" class=
+                "dropdown-toggle" data-toggle="dropdown">File</a>
+
+                <ul class="dropdown-menu" role="menu"
+                aria-labelledby="file-dropdown">
+                  <li><a tabindex="-1" class="new_file_button"
+                  href="#">New (Ctrl-N)</a></li>
+
+                  <li><a tabindex="-1" class="open_file_button"
+                  href="#">Open File (Ctrl-O)</a></li>
+
+                  <li><a tabindex="-1" class="save_file_button"
+                  href="#">Save File (Ctrl-S)</a></li>
+
+                  <li><a tabindex="-1" class="save_as_file_button"
+                  href="#">Save As File</a></li>
+
+                  <li><a tabindex="-1" class="open_url_button"
+                  href="#">Open URL (Experimento)</a></li>
+
+                  <li><a tabindex="-1" class="close_file_button"
+                  href="#">Close</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" id="build-dropdown" role="button"
+                class="dropdown-toggle" data-toggle=
+                "dropdown">Build</a>
+
+                <ul class="dropdown-menu" role="menu"
+                aria-labelledby="build-dropdown">
+                  <li><a tabindex="-1" class="syntax_check_button"
+                  href="#">Syntax Check (F6)</a></li>
+
+                  <li><a tabindex="-1" class="run-button" href=
+                  "#">Run... (F5)</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" id="tools-dropdown" role="button"
+                class="dropdown-toggle" data-toggle=
+                "dropdown">Tools</a>
+
+                <ul class="dropdown-menu" role="menu"
+                aria-labelledby="tools-dropdown">
+                  <li><a tabindex="-1" class="show_pod_button"
+                  href="#">Update POD (F9)</a></li>
+
+                  <li><a tabindex="-1" class="options_button" href=
+                  "#">Options</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <ul class="nav pull-right">
+              <li class="dropdown">
+                <a href="#" id="help-dropdown" role="button" class=
+                "dropdown-toggle" data-toggle="dropdown">Help</a>
+
+                <ul class="dropdown-menu" role="menu"
+                aria-labelledby="help-dropdown">
+                  <li><a tabindex="-1" class="help_button" href=
+                  "#">Getting Started</a></li>
+
+                  <li><a tabindex="-1" href="http://perl6.org"
+                  target="_blank">Official Perl 6 Language
+                  Website</a></li>
+
+                  <li><a tabindex="-1" href="http://doc.perl6.org"
+                  target="_blank">Perl 6 Documentation</a></li>
+
+                  <li><a tabindex="-1" href=
+                  "http://modules.perl6.org" target="_blank">Perl 6
+                  Modules</a></li>
+
+                  <li><a tabindex="-1" href=
+                  "http://perlcabal.org/syn/Differences.html"
+                  target=
+                  "_blank">Perl5::Perl6::Differences</a></li>
+
+                  <li><a tabindex="-1" class="about_button" href=
+                  "#">About Farabi</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12 farabi-bordered">
+          <textarea id="editor" name="editor" class="editor">
 use v6;
 
 my $farabi = "Farabi 6";
@@ -99,253 +164,367 @@ Press F5 to run your script using Perlito 6
 
 =end pod
 </textarea>
-							<div id="editor_stats" class="pull-right"></div>
-						</div>
-				</div>
-					<div class="row-fluid">
-					<div class="span12" id="output-tab">
-						<textarea id="output" cols="80" rows="10"></textarea>
-					</div>
-					</div>
-				</div>
-                    </div>
-				</div>
-			</div>
-	</div>
 
-	<!-- About dialog -->
-	<div class="modal" id="about_dialog" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true"></button>
-			<h3 id="myModalLabel">About Farabi</</h3>
-		</div>
-		<div class="modal-body">
-			Written with love and for fun by <strong>Ahmad M. Zawawi</strong>, azawawi @ #perl6, #padre<br>
-			All rights reserved universe-wide.<br>
-			<br>
-			<div class="farabi-centered">
-				<blockquote>
-					<p>An art, which has an aim to achieve the beauty, is called a
-						philosophy or in the absolute sense it is named wisdom.</p>
-					<small><a target="_blank"
-						href="http://en.wikipedia.org/wiki/Al-Farabi">Al-Farabi</a></small>
-				</blockquote>
-			</div>
-			<table class="table table-bordered table-striped">
-				<tbody>
-					<tr>
-						<td><a target="_blank" href="http://jquery.com">jQuery</a></td>
-						<td><span id="jquery-version"></span></td>
-					</tr>
-					<tr>
-						<td><a target="_blank" href="http://twitter.github.com/bootstrap">Bootstrap</a></td>
-						<td><span id="bootstrap-version">2.1.1</span></td>
-					</tr>
-					<tr>
-						<td><a target="_blank" href="http://codemirror.net/">CodeMirror</a></td>
-						<td><span id="codemirror-version"></span></td>
-					</tr>
-					<tr>
-						<td><a target="_blank" href="http://perlito.org/">Perlito5</a></td>
-						<td><span id="perlito-version"></span></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		</div>
-	</div>
+          <div id="editor_stats" class="pull-right"></div>
+        </div>
+      </div>
 
-	<!-- Help dialog -->
-	<div class="modal" id="help_dialog" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true"></button>
-			<h3 id="myModalLabel">Getting Started</h3>
-		</div>
-		<div class="modal-body">
-			<dl>
-				<dt>F1</dt>
-				<dd>Context-sensitive help</dd>
-				<dt>F5</dt>
-				<dd>Run in browser</dd>
-				<dt>Ctrl-F</dt>
-				<dd>Start searching</dd>
-				<dt>Ctrl-G</dt>
-				<dd>Find next</dd>
-				<dt>Shift-Ctrl-G</dt>
-				<dd>Find previous</dd>
-				<dt>Shift-Ctrl-F</dt>
-				<dd>Replace</dd>
-				<dt>Shift-Ctrl-R</dt>
-				<dd>Replace all</dd>
-			</dl>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		</div>
-	</div>
+      <div class="row-fluid">
+        <div class="span12" id="output-tab">
+          <textarea id="output" cols="80" rows="10">
+</textarea>
+        </div>
+      </div>
+    </div>
+  </div><!-- About dialog -->
 
-	<!-- Open file dialog -->
-	<div class="modal" id="open_file_dialog" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true"></button>
-			<h3 id="myModalLabel">Open File...</h3>
-		</div>
-		<div class="modal-body">
+  <div class="modal" id="about_dialog" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">About Farabi6</h3>
 
-<div class="form-horizontal">
-  <div class="control-group">
-    <label class="control-label" for="file">File</label>
-    <div class="controls">
-      <input type="text" id="file" placeholder="File">
+      <div class="modal-body">
+        <h3 id="myModalLabel">Written with love and for fun by
+        <strong>Ahmad M. Zawawi</strong>, azawawi @ #perl6,
+        #padre<br>
+        All rights reserved universe-wide.<br>
+        <br></h3>
+
+        <div class="farabi-centered">
+          <h3 id="myModalLabel"></h3>
+        </div>
+      </div>
+
+      <blockquote>
+        <p>An art, which has an aim to achieve the beauty, is
+        called a philosophy or in the absolute sense it is named
+        wisdom.</p><small><a target="_blank" href=
+        "http://en.wikipedia.org/wiki/Al-Farabi">Al-Farabi</a></small>
+      </blockquote>
+    </div>
+
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <tr>
+          <td><a target="_blank" href=
+          "http://jquery.com">jQuery</a></td>
+
+          <td><span id="jquery-version"></span></td>
+        </tr>
+
+        <tr>
+          <td><a target="_blank" href=
+          "http://twitter.github.com/bootstrap">Bootstrap</a></td>
+
+          <td><span id="bootstrap-version">2.1.1</span></td>
+        </tr>
+
+        <tr>
+          <td><a target="_blank" href=
+          "http://codemirror.net/">CodeMirror</a></td>
+
+          <td><span id="codemirror-version"></span></td>
+        </tr>
+
+        <tr>
+          <td><a target="_blank" href=
+          "http://perlito.org/">Perlito5</a></td>
+
+          <td><span id="perlito-version"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden=
+    "true">Close</button>
+  </div><!-- Help dialog -->
+
+  <div class="modal" id="help_dialog" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">Getting Started</h3>
+    </div>
+
+    <div class="modal-body">
+      <dl>
+        <dt>F1</dt>
+
+        <dd>Context-sensitive help</dd>
+
+        <dt>F5</dt>
+
+        <dd>Run in browser</dd>
+
+        <dt>Ctrl-F</dt>
+
+        <dd>Start searching</dd>
+
+        <dt>Ctrl-G</dt>
+
+        <dd>Find next</dd>
+
+        <dt>Shift-Ctrl-G</dt>
+
+        <dd>Find previous</dd>
+
+        <dt>Shift-Ctrl-F</dt>
+
+        <dd>Replace</dd>
+
+        <dt>Shift-Ctrl-R</dt>
+
+        <dd>Replace all</dd>
+      </dl>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden=
+      "true">Close</button>
+    </div>
+  </div><!-- Open file dialog -->
+
+  <div class="modal" id="open_file_dialog" tabindex="-1" role=
+  "dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">Open File...</h3>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="file">File</label>
+
+          <div class="controls">
+            <input type="text" id="file" placeholder="File">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="search-results">Search
+          Results</label>
+
+          <div class="controls">
+            <select id="search-results" size="5">
+              </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button id="ok-button" class="btn btn-primary" data-dismiss=
+      "modal" aria-hidden="true">OK</button> <button id=
+      "cancel-button" class="btn" data-dismiss="modal" aria-hidden=
+      "true">Cancel</button>
+    </div>
+  </div><!-- Options dialog -->
+
+  <div class="modal" id="options_dialog" tabindex="-1" role=
+  "dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">Options</h3>
+    </div>
+
+    <div class="modal-body">
+      <table>
+        <tr>
+          <td><strong>Mode:</strong><br>
+          <select id="mode_selector" class="input-medium">
+            <option value="clike">
+              C, C++, C#
+            </option>
+
+            <option value="css">
+              CSS
+            </option>
+
+            <option value="diff">
+              Diff
+            </option>
+
+            <option value="javascript">
+              JavaScript
+            </option>
+
+            <option value="markdown">
+              Github Markdown
+            </option>
+
+            <option value="perl" selected>
+              Perl
+            </option>
+
+            <option value="plsql">
+              PL/SQL
+            </option>
+
+            <option value="properties">
+              Properties file
+            </option>
+
+            <option value="shell">
+              Shell
+            </option>
+
+            <option value="stex">
+              sTeX, LaTeX
+            </option>
+
+            <option value="xml">
+              XML/HTML
+            </option>
+
+            <option value="yaml">
+              YAML
+            </option>
+          </select></td>
+        </tr>
+
+        <tr>
+          <td><strong>Theme:</strong><br>
+          <select id="theme_selector" class="input-medium">
+            <option value="default" selected>
+              Default
+            </option>
+
+            <option value="blackboard">
+              Black Board
+            </option>
+
+            <option value="cobalt">
+              Cobalt
+            </option>
+
+            <option value="eclipse">
+              Eclipse
+            </option>
+
+            <option value="elegant">
+              Elegant
+            </option>
+
+            <option value="erlang-dark">
+              Erlang Dark
+            </option>
+
+            <option value="lesser-dark">
+              Lesser Dark
+            </option>
+
+            <option value="monokai">
+              Monokai
+            </option>
+
+            <option value="neat">
+              Neat
+            </option>
+
+            <option value="night">
+              Night
+            </option>
+
+            <option value="rubyblue">
+              Ruby Blue
+            </option>
+
+            <option value="vibrant-ink">
+              Vibrant Ink
+            </option>
+
+            <option value="xq-dark">
+              XQ Dark
+            </option>
+          </select></td>
+        </tr>
+
+        <tr>
+          <td><label class="checkbox"><input id=
+          "line_numbers_checkbox" type="checkbox" value="" checked>
+          <strong>Line Numbers?</strong></label></td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="control-group">
+              <label class="control-label" for=
+              "inputError"><strong>Tab Size:</strong></label>
+
+              <div class="controls">
+                <input class="input-mini" type="text" value="4" id=
+                "tab_size">
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden=
+      "true">Close</button>
+    </div>
+  </div><!-- POD dialog -->
+
+  <div class="modal" id="pod_dialog" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">POD</h3>
+    </div>
+
+    <div class="modal-body"></div>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden=
+      "true">Close</button>
+    </div>
+  </div><!-- Run dialog -->
+
+  <div class="modal" id="run-dialog" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h3 id="myModalLabel">Run...</h3>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for=
+          "runtime">Runtime:</label>
+
+          <div class="controls">
+            <select id="runtime" size="5">
+              <option id="niecza">
+                Niecza
+              </option>
+
+              <option id="perlito-6" selected>
+                Perlito 6
+              </option>
+
+              <option id="perlito-5">
+                Perlito 5
+              </option>
+
+              <option id="rakudo">
+                Rakudo Perl 6
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div id="help"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button id="ok-button" class="btn btn-primary" data-dismiss=
+      "modal" aria-hidden="true">OK</button> <button class="btn"
+      data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
   </div>
-  <div class="control-group">
-    <label class="control-label" for="search-results">Search Results</label>
-    <div class="controls">
-			<select id="search-results" size="5">
-			</select>
-		</div>
-  </div>
-</div>
-
-		</div>
-		<div class="modal-footer">
-			<button id="ok-button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button>
-			<button id="cancel-button" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		</div>
-	</div>
-
-	<!-- Options dialog -->
-	<div class="modal" id="options_dialog" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true"></button>
-			<h3 id="myModalLabel">Options</h3>
-		</div>
-		<div class="modal-body">
-					<table>
-						<tr>
-							<td><strong>Mode:</strong><br>
-								<select id="mode_selector" class="input-medium">
-								        <option value="clike">C, C++, C#</option>
-								        <option value="css">CSS</option>
-										<option value="diff">Diff</option>
-								        <option value="javascript">JavaScript</option>
-								        <option value="markdown">Github Markdown</option>
-								        <option value="perl" selected>Perl</option>
-								        <option value="plsql">PL/SQL</option>
-								        <option value="properties">Properties file</option>
-								        <option value="shell">Shell</option>
-										<option value="stex">sTeX, LaTeX</option>
-								        <option value="xml">XML/HTML</option>
-								        <option value="yaml">YAML</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td><strong>Theme:<strong><br>
-								<select id="theme_selector" class="input-medium">
-								        <option value="default" selected>Default</option>
-									<option value="blackboard">Black Board</option>
-								        <option value="cobalt">Cobalt</option>
-								        <option value="eclipse">Eclipse</option>
-								        <option value="elegant">Elegant</option>
-								        <option value="erlang-dark">Erlang Dark</option>
-								        <option value="lesser-dark">Lesser Dark</option>
-								        <option value="monokai">Monokai</option>
-								        <option value="neat">Neat</option>
-								        <option value="night">Night</option>
-								        <option value="rubyblue">Ruby Blue</option>
-								        <option value="vibrant-ink">Vibrant Ink</option>
-								        <option value="xq-dark">XQ Dark</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label class="checkbox"> 
-									<input id="line_numbers_checkbox" type="checkbox"
-										value="" checked>
-									<strong>Line Numbers?</strong>
-								</label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="control-group">
-									<label class="control-label" for="inputError"><strong>Tab
-											Size:</strong></label>
-									<div class="controls">
-										<input class="input-mini" type="text" value="4"
-											id="tab_size">
-									</div>
-								</div>
-							</td>
-						</tr>
-					</table>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		</div>
-	</div>
-
-	<!-- POD dialog -->
-	<div class="modal" id="pod_dialog" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true"></button>
-			<h3 id="myModalLabel">POD</h3>
-		</div>
-		<div class="modal-body">
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		</div>
-	</div>
-
-	<!-- Run dialog -->
-	<div class="modal" id="run-dialog" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true"></button>
-			<h3 id="myModalLabel">Run...</h3>
-		</div>
-		<div class="modal-body">
-			<div class="form-horizontal">
- 				 <div class="control-group">
-    				<label class="control-label" for="runtime">Runtime:</label>
-    				<div class="controls">
-						<select id="runtime" size="5">
-							<option id="niecza">Niecza</option>
-							<option id="perlito-6" selected>Perlito 6</option>
-							<option id="perlito-5">Perlito 5</option>
-							<option id="rakudo">Rakudo Perl 6</option>
-						</select>
-					</div>
-  				</div>
-				
-				<div>
-					<div id="help">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<button id="ok-button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">OK</button>
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		</div>
-	</div>
-
 </body>
 </html>
