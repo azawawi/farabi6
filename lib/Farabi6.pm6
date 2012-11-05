@@ -42,33 +42,33 @@ method run(Str $host, Int $port) is export {
 		#TODO use psgi.input once HTTP::Server::Simple supports it
 	
 		# Handle files and routes :)
-		if ($uri eq '/') {
+		if $uri eq '/' {
 			$filename = 'index.html';
-		} elsif ($uri eq '/pod_to_html') { 
+		} elsif $uri eq '/pod_to_html' { 
 			return Farabi6::Editor.pod-to-html(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'source'));
-		} elsif ($uri eq '/syntax_check') {
+		} elsif $uri eq '/syntax_check' {
 			return Farabi6::Editor.syntax-check(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'source')); 
-		} elsif ($uri eq '/open_file') {
+		} elsif $uri eq '/open_file' {
 			return Farabi6::Editor.open-file(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'filename')); 
-		} elsif ($uri eq '/search_file') {
+		} elsif $uri eq '/search_file' {
 			return Farabi6::Editor.search-file(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'filename')); 
-		} elsif ($uri eq '/open_url') {
+		} elsif $uri eq '/open_url' {
 			return Farabi6::Editor.open-url(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'url'));
-		} elsif ($uri eq '/rosettacode_rebuild_index') {
+		} elsif $uri eq '/rosettacode_rebuild_index' {
 			return Farabi6::Editor.rosettacode-rebuild-index;
-		} elsif ($uri eq '/rosettacode_search') {
+		} elsif $uri eq '/rosettacode_search' {
 			return Farabi6::Editor.rosettacode-search(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'something'));
-		} elsif ($uri eq '/run/rakudo') {
+		} elsif $uri eq '/run/rakudo' {
 			return Farabi6::Editor.run-code(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'source'),
 				'rakudo'); 		
-		} elsif ($uri eq '/run/niecza') {
+		} elsif $uri eq '/run/niecza' {
 			return Farabi6::Editor.run-code(
 				Farabi6::Util.get-parameter(%env<QUERY_STRING>, 'source'),
 				'niecza',
