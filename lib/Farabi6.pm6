@@ -4,7 +4,7 @@ class Farabi6 {
 
 # External
 use File::Spec;
-use HTTP::Server::Simple::PSGI;
+use HTTP::Easy::PSGI;
 use URI;
 
 # Internal
@@ -35,8 +35,10 @@ method run(Str $host, Int $port) is export {
 	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
 	{
+   		return [400,['Content-Type' => 'text/plain'],['']] if %env<REQUEST_METHOD> eq '';
+		
 		my Str $filename;
-   		my Str $uri = %env<REQUEST_URI>;
+		my Str $uri = %env<REQUEST_URI>;
 		$uri ~~= s/\?.*$//;
 
 		#TODO use psgi.input once HTTP::Server::Simple supports it
@@ -103,8 +105,7 @@ method run(Str $host, Int $port) is export {
 		];
 	}
 
-	my $server = HTTP::Server::Simple::PSGI.new($port);
-	$server.host = $host;
+	my $server = HTTP::Easy::PSGI.new(:debug, :host($host), :port($port));
 	$server.app($app);
  	$server.run;
 }
