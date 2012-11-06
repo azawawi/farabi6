@@ -105,7 +105,7 @@ method run(Str $host, Int $port) is export {
 		];
 	}
 
-	my $server = HTTP::Easy::PSGI.new(:debug, :host($host), :port($port));
+	my $server = HTTP::Easy::PSGI.new(:host($host), :port($port));
 	$server.app($app);
  	$server.run;
 }
