@@ -6,6 +6,10 @@ The idea here is to experiment with a Perl 6 in-browser editor running over Raku
 
 Have fun!
 
+## Demo
+
+A demo without the ability to run things remotely is found [here](http://feather.perl6.nl:8080). 
+
 ## Installation
 
 To run it from the local directory:
