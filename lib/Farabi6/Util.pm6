@@ -88,15 +88,26 @@ method find-file($dir, $pattern, @excluded) {
 	gather {
 		for @files -> $file {
 			my $path = "$dir/$file";
-			if $file.Str eq any(@excluded) {
-				 # Ignore excluded file or directory
-			} elsif $file.IO ~~ :d {
+			my $file-name = $file.Str;
+	
+			# Ignore excluded file or directory
+			# TODO use any(@excluded) once it is faster than now
+			my $found = 0;
+			for @excluded -> $excluded {
+				if $file-name eq $excluded {
+					$found = 1;
+					last;
+				}
+			}
+			next if $found;
+		
+			if $file.IO ~~ :d {
 				take self.find-file($path, $pattern, @excluded);
 			} else {
 				take { 
-					'file' => $path,
-					'name' => $file.Str	
-				} if $file.Str ~~ /$pattern/;
+				'file' => $path,
+				'name' => $file-name
+				} if $file-name ~~ /$pattern/;
 			}
 		}
 	}
