@@ -2,7 +2,6 @@ use v6;
 
 class Farabi6::Editor {
 
-use File::Spec;
 use JSON::Tiny;
 use URI::Escape;
 
@@ -17,13 +16,13 @@ std/viv
 method syntax-check(Str $source) {
 
 	# TODO use File::Temp once it is usable
-	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-syntax-check.tmp');
+	my $filename = IO::Spec.catfile(IO::Spec.tmpdir, 'farabi-syntax-check.tmp');
 	my $fh = open $filename, :w;
 	$fh.print($source);
 	$fh.close;	
 
 	#TODO more portable version for win32 in the future
-	my Str $viv = File::Spec.catdir(%*ENV{'HOME'}, 'std', 'viv');
+	my Str $viv = IO::Spec.catdir(%*ENV{'HOME'}, 'std', 'viv');
     my Str $output = qqx{$viv -c $filename};
 
 	my @problems;
@@ -129,7 +128,7 @@ Returns a PSGI response containing a rendered POD HTML string
 method pod-to-html(Str $pod) {
 
 	# TODO use File::Temp once it is usable
-	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-pod-to-html.tmp');
+	my $filename = IO::Spec.catfile(IO::Spec.tmpdir, 'farabi-pod-to-html.tmp');
 	my $fh = open $filename, :w;
 	$fh.print($pod);	
 	$fh.close;
@@ -188,7 +187,7 @@ method run-code(Str $source, Str $runtime) {
 	}
 
 	# TODO use File::Temp once it is usable
-	my $filename = File::Spec.catfile(File::Spec.tmpdir, 'farabi-run.tmp');
+	my $filename = IO::Spec.catfile(IO::Spec.tmpdir, 'farabi-run.tmp');
 	my $fh = open $filename, :w;
 	$fh.print($source);
 	$fh.close;	
