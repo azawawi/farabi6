@@ -27,7 +27,7 @@ method syntax-check(Str $source) {
 
 	my @problems;
 	for $output.lines -> $line {
-		if ($line ~~ /^(.+)\ at\ .+\ line\ (\d+)\:$/ ) {
+		if ($line ~~ m/^(.+) at .+ line (\d+)\:$/ ) {
 			push @problems, {
 				'description'   => ~$0,
 				'line_number'   => ~$1,
