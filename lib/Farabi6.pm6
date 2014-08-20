@@ -3,7 +3,6 @@ use v6;
 class Farabi6 {
 
 # External
-use File::Spec;
 use HTTP::Easy::PSGI;
 use URI;
 
@@ -19,18 +18,18 @@ then it listens on all interfaces
 =end pod
 method run(Str $host, Int $port) is export {
 	
-	my @dirs = File::Spec.splitdir($?FILE);
-	my $files-dir = File::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
-	unless File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e {
+	my @dirs = IO::Spec.splitdir($?FILE);
+	my $files-dir = IO::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
+	unless IO::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e {
 		# Workaround for panda not installing non-perl files in ~/.perl6
-		$files-dir = File::Spec.catdir(
+		$files-dir = IO::Spec.catdir(
 			%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
 		say "Panda installation found. Switching to {$files-dir}";
 	}
 
 	# Make sure files contains farabi.js
 	die "farabi.js is not found in {$files-dir}" 
-		unless File::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e;
+		unless IO::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e;
 
 	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
@@ -79,7 +78,7 @@ method run(Str $host, Int $port) is export {
 
 		# Get the real file from the local filesystem
 		#TODO more robust and secure way of getting files. We could easily be attacked from here
-		$filename = File::Spec.catdir($files-dir, $filename);
+		$filename = IO::Spec.catdir($files-dir, $filename);
 		my Str $mime-type = Farabi6::Util.find-mime-type($filename);
 		my Int $status;
 		my $contents;
