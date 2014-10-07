@@ -20,12 +20,6 @@ method run(Str $host, Int $port) is export {
 	
 	my @dirs = IO::Spec.splitdir($?FILE);
 	my $files-dir = IO::Spec.catdir(@dirs[0..*-2], 'Farabi6', 'files');
-	unless IO::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e {
-		# Workaround for panda not installing non-perl files in ~/.perl6
-		$files-dir = IO::Spec.catdir(
-			%*ENV{'HOME'}, '.panda', 'src', 'Farabi6', 'lib', 'Farabi6', 'files');	
-		say "Panda installation found. Switching to {$files-dir}";
-	}
 
 	# Make sure files contains farabi.js
 	die "farabi.js is not found in {$files-dir}" 
@@ -83,12 +77,10 @@ method run(Str $host, Int $port) is export {
 		my Int $status;
 		my $contents;
 		if ($filename.IO ~~ :e) {
-			if (my $fh = open $filename, :bin ) {
-				$status = 200;
-				$contents = $fh.slurp;
-				$fh.close;
-			}
+			$status = 200;
+			$contents = slurp $filename, :enc('ASCII');
 		} 
+
 		unless ($contents) {
 			$status = 404;
 			$mime-type = 'text/plain';
