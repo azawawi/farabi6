@@ -5,8 +5,8 @@
 	"depends"     : [ "HTTP::Easy", "JSON::Tiny", "Pod::To::HTML", "URI" ],
 	"provides"    : {
 		"Farabi6"         : "lib/Farabi6.pm6",
-		"Farabi6::Editor" :"lib/Farabi6/Editor.pm6",
+		"Farabi6::Editor" : "lib/Farabi6/Editor.pm6",
 		"Farabi6::Util"   : "lib/Farabi6/Util.pm6",
-+  },
+	},
 	"source-url"  : "git://github.com/azawawi/farabi6.git"
 }
