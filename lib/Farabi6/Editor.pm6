@@ -2,6 +2,7 @@ use v6;
 
 class Farabi6::Editor {
 
+use File::Temp;
 use JSON::Tiny;
 use URI::Escape;
 
@@ -15,22 +16,25 @@ std/viv
 =end comment
 method syntax-check(Str $source) {
 
-	# TODO use File::Temp once it is usable
-	my $filename = IO::Spec.catfile(IO::Spec.tmpdir, 'farabi-syntax-check.tmp');
-	my $fh = open $filename, :w;
-	$fh.print($source);
-	$fh.close;	
+	#TODO only syntax check on save like Eclipse and use real files only
 
-	#TODO more portable version for win32 in the future
-	my Str $viv = IO::Spec.catdir(%*ENV{'HOME'}, 'std', 'viv');
-    my Str $output = qqx{$viv -c $filename};
+	# Prepare Perl 6 source for syntax check
+	my ($filename,$filehandle) = tempfile(:!unlink);
+	spurt $filehandle, $source;
+
+	# Invoke perl -c $temp_file
+	my Str $output = qqx{$*EXECUTABLE -c $filename 2>&1};
+
+	# Remove temp file
+	unlink $filehandle;
 
 	my @problems;
-	for $output.lines -> $line {
-		if ($line ~~ m/^(.+) at .+ line (\d+)\:$/ ) {
+	unless $output ~~ /^Syntax OK/ {
+		say "Checking...";
+		if $output ~~ m/\n(.+?)at\s.+?\:(\d+)/ {
 			push @problems, {
-				'description'   => ~$0,
-				'line_number'   => ~$1,
+				'description'   => ~$/[0],
+				'line_number'   => ~$/[1],
 			}
 		}
 	}
