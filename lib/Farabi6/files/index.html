@@ -85,7 +85,7 @@
                   href="#">Syntax Check (F6)</a></li>
 
                   <li><a tabindex="-1" class="run-button" href=
-                  "#">Run... (F5)</a></li>
+                  "#">Run... (Alt-Enter)</a></li>
                 </ul>
               </li>
 
@@ -169,7 +169,7 @@ $message.say for 1..5;
 
 =head3 Heading 3
 
-Press F5 to run your script using Perlito 6
+Press Alt-Enter to run your script using Perl 6 rakudo
 
 =end pod
 </textarea>
@@ -230,12 +230,6 @@ Press F5 to run your script using Perlito 6
           <td><span id="codemirror-version"></span></td>
         </tr>
 
-        <tr>
-          <td><a target="_blank" href=
-          "http://perlito.org/">Perlito 5</a></td>
-
-          <td><span id="perlito-version"></span></td>
-        </tr>
       </tbody>
     </table>
   </div>
@@ -260,9 +254,9 @@ Press F5 to run your script using Perlito 6
 
         <dd>Context-sensitive help</dd>
 
-        <dt>F5</dt>
+        <dt>Run</dt>
 
-        <dd>Run in browser</dd>
+        <dd>Run via rakudo</dd>
 
         <dt>Ctrl-F</dt>
 
@@ -476,8 +470,9 @@ Press F5 to run your script using Perlito 6
       <button class="btn" data-dismiss="modal" aria-hidden=
       "true">Close</button>
     </div>
-  </div><!-- POD dialog -->
+  </div>
 
+  <!-- POD dialog -->
   <div class="modal" id="pod_dialog" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -490,52 +485,7 @@ Press F5 to run your script using Perlito 6
       <button class="btn" data-dismiss="modal" aria-hidden=
       "true">Close</button>
     </div>
-  </div><!-- Run dialog -->
-
-  <div class="modal" id="run-dialog" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel">Run...</h3>
-    </div>
-
-    <div class="modal-body">
-      <div class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label" for=
-          "runtime">Runtime:</label>
-
-          <div class="controls">
-            <select id="runtime" size="5">
-              <option id="niecza">
-                Niecza
-              </option>
-
-              <option id="perlito-6" selected>
-                Perlito 6
-              </option>
-
-              <option id="perlito-5">
-                Perlito 5
-              </option>
-
-              <option id="rakudo">
-                Rakudo Perl 6
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <div id="help"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button id="ok-button" class="btn btn-primary" data-dismiss=
-      "modal" aria-hidden="true">OK</button> <button class="btn"
-      data-dismiss="modal" aria-hidden="true">Cancel</button>
-    </div>
   </div>
+
 </body>
 </html>
