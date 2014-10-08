@@ -42,14 +42,6 @@
       <div class="ui one column grid">
         <div class="column">
 		  <div class="editor-container">
-            <ul id="myTab" class="nav nav-tabs">
-              <li class="active"><a href="#home" data-toggle="tab">Home&nbsp;&nbsp;<i class="icon-remove"></i></a></li>
-            </ul>
-            <div id="myTabContent" class="tab-content">
-              <div class="tab-pane fade active" id="home">
-             </div>
- 			</div>
-            </div>
                  <textarea id="editor" name="editor" class="editor">
 use v6;
 
@@ -72,7 +64,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
                <div id="editor_stats" class="pull-right"></div>
 
           </div>
-
+		  </div>
       </div>
 
       <div class="ui one column grid">
@@ -280,7 +272,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
         <tr>
           <td><strong>Theme:</strong><br/>
           <select id="theme_selector" class="input-medium">
-            <option value="default" selected>
+            <option value="default">
               Default
             </option>
 
@@ -320,7 +312,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
               Night
             </option>
 
-            <option value="rubyblue">
+            <option value="rubyblue" selected>
               Ruby Blue
             </option>
 

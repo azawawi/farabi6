@@ -6,11 +6,6 @@
 .CodeMirror-scroll {
 	min-height: 450px;
 }
-.CodeMirror-gutter {
-	width: 3em;
-	background: white;
-	border-left    : 1px solid #DDD;
-}
 .farabi-bordered {
 	border: 1px solid #DDD !important;
 }
