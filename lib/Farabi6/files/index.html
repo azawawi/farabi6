@@ -39,32 +39,8 @@
 		</div>
 	</div>
 
-      <div class="ui one column grid">
-        <div class="column">
-		  <div class="editor-container">
-                 <textarea id="editor" name="editor" class="editor">
-use v6;
-
-my $farabi = "Farabi 6";
-my Str $message = "Hello world from {$farabi}";
-$message.say for 1..5;
-
-=begin pod
-
-=head1 Heading 1
-
-=head2 Heading 2
-
-=head3 Heading 3
-
-Press Alt-Enter to run your script using Perl 6 rakudo
-
-=end pod
-</textarea>
-               <div id="editor_stats" class="pull-right"></div>
-
-          </div>
-		  </div>
+      <div class="ui one column grid" id="editors">
+		  <div id="editor_stats" class="pull-right"></div>
       </div>
 
       <div class="ui one column grid">
