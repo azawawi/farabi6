@@ -109,8 +109,8 @@ method find-file($dir, $pattern, @excluded) {
 			}
 		} elsif $file-name ~~ m:ignorecase/$pattern/ {
 			take {
-				'file' => $file-name,
-				'name' => $path;
+				'file' => $path,
+				'name' => $file-name;
 			};
 		}
 	};
