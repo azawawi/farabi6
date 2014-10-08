@@ -5,14 +5,21 @@
   <title>Farabi6: The Perl 6 Editor</title>
 
   <script src="assets/3rd-party/jquery-v2.1.1/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" class="ui" href="assets/3rd-party/semantic-ui-v0.19.3/css/semantic.min.css">
+
+  <link rel="stylesheet" type="text/css" class="ui" href="assets/3rd-party/semantic-ui-v0.19.3/css/semantic.min.css"/>
+
   <script src="assets/3rd-party/semantic-ui-v0.19.3/javascript/semantic.min.js"></script>
-  <link rel="stylesheet" href="farabi.css" type="text/css">
+
+  <link rel="stylesheet" href="farabi.css" type="text/css"/>
+
   <script src="farabi.js"></script>
+
   <link rel="stylesheet" href="assets/3rd-party/codemirror-v4.6/lib/codemirror.css"
-  type="text/css">
+  type="text/css"/>
+
   <link rel="stylesheet" href="assets/3rd-party/codemirror-v4.6/addon/dialog/dialog.css"
-  type="text/css">
+  type="text/css"/>
+
   <script src="assets/3rd-party/codemirror-v4.6/lib/codemirror.js"></script>
   <script src="assets/3rd-party/codemirror-v4.6/addon/selection/active-line.js"></script>
   <script src="assets/3rd-party/codemirror-v4.6/addon/mode/loadmode.js"></script>
@@ -111,62 +118,62 @@ Press Alt-Enter to run your script using Perl 6 rakudo
 </textarea>
         </div>
       </div>
-    </div>
-  </div><!-- About dialog -->
 
-  <div class="modal" id="about_dialog" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel">About Farabi6</h3>
-	</div>
-      <div class="modal-body">
-		Written with love and for fun by
-        <strong>Ahmad M. Zawawi</strong>, azawawi @ #perl6,
-        #padre<br>
-        All rights reserved universe-wide.<br>
-        <br></h3>
-
-      <blockquote>
-        <p>An art, which has an aim to achieve the beauty, is
-        called a philosophy or in the absolute sense it is named
-        wisdom.</p><small><a target="_blank" href=
-        "http://en.wikipedia.org/wiki/Al-Farabi">Al-Farabi</a></small>
-      </blockquote>
-
-    <table class="table table-bordered table-striped">
-      <tbody>
-        <tr>
-          <td><a target="_blank" href=
-          "http://jquery.com">jQuery</a></td>
-
-          <td><span id="jquery-version"></span></td>
-        </tr>
-
-        <tr>
-          <td><a target="_blank" href=
-          "http://twitter.github.com/bootstrap">Bootstrap</a></td>
-
-          <td><span id="bootstrap-version">2.2.1</span></td>
-        </tr>
-
-        <tr>
-          <td><a target="_blank" href=
-          "http://codemirror.net/">CodeMirror</a></td>
-
-          <td><span id="codemirror-version"></span></td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden=
-    "true">Close</button>
 	
-  </div>
+	<div class="ui small modal" id="about_dialog">
+	  <i class="close icon"></i>
+	  <div class="header">
+		About Farabi6
+	  </div>
+	  <div class="content">
+			Written with love and for fun by
+			<strong>Ahmad M. Zawawi</strong>, azawawi @ #perl6,
+			#padre<br/>
+			All rights reserved universe-wide.<br/>
+			<br/>
+
+		  <blockquote>
+			<p>An art, which has an aim to achieve the beauty, is
+			called a philosophy or in the absolute sense it is named
+			wisdom.</p><small><a target="_blank" href=
+			"http://en.wikipedia.org/wiki/Al-Farabi">Al-Farabi</a></small>
+		  </blockquote>
+
+		<table class="ui table segment">
+		  <tbody>
+			<tr>
+			  <td><a target="_blank" href=
+			  "http://jquery.com">jQuery</a></td>
+
+			  <td><span id="jquery-version"></span></td>
+			</tr>
+
+			<tr>
+			  <td><a target="_blank" href=
+			  "http://semantic-ui.com/">Semantic UI</a></td>
+
+			  <td><span id="semantic-ui-version">0.19.3</span></td>
+			</tr>
+
+			<tr>
+			  <td><a target="_blank" href=
+			  "http://codemirror.net/">CodeMirror</a></td>
+
+			  <td><span id="codemirror-version"></span></td>
+			</tr>
+
+		  </tbody>
+		</table>
+	  </div>
+	  <div class="actions">
+		<div class="ui button">
+		  Close
+		</div>
+	  </div>
 	</div>
-<!-- Help dialog -->
+
+	
+
 
   <div class="modal" id="help_dialog" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
@@ -210,7 +217,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
       <button class="btn" data-dismiss="modal" aria-hidden=
       "true">Close</button>
     </div>
-  </div><!-- Open file dialog -->
+  </div>
 
   <div class="modal" id="open_file_dialog" tabindex="-1" role=
   "dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -246,7 +253,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
       "cancel-button" class="btn" data-dismiss="modal" aria-hidden=
       "true">Cancel</button>
     </div>
-  </div><!-- Options dialog -->
+  </div>
 
   <div class="modal" id="options_dialog" tabindex="-1" role=
   "dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -398,7 +405,6 @@ Press Alt-Enter to run your script using Perl 6 rakudo
     </div>
   </div>
 
-  <!-- POD dialog -->
   <div class="modal" id="pod_dialog" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
