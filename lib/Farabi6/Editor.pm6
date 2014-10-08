@@ -201,14 +201,10 @@ method run-code(Str $source, Str $runtime) {
 	#TODO configurable from runtime configuratooor :)
 	#TODO safe command argument...
 	#TODO safe runtime arguments...
-	if $runtime eq 'niecza' {
-		# Niecza
-		$cmd = '/usr/bin/env Niecza.exe';
-	} else {
-		# Default to Rakudo Perl 6 for now
-		$cmd = '/usr/bin/env perl6';
-	}
-    my Str $output = qqx{$cmd $filename};
+
+	# Default to Rakudo Perl 6 for now
+	$cmd = '/usr/bin/env perl6';
+    my Str $output = qqx{$cmd $filename 2>&1};
 
 	my %result = 
 		'output'   => $output;
