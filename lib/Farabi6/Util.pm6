@@ -87,8 +87,8 @@ method find-file($dir, $pattern, @excluded) {
 	my @files = dir($dir);
 	gather {
 		for @files -> $file {
-			my $path = "$dir/$file";
-			my $file-name = $file.Str;
+			my $path = $file.Str;
+			my $file-name = $file.basename;
 	
 			# Ignore excluded file or directory
 			# TODO use any(@excluded) once it is faster than now
