@@ -32,47 +32,10 @@
 <body>
 	<div class="ui one column grid">
 		<div class="column">
-			<nav class="ui menu">
-				<h3 class="header item">Farabi6: The Perl 6 Editor</h3>
-				<div class="ui dropdown item">
-					File <i class="dropdown icon"></i>
-					<div class="menu">
-						<a class="item new-file-button">New (Alt-N)</a>
-						<a class="item open_file_button">Open File (Alt-O)</a>
-						<a class="item save_file_button">Save File (Alt-S)</a>
-						<a class="item save_as_file_button">Save As File</a>
-						<a class="item open_url_button">Open URL (Experimento)</a>
-						<a class="item close_file_button">Close</a>
-					</div>
-				</div>
-				<div class="ui dropdown item">
-					Build <i class="dropdown icon"></i>
-					<div class="menu">
-						<a class="item syntax_check_button">Syntax Check (F6)</a>
-						<a class="item run-button">Run... (Alt-Enter)</a>
-					</div>
-				</div>
-				<div class="ui dropdown item">
-					Tools <i class="dropdown icon"></i>
-					<div class="menu">
-						<a class="item show_pod_button">Update POD (F9)</a>
-						<a class="item options_button">Options</a>
-					</div>
-				</div>
-				<div class="ui dropdown item">
-					Help <i class="dropdown icon"></i>
-					<div class="menu">
-						<a class="item help_button">Getting Started</a>
-						<a class="item" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a>
-						<a class="item" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a>
-						<a class="item" href="http://modules.perl6.org" target="_blank">Perl 6 Modules</a>
-						<a class="item" href="http://perlcabal.org/syn/Differences.html" target="_blank">
-							Perl5::Perl6::Differences
-						</a>
-						<a class="item about_button">About Farabi</a>
-					</div>
-				</div>
-			</nav>
+			<h3 class="header item">Farabi6: The Perl 6 Editor</h3>
+			<button id="toggle_left_menu_sidebar" class="small ui orange button">
+				Menu!
+			</button>
 		</div>
 	</div>
 
@@ -414,6 +377,33 @@ Press Alt-Enter to run your script using Perl 6 rakudo
 		</div>
 	  </div>
   </div>
+	
+	<div class="ui styled sidebar" id="left_menu_sidebar">
+		<div class="ui selection list">
+			<div class="header">File</div>
+			<a class="item new-file-button">New (Alt-N)</a>
+			<a class="item open_file_button">Open File (Alt-O)</a>
+			<a class="item save_file_button">Save File (Alt-S)</a>
+			<a class="item save_as_file_button">Save As File</a>
+			<a class="item open_url_button">Open URL (Experimento)</a>
+			<a class="item close_file_button">Close</a>
+			<div class="header">Build</div>
+			<a class="item syntax_check_button">Syntax Check (F6)</a>
+			<a class="item run-button">Run... (Alt-Enter)</a>
+			<div class="header">Tools</div>
+			<a class="item show_pod_button">Update POD (F9)</a>
+			<a class="item options_button">Options</a>
+			<div class="header">Help</div>
+			<a class="item help_button">Getting Started</a>
+			<a class="item" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a>
+			<a class="item" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a>
+			<a class="item" href="http://modules.perl6.org" target="_blank">Perl 6 Modules</a>
+			<a class="item" href="http://perlcabal.org/syn/Differences.html" target="_blank">Perl5::Perl6::Differences</a>
+			<a class="item about_button">About Farabi</a>
+		</div>
+    </div>
+</div>
+
 
 </body>
 </html>
