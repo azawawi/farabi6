@@ -4,10 +4,9 @@
 <head>
   <title>Farabi6: The Perl 6 Editor</title>
 
-  <script src="jquery-1.8.2.min.js"></script>
-  <link href="assets/bootstrap/css/bootstrap.min.css" rel=
-  "stylesheet" type="text/css">
-  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/3rd-party/jquery-v2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" class="ui" href="assets/3rd-party/semantic-ui-v0.19.3/css/semantic.min.css">
+  <script src="assets/3rd-party/semantic-ui-v0.19.3/javascript/semantic.min.js"></script>
   <link rel="stylesheet" href="farabi.css" type="text/css">
   <script src="farabi.js"></script>
   <link rel="stylesheet" href="assets/3rd-party/codemirror-v4.6/lib/codemirror.css"
@@ -24,112 +23,54 @@
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row-fluid">
-      <div id="navbar-example" class="navbar navbar-static">
-        <div class="navbar-inner">
-          <div class="container" style="width: auto;">
-            <a class="brand" href="#">Farabi6: The Perl 6
-            Editor</a>
+	<div class="ui one column grid">
+		<div class="column">
+			<nav class="ui menu">
+				<h3 class="header item">Farabi6: The Perl 6 Editor</h3>
+				<div class="ui dropdown active item">
+					File <i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item new-file-button">New (Ctrl-N)</a>
+						<a class="item open_file_button">Open File (Ctrl-O)</a>
+						<a class="item save_file_button">Save File (Ctrl-S)</a>
+						<a class="item save_as_file_button">Save As File</a>
+						<a class="item open_url_button">Open URL (Experimento)</a>
+						<a class="item close_file_button">Close</a>
+					</div>
+				</div>
+				<div class="ui dropdown item">
+					Build <i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item syntax_check_button">Syntax Check (F6)</a>
+						<a class="item run-button">Run... (Alt-Enter)</a>
+					</div>
+				</div>
+				<div class="ui dropdown item">
+					Tools <i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item show_pod_button">Update POD (F9)</a>
+						<a class="item options_button">Options</a>
+					</div>
+				</div>
+				<div class="ui dropdown item">
+					Help <i class="dropdown icon"></i>
+					<div class="menu">
+						<a class="item help_button">Getting Started</a>
+						<a class="item" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a>
+						<a class="item" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a>
+						<a class="item" href="http://modules.perl6.org" target="_blank">Perl 6 Modules</a>
+						<a class="item" href="http://perlcabal.org/syn/Differences.html" target="_blank">
+							Perl5::Perl6::Differences
+						</a>
+						<a class="item about_button">About Farabi</a>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>
 
-            <ul class="nav" role="navigation">
-              <li class="dropdown">
-                <a id="file-dropdown" href="#" role="button" class=
-                "dropdown-toggle" data-toggle="dropdown">File</a>
-
-                <ul class="dropdown-menu" role="menu"
-                aria-labelledby="file-dropdown">
-                  <li><a tabindex="-1" class="new-file-button"
-                  href="#">New (Ctrl-N)</a></li>
-
-                  <li><a tabindex="-1" class="open_file_button"
-                  href="#">Open File (Ctrl-O)</a></li>
-
-                  <li><a tabindex="-1" class="save_file_button"
-                  href="#">Save File (Ctrl-S)</a></li>
-
-                  <li><a tabindex="-1" class="save_as_file_button"
-                  href="#">Save As File</a></li>
-
-                  <li><a tabindex="-1" class="open_url_button"
-                  href="#">Open URL (Experimento)</a></li>
-
-                  <li><a tabindex="-1" class="close_file_button"
-                  href="#">Close</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" id="build-dropdown" role="button"
-                class="dropdown-toggle" data-toggle=
-                "dropdown">Build</a>
-
-                <ul class="dropdown-menu" role="menu"
-                aria-labelledby="build-dropdown">
-                  <li><a tabindex="-1" class="syntax_check_button"
-                  href="#">Syntax Check (F6)</a></li>
-
-                  <li><a tabindex="-1" class="run-button" href=
-                  "#">Run... (Alt-Enter)</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" id="tools-dropdown" role="button"
-                class="dropdown-toggle" data-toggle=
-                "dropdown">Tools</a>
-
-                <ul class="dropdown-menu" role="menu"
-                aria-labelledby="tools-dropdown">
-                  <li><a tabindex="-1" class="show_pod_button"
-                  href="#">Update POD (F9)</a></li>
-
-				  <li class="divider"></li>
-
-                  <li><a tabindex="-1" class="options_button" href=
-                  "#">Options</a></li>
-                </ul>
-              </li>
-            </ul>
-
-            <ul class="nav pull-right">
-              <li class="dropdown">
-                <a href="#" id="help-dropdown" role="button" class=
-                "dropdown-toggle" data-toggle="dropdown">Help</a>
-
-                <ul class="dropdown-menu" role="menu"
-                aria-labelledby="help-dropdown">
-                  <li><a tabindex="-1" class="help_button" href=
-                  "#">Getting Started</a></li>
-
-                  <li><a tabindex="-1" href="http://perl6.org"
-                  target="_blank">Official Perl 6 Language
-                  Website</a></li>
-
-                  <li><a tabindex="-1" href="http://doc.perl6.org"
-                  target="_blank">Perl 6 Documentation</a></li>
-
-                  <li><a tabindex="-1" href=
-                  "http://modules.perl6.org" target="_blank">Perl 6
-                  Modules</a></li>
-
-                  <li><a tabindex="-1" href=
-                  "http://perlcabal.org/syn/Differences.html"
-                  target=
-                  "_blank">Perl5::Perl6::Differences</a></li>
-
-				  <li class="divider"></li>
-                  <li><a tabindex="-1" class="about_button" href=
-                  "#">About Farabi</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="row-fluid">
-        <div class="span12">
+      <div class="ui one column grid">
+        <div class="column">
 		  <div class="editor-container">
             <ul id="myTab" class="nav nav-tabs">
               <li class="active"><a href="#home" data-toggle="tab">Home&nbsp;&nbsp;<i class="icon-remove"></i></a></li>
@@ -164,8 +105,8 @@ Press Alt-Enter to run your script using Perl 6 rakudo
 
       </div>
 
-      <div class="row-fluid">
-        <div class="span12" id="output-tab">
+      <div class="ui one column grid">
+        <div class="column" id="output-tab">
           <textarea id="output" cols="80" rows="10">
 </textarea>
         </div>

@@ -75,23 +75,3 @@ span.CodeMirror-matchhighlight {
 	padding: 0 3px; 
 	margin-right: 7px;
 }
-
-.modal-backdrop {
-	opacity: 0.1 !important;
-}
-
-/* Minimal editor tabs */
-.nav-tabs > li > a {
-	padding-top         : 0px;
-	padding-bottom      : 0px;
-	border-bottom-color : #DDD !important;
-}
-
-.nav {
-	margin-bottom  : 0px;
-}
-
-/* Minimal top navigation bar (i.e. menubar) */
-.navbar {
-	margin-bottom  : 5px;
-}
