@@ -3,6 +3,7 @@ use v6;
 class Farabi6::Util {
 
 use URI::Escape;
+use File::Find;
 
 method get-parameter(Str $input, Str $name) {
 	# TODO more generic parameter parsing
@@ -84,33 +85,30 @@ method find-mime-type(Str $filename) {
 	Finds a file inside a directory excluding list of files/directories
 =end comment
 method find-file($dir, $pattern, @excluded) {
-	my @files = dir($dir);
-	gather {
-		for @files -> $file {
-			my $path = $file.Str;
-			my $file-name = $file.basename;
-	
-			# Ignore excluded file or directory
-			# TODO use any(@excluded) once it is faster than now
-			my $found = 0;
-			for @excluded -> $excluded {
-				if $file-name eq $excluded {
-					$found = 1;
-					last;
-				}
-			}
-			next if $found;
-		
-			if $file.IO ~~ :d {
-				take self.find-file($path, $pattern, @excluded);
-			} else {
-				take { 
-				'file' => $path,
-				'name' => $file-name
-				} if $file-name ~~ /$pattern/;
-			}
-		}
+
+	my $files = find(:dir($dir), :type<file>);
+	my @result;
+	for @$files -> $file {
+		my $file-name = $file.basename;
+
+		# Ignore excluded file or directory
+		# TODO use any(@excluded) once it is faster than now
+		#my $found = 0;
+		#for @excluded -> $excluded {
+		#	if $file.Str ~~ /$excluded/ {
+		#		$found = 1;
+		#		last;
+		#	}
+		#}
+		#next if $found;
+
+		push @result, {
+			'file' => $file.Str,
+			'name' => $file-name
+		} if $file-name ~~ /$pattern/;
 	}
+
+	@result;
 }
 
 }
