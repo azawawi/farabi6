@@ -37,9 +37,9 @@
 				<div class="ui dropdown active item">
 					File <i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item new-file-button">New (Ctrl-N)</a>
-						<a class="item open_file_button">Open File (Ctrl-O)</a>
-						<a class="item save_file_button">Save File (Ctrl-S)</a>
+						<a class="item new-file-button">New (Alt-N)</a>
+						<a class="item open_file_button">Open File (Alt-O)</a>
+						<a class="item save_file_button">Save File (Alt-S)</a>
 						<a class="item save_as_file_button">Save As File</a>
 						<a class="item open_url_button">Open URL (Experimento)</a>
 						<a class="item close_file_button">Close</a>
@@ -175,13 +175,12 @@ Press Alt-Enter to run your script using Perl 6 rakudo
 	
 
 
-  <div class="modal" id="help_dialog" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel">Getting Started</h3>
+  <div class="ui modal" id="help_dialog">
+    <div class="header">
+      Getting Started
     </div>
 
-    <div class="modal-body">
+    <div class="content">
       <dl>
         <dt>F1</dt>
 
@@ -213,58 +212,53 @@ Press Alt-Enter to run your script using Perl 6 rakudo
       </dl>
     </div>
 
-    <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden=
-      "true">Close</button>
-    </div>
+	  <div class="actions">
+		<div class="ui button">
+		  Close
+		</div>
+	  </div>
   </div>
 
-  <div class="modal" id="open_file_dialog" tabindex="-1" role=
-  "dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel">Open File...</h3>
+  <div class="ui modal" id="open_file_dialog">
+    <div class="header">
+      Open File...
     </div>
 
-    <div class="modal-body">
-      <div class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label" for="file">File</label>
-
-          <div class="controls">
-            <input type="text" id="file" placeholder="File">
-          </div>
+    <div class="content">
+      <div class="ui form segment">
+        <div class="field">
+          <label for="file">File</label>
+            <input type="text" id="file" placeholder="File"/>
         </div>
 
-        <div class="control-group">
-          <label class="control-label" for="search-results">Search
+        <div class="field">
+          <label for="search-results">Search
           Results</label>
-
-          <div class="controls">
-            <select id="search-results" size="5">
+            <select class="ui fluid input" id="search-results" size="5">
               </select>
-          </div>
         </div>
       </div>
     </div>
+	  <div class="actions">
+		<div class="ui button" id="ok-button">
+		  OK
+		</div>
+		<div class="ui button" id="cancel-button">
+		  Cancel
+		</div>
+	  </div>
 
-    <div class="modal-footer">
-      <button id="ok-button" class="btn btn-primary" data-dismiss=
-      "modal" aria-hidden="true">OK</button> <button id=
-      "cancel-button" class="btn" data-dismiss="modal" aria-hidden=
-      "true">Cancel</button>
-    </div>
   </div>
 
-  <div class="modal" id="options_dialog" tabindex="-1" role=
-  "dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel">Options</h3>
+  <div class="ui modal" id="options_dialog">
+    <div class="header">
+      Options
     </div>
 
-    <div class="modal-body">
+    <div class="content">
       <table>
         <tr>
-          <td><strong>Mode:</strong><br>
+          <td><strong>Mode:</strong><br/>
           <select id="mode_selector" class="input-medium">
             <option value="clike">
               C, C++, C#
@@ -321,7 +315,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
         </tr>
 
         <tr>
-          <td><strong>Theme:</strong><br>
+          <td><strong>Theme:</strong><br/>
           <select id="theme_selector" class="input-medium">
             <option value="default" selected>
               Default
@@ -379,7 +373,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
 
         <tr>
           <td><label class="checkbox"><input id=
-          "line_numbers_checkbox" type="checkbox" value="" checked>
+          "line_numbers_checkbox" type="checkbox" value="" checked/>
           <strong>Line Numbers?</strong></label></td>
         </tr>
 
@@ -391,7 +385,7 @@ Press Alt-Enter to run your script using Perl 6 rakudo
 
               <div class="controls">
                 <input class="input-mini" type="text" value="4" id=
-                "tab_size">
+                "tab_size"/>
               </div>
             </div>
           </td>
@@ -399,24 +393,26 @@ Press Alt-Enter to run your script using Perl 6 rakudo
       </table>
     </div>
 
-    <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden=
-      "true">Close</button>
-    </div>
+	  <div class="actions">
+		<div class="ui button">
+		  Close
+		</div>
+	  </div>
+			
   </div>
 
-  <div class="modal" id="pod_dialog" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <h3 id="myModalLabel">POD</h3>
+  <div class="ui modal" id="pod_dialog">
+    <div class="header">
+      POD
     </div>
 
-    <div class="modal-body"></div>
+    <div class="content"></div>
 
-    <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden=
-      "true">Close</button>
-    </div>
+	  <div class="actions">
+		<div class="ui button">
+		  Close
+		</div>
+	  </div>
   </div>
 
 </body>
