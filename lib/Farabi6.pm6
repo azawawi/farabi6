@@ -20,15 +20,18 @@ method run(Str $host, Int $port) is export {
 	
 	# Development or panda-installed farabi6?
 	my $files-dir = 'lib/Farabi6/files';
-	unless "$files-dir/farabi.js".IO ~~ :e {
+	unless "$files-dir/assets/farabi.js".IO ~~ :e {
 		say "Switching to panda-installed farabi6";
 		my @dirs = IO::Spec.splitdir($*EXECUTABLE);
-		$files-dir = IO::Spec.catdir(@dirs[0..*-3], 'languages', 'perl6', 'site', 'lib', 'Farabi6', 'files');
+		$files-dir = IO::Spec.catdir(
+			@dirs[0..*-3], 
+			'languages', 'perl6', 'site', 'lib', 'Farabi6', 'files'
+		);
 	}
 
 	# Make sure files contains farabi.js
-	die "farabi.js is not found in {$files-dir}" 
-		unless IO::Spec.catdir($files-dir, 'farabi.js').IO ~~ :e;
+	die "farabi.js is not found in {$files-dir}/assets" 
+		unless IO::Spec.catdir($files-dir, 'assets', 'farabi.js').IO ~~ :e;
 
 	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
