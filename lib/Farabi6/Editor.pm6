@@ -189,12 +189,52 @@ method run-code(Str $source, Str $runtime) {
 	# Remove temp file
 	unlink $filehandle;
 
+	my %ANSI_COLORS = {
+		30	=> "fg-black",
+		31	=> "fg-red",
+		32	=> "fg-green",
+		33	=> "fg-yellow",
+		34	=> "fg-blue",
+		35	=> "fg-magenta",
+		36	=> "fg-cyan",
+		37	=> "fg-white"
+	};
+
+#TODO more robust ANSI sequence parsing
+
+	# Create color ranges from the ANSI color sequences in the output text
+	my @ranges = gather {
+		my $start = -1;
+		my $color = "";
+		my $len   = 0;
+		while $output ~~ m:c/\x1B\[(\d+)m/ {
+			if $start == -1 {
+				$start = $/.from - $len;
+				$len   += $/.chars;
+				$color = %ANSI_COLORS{$/[0]};
+			} else {
+				$len   += $/.chars;
+				take {
+					"from"  => $start,
+					"to"    => $/.to - $len,
+					"color" => $color,
+				};
+				$start = -1;
+			}
+		}
+	};
+
+	# Remove the ANSI color sequences from the output text
+	$output ~~ s:g/\x1B\[\d+m//;
+
 	#TODO configurable from runtime configuratooor :)
 	#TODO safe command argument...
 	#TODO safe runtime arguments...
 
-	my %result = 
-		'output'   => $output;
+	my %result = {
+		'output'   => $output,
+		'ranges'   => @ranges,
+	}
 
 	[
 		200,
