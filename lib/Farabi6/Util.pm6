@@ -68,6 +68,7 @@ method find-mime-type(Str $filename) {
 		'js'   => 'text/javascript',
 		'png'  => 'image/png',
 		'ico'  => 'image/vnd.microsoft.icon',
+		'svg'  => 'image/svg+xml',
 	);
 	
 	my $mime-type;
