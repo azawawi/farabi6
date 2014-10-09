@@ -57,11 +57,10 @@ Returns the 'file-name' file searchs as a PSGI response
 =end comment
 method search-file(Str $file-name) {
 
-	# Find file inside current directory exluding usual excluded stuff
+	# Find file inside current directory exluding .svn and .git folders
 	my @search-results = Farabi6::Util.find-file(
 		cwd,
-		$file-name, 
-		['.svn', '.git']
+		$file-name
 	);
 
 	# Return the PSGI response

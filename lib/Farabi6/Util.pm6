@@ -85,7 +85,7 @@ method find-mime-type(Str $filename) {
 
 	Code adapted from File::Find
 =end comment
-method find-file($dir, $pattern, @excluded) {
+method find-file($dir, $pattern) {
 
 	my @targets = dir($dir);
 	my $list = gather while @targets {
@@ -94,13 +94,7 @@ method find-file($dir, $pattern, @excluded) {
 		my $found = 0;
 		my $file-name = $elem.basename;
 		my $path = $elem.Str;
-		for @excluded -> $excluded {
-			if $path ~~ /$excluded/ {
-				$found = 1;
-				last;
-			}
-		}
-		next if $found;
+		next if $path ~~ /.svn$|.git$/;
 
 		if $elem.IO ~~ :d {
 			@targets.push: dir($elem);
