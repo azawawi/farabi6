@@ -10,10 +10,6 @@
 
   <script src="assets/3rd-party/semantic-ui-v0.19.3/javascript/semantic.min.js"></script>
 
-  <link rel="stylesheet" href="assets/farabi.css"/>
-
-  <script src="assets/farabi.js"></script>
-
   <link rel="stylesheet" href="assets/3rd-party/codemirror-v4.6/lib/codemirror.css" />
   <link rel="stylesheet" href="assets/3rd-party/codemirror-v4.6/addon/display/fullscreen.css" />
 
@@ -28,30 +24,69 @@
   <script src="assets/3rd-party/codemirror-v4.6/addon/dialog/dialog.js"></script>
   <script src="assets/3rd-party/codemirror-v4.6/addon/display/fullscreen.js"></script>
 
+  <link rel="stylesheet" href="assets/farabi.css"/>
+  <script src="assets/farabi.js"></script>
+
 </head>
 
 <body>
-	<div class="ui one column grid">
-		<div class="column">
-			<h3 class="header item">Farabi6: The Perl 6 Editor</h3>
-			<button id="toggle_left_menu_sidebar" class="small ui orange button">
-				Menu!
-			</button>
+
+	<h3 class="header item">Farabi6: The Perl 6 Editor</h3>
+
+	<div class="ui large vertical inverted sidebar menu" id="left_menu_sidebar">
+		<div class="item">
+			<div class="ui small inverted header">File</div>
+			<div class="menu">
+				<a class="item new-file-button">New (Alt-N)</a>
+				<a class="item open_file_button">Open File (Alt-O)</a>
+				<a class="item save_file_button">Save File (Alt-S)</a>
+				<a class="item save_as_file_button">Save As File</a>
+				<a class="item open_url_button">Open URL</a>
+				<a class="item close_file_button">Close</a>
+			</div>
+		</div>
+		<div class="item">
+			<div class="ui small inverted header">Build</div>
+			<div class="menu">
+				<a class="item syntax_check_button">Syntax Check (F6)</a>
+				<a class="item run-button">Run... (Alt-Enter)</a>
+			</div>
+		</div>
+		<div class="item">
+			<div class="ui small inverted header">View</div>
+			<div class="menu">
+				<a class="item fullscreen-button">Toggle Fullscreen (Alt-F11)</a>
+			</div>
+		</div>
+		<div class="item">
+			<div class="ui small inverted header">Tools</div>
+			<div class="menu">
+				<a class="item show_pod_button">Show POD (F9)</a>
+				<a class="item options_button">Options</a>
+			</div>
+		</div>
+		<div class="item">
+			<div class="ui small inverted header">Help</div>
+			<div class="menu">
+				<a class="item help_button">Getting Started</a>
+				<a class="item" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a>
+				<a class="item" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a>
+				<a class="item" href="http://modules.perl6.org" target="_blank">Perl 6 Modules</a>
+				<a class="item" href="http://perlcabal.org/syn/Differences.html" target="_blank">Perl5::Perl6::Differences</a>
+				<a class="item about_button">About Farabi</a>
+			</div>
 		</div>
 	</div>
 
-      <div class="ui two column grid" id="editors">
+	<div class="ui black launch right attached button" id="toggle_left_menu_sidebar">
+		<i class="icon list layout"></i>
+		<span class="text">Menu</span>
+	</div>
+
+      <div class="ui one column grid" id="editors">
       </div>
       <div id="editor_stats" class="pull-right"></div>
 
-      <div class="ui one column grid">
-        <div class="column">
-          <textarea id="output" cols="80" rows="10">
-          </textarea>
-        </div>
-      </div>
-
-	
 	<div class="ui small modal" id="about_dialog">
 	  <i class="close icon"></i>
 	  <div class="header">
@@ -250,7 +285,7 @@
           <td><strong>Theme:</strong><br/>
 
 			<select id="theme_selector" class="input-medium">
-				<option>default</option>
+				<option selected>default</option>
 				<option>3024-day</option>
 				<option>3024-night</option>
 				<option>ambiance</option>
@@ -278,7 +313,7 @@
 				<option>the-matrix</option>
 				<option>tomorrow-night-eighties</option>
 				<option>twilight</option>
-				<option selected>vibrant-ink</option>
+				<option>vibrant-ink</option>
 				<option>xq-dark</option>
 				<option>xq-light</option>
 			</select>
@@ -328,51 +363,6 @@
 		</div>
 	  </div>
   </div>
-
-	<div class="ui large vertical inverted sidebar menu" id="left_menu_sidebar">
-		<div class="item">
-			<div class="ui small inverted header">File</div>
-			<div class="menu">
-				<a class="item new-file-button">New (Alt-N)</a>
-				<a class="item open_file_button">Open File (Alt-O)</a>
-				<a class="item save_file_button">Save File (Alt-S)</a>
-				<a class="item save_as_file_button">Save As File</a>
-				<a class="item open_url_button">Open URL</a>
-				<a class="item close_file_button">Close</a>
-			</div>
-		</div>
-		<div class="item">
-			<div class="ui small inverted header">Build</div>
-			<div class="menu">
-				<a class="item syntax_check_button">Syntax Check (F6)</a>
-				<a class="item run-button">Run... (Alt-Enter)</a>
-			</div>
-		</div>
-		<div class="item">
-			<div class="ui small inverted header">View</div>
-			<div class="menu">
-				<a class="item fullscreen-button">Toggle Fullscreen (Alt-F11)</a>
-			</div>
-		</div>
-		<div class="item">
-			<div class="ui small inverted header">Tools</div>
-			<div class="menu">
-				<a class="item show_pod_button">Show POD (F9)</a>
-				<a class="item options_button">Options</a>
-			</div>
-		</div>
-		<div class="item">
-			<div class="ui small inverted header">Help</div>
-			<div class="menu">
-				<a class="item help_button">Getting Started</a>
-				<a class="item" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a>
-				<a class="item" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a>
-				<a class="item" href="http://modules.perl6.org" target="_blank">Perl 6 Modules</a>
-				<a class="item" href="http://perlcabal.org/syn/Differences.html" target="_blank">Perl5::Perl6::Differences</a>
-				<a class="item about_button">About Farabi</a>
-			</div>
-		</div>
-	</div>
 
 </body>
 </html>
