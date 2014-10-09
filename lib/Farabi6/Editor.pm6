@@ -11,7 +11,7 @@ use Farabi6::Util;
 =begin comment
 
 Syntax checks the current editor document for any problems using
-std/viv
+Rakudo Perl 6
 
 =end comment
 method syntax-check(Str $source) {
@@ -46,7 +46,7 @@ method syntax-check(Str $source) {
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
-        [ to-json(%result) ],
+		[ to-json(%result) ],
 	];
 }
 
@@ -130,22 +130,23 @@ Returns a PSGI response containing a rendered POD HTML string
 =end comment
 method pod-to-html(Str $pod) {
 
-	# TODO use File::Temp once it is usable
-	my $filename = IO::Spec.catfile(IO::Spec.tmpdir, 'farabi-pod-to-html.tmp');
-	my $fh = open $filename, :w;
-	$fh.print($pod);	
-	$fh.close;
-	
-	my $contents = qqx/perl6 --doc=HTML $filename/;
-	$contents ~~ s/^.+\<body.+?\>(.+)\<\/body\>.+$/$0/;
-	
-	# TODO more robust cleanup
-	unlink $filename;
+	# Create a temporary file that holds the POD string
+	my ($filename,$filehandle) = tempfile(:!unlink);
+	spurt $filehandle, $pod;
+
+	# Invoke perl6 -doc to convert POD to HTML
+	my $html = qqx/$*EXECUTABLE --doc=HTML $filename/;
+
+	# Remove temp file
+	unlink $filehandle;
+
+	# only <body> section is needed (HTML fragment)
+	$html ~~ s/^.+\<body.+?\>(.+)\<\/body\>.+$/$0/;
 
 	[
 		200,
 		[ 'Content-Type' => 'text/plain' ],
-		[ $contents ],
+		[ $html ],
 	];
 }
 
@@ -178,32 +179,19 @@ Runs code using the requested runtime and returns the output
 =end comment
 method run-code(Str $source, Str $runtime) {
 
-	unless %*ENV{'FARABI6_UNSAFE'} {
-		# Safety first	
-		my %result = 
-			'output' => 'ENV{FARABI6_UNSAFE} is not enabled';
-		return [
-			200,
-			[ 'Content-Type' => 'application/json' ],
-        	[ to-json(%result) ],
-		];
-	}
+	# Create a temporary file that holds the POD string
+	my ($filename,$filehandle) = tempfile(:!unlink);
+	spurt $filehandle, $source;
 
-	# TODO use File::Temp once it is usable
-	my $filename = IO::Spec.catfile(IO::Spec.tmpdir, 'farabi-run.tmp');
-	my $fh = open $filename, :w;
-	$fh.print($source);
-	$fh.close;	
+	# Run code using rakudo Perl 6
+	my Str $output = qqx{$*EXECUTABLE $filename 2>&1};
 
-	#TODO more portable version for win32 in the future
-	my Str $cmd;
+	# Remove temp file
+	unlink $filehandle;
+
 	#TODO configurable from runtime configuratooor :)
 	#TODO safe command argument...
 	#TODO safe runtime arguments...
-
-	# Default to Rakudo Perl 6 for now
-	$cmd = '/usr/bin/env perl6';
-    my Str $output = qqx{$cmd $filename 2>&1};
 
 	my %result = 
 		'output'   => $output;
@@ -211,7 +199,7 @@ method run-code(Str $source, Str $runtime) {
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
-        [ to-json(%result) ],
+		[ to-json(%result) ],
 	];
 }
 
