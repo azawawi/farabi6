@@ -22,8 +22,8 @@ method run(Str $host, Int $port) is export {
 	my $files-dir = 'lib/Farabi6/files';
 	unless "$files-dir/assets/farabi.js".IO ~~ :e {
 		say "Switching to panda-installed farabi6";
-		my @dirs = IO::Spec.splitdir($*EXECUTABLE);
-		$files-dir = IO::Spec.catdir(
+		my @dirs = $*SPEC.splitdir($*EXECUTABLE);
+		$files-dir = $*SPEC.catdir(
 			@dirs[0..*-3], 
 			'languages', 'perl6', 'site', 'lib', 'Farabi6', 'files'
 		);
@@ -31,7 +31,7 @@ method run(Str $host, Int $port) is export {
 
 	# Make sure files contains farabi.js
 	die "farabi.js is not found in {$files-dir}/assets" 
-		unless IO::Spec.catdir($files-dir, 'assets', 'farabi.js').IO ~~ :e;
+		unless $*SPEC.catdir($files-dir, 'assets', 'farabi.js').IO ~~ :e;
 
 	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
@@ -75,7 +75,7 @@ method run(Str $host, Int $port) is export {
 
 		# Get the real file from the local filesystem
 		#TODO more robust and secure way of getting files. We could easily be attacked from here
-		$filename = IO::Spec.catdir($files-dir, $filename);
+		$filename = $*SPEC.catdir($files-dir, $filename);
 		my Str $mime-type = Farabi6::Util.find-mime-type($filename);
 		my Int $status;
 		my $contents;
