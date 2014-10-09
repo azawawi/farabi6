@@ -69,11 +69,6 @@ method run(Str $host, Int $port) is export {
 			return Farabi6::Editor.run-code(
 				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
 				'rakudo'); 		
-		} elsif $uri eq '/run/niecza' {
-			return Farabi6::Editor.run-code(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
-				'niecza',
-			); 
 		} else {
 			$filename = $uri.substr(1);
 		}
