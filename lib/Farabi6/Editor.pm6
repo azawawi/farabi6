@@ -30,7 +30,6 @@ method syntax-check(Str $source) {
 
 	my @problems;
 	unless $output ~~ /^Syntax OK/ {
-		say "Checking...";
 		if $output ~~ m/\n(.+?)at\s.+?\:(\d+)/ {
 			push @problems, {
 				'description'   => ~$/[0],
