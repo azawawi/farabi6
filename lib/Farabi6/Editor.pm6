@@ -188,7 +188,7 @@ method run-code(Str $source, Str $runtime) {
 	# Remove temp file
 	unlink $filehandle;
 
-	my %ANSI_COLORS = {
+	my %ANSI_COLORS = %(
 		# Styles
 		0	=> "ansi-reset",
 		1	=> "ansi-bold",
@@ -213,7 +213,7 @@ method run-code(Str $source, Str $runtime) {
 		45	=> "ansi-bg-magenta",
 		46	=> "ansi-bg-cyan",
 		47	=> "ansi-bg-white",
-	};
+	);
 
 	# Create color ranges from the ANSI color sequences in the output text
 	my @ranges = gather {
@@ -254,10 +254,10 @@ method run-code(Str $source, Str $runtime) {
 	#TODO safe command argument...
 	#TODO safe runtime arguments...
 
-	my %result = {
+	my %result = %(
 		'output'   => $output,
 		'ranges'   => @ranges,
-	}
+	);
 
 	[
 		200,
