@@ -17,29 +17,61 @@
 	color: #999; 
 }
 
-/* ANSI color mapping */
-.fg-black {
+/* ANSI escape code font styles */
+.ansi-bold {
+	font-weight: bold;
+}
+.ansi-underline {
+	text-decoration: underline;
+}
+/* ANSI escape code background colors */
+.ansi-bg-black {
+	background-color: black;
+}
+.ansi-bg-red {
+	background-color: red;
+}
+.ansi-bg-green {
+	background-color: green;
+}
+.ansi-bg-yellow {
+	background-color: yellow;
+}
+.ansi-bg-blue {
+	background-color: blue;
+}
+.ansi-bg-magenta {
+	background-color: magenta;
+}
+.ansi-bg-cyan {
+	background-color: cyan;
+}
+.ansi-bg-white {
+	background-color: white;
+}
+/* ANSI escape code foreground colors */
+.ansi-fg-black {
 	color: black;
 }
-.fg-red {
+.ansi-fg-red {
 	color: red;
 }
-.fg-green {
+.ansi-fg-green {
 	color: green;
 }
-.fg-yellow {
+.ansi-fg-yellow {
 	color: yellow;
 }
-.fg-blue {
+.ansi-fg-blue {
 	color: blue;
 }
-.fg-magenta {
+.ansi-fg-magenta {
 	color: magenta;
 }
-.fg-cyan {
+.ansi-fg-cyan {
 	color: cyan;
 }
-.fg-white {
+.ansi-fg-white {
 	color: white;
 }
 

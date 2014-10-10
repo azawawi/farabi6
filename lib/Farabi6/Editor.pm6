@@ -189,33 +189,48 @@ method run-code(Str $source, Str $runtime) {
 	unlink $filehandle;
 
 	my %ANSI_COLORS = {
-		0   => "reset",
-		30	=> "fg-black",
-		31	=> "fg-red",
-		32	=> "fg-green",
-		33	=> "fg-yellow",
-		34	=> "fg-blue",
-		35	=> "fg-magenta",
-		36	=> "fg-cyan",
-		37	=> "fg-white"
+		# Styles
+		0	=> "ansi-reset",
+		1	=> "ansi-bold",
+		4	=> "ansi-underline",
+
+		# Foreground colors
+		30	=> "ansi-fg-black",
+		31	=> "ansi-fg-red",
+		32	=> "ansi-fg-green",
+		33	=> "ansi-fg-yellow",
+		34	=> "ansi-fg-blue",
+		35	=> "ansi-fg-magenta",
+		36	=> "ansi-fg-cyan",
+		37	=> "ansi-fg-white",
+
+		# Background colors
+		40	=> "ansi-bg-black",
+		41	=> "ansi-bg-red",
+		42	=> "ansi-bg-green",
+		43	=> "ansi-bg-yellow",
+		44	=> "ansi-bg-blue",
+		45	=> "ansi-bg-magenta",
+		46	=> "ansi-bg-cyan",
+		47	=> "ansi-bg-white",
 	};
 
 	# Create color ranges from the ANSI color sequences in the output text
 	my @ranges = gather {
-		my $color;
+		my $colors;
 		my $start;
 		my $len    =  0;
-		while $output ~~ m:c/\x1B\[(\d+)m/ {
+		while $output ~~ m:c/ \x1B \[ [(\d+)\;?]+ m / {
 
 			# Take the marked text range if possible
 			take {
 				"from"  => $start,
 				"to"    => $/.from - $len,
-				"color" => $color,
-			} if defined $color;
+				"colors" => $colors,
+			} if defined $colors;
 
-			# Decode color into a simple CSS class name
-			$color = %ANSI_COLORS{$/[0]};
+			# Decode colors into a simple CSS class name
+			$colors = (map { %ANSI_COLORS{$_}  }, $/[0].list).Str;
 
 			# Since we're going to remove ANSI colors
 			# we need to shift positions to the left
@@ -225,15 +240,15 @@ method run-code(Str $source, Str $runtime) {
 
 		# Take the **remaining** marked text range if possible
 		take {
-			"from"  => $start,
-			"to"    => $output.chars - $len,
-			"color" => $color,
-		} if defined $color;
+			"from"   => $start,
+			"to"     => $output.chars - $len,
+			"colors" => $colors,
+		} if defined $colors;
 
 	};
 
 	# Remove the ANSI color sequences from the output text
-	$output ~~ s:g/\x1B\[\d+m//;
+	$output ~~ s:g/ \x1B \[ [(\d+)\;?]+ m //;
 
 	#TODO configurable from runtime configuratooor :)
 	#TODO safe command argument...
