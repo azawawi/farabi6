@@ -190,6 +190,7 @@ method run-code(Str $source, Str $runtime) {
 	unlink $filehandle;
 
 	my %ANSI_COLORS = {
+		0   => "reset",
 		30	=> "fg-black",
 		31	=> "fg-red",
 		32	=> "fg-green",
@@ -200,28 +201,36 @@ method run-code(Str $source, Str $runtime) {
 		37	=> "fg-white"
 	};
 
-#TODO more robust ANSI sequence parsing
-
 	# Create color ranges from the ANSI color sequences in the output text
 	my @ranges = gather {
-		my $start = -1;
-		my $color = "";
-		my $len   = 0;
+		my $color;
+		my $start;
+		my $len    =  0;
 		while $output ~~ m:c/\x1B\[(\d+)m/ {
-			if $start == -1 {
-				$start = $/.from - $len;
-				$len   += $/.chars;
-				$color = %ANSI_COLORS{$/[0]};
-			} else {
-				$len   += $/.chars;
-				take {
-					"from"  => $start,
-					"to"    => $/.to - $len,
-					"color" => $color,
-				};
-				$start = -1;
-			}
+
+			# Take the marked text range if possible
+			take {
+				"from"  => $start,
+				"to"    => $/.from - $len,
+				"color" => $color,
+			} if defined $color;
+
+			# Decode color into a simple CSS class name
+			$color = %ANSI_COLORS{$/[0]};
+
+			# Since we're going to remove ANSI colors
+			# we need to shift positions to the left
+			$start = $/.from - $len;
+			$len   += $/.chars;
 		}
+
+		# Take the **remaining** marked text range if possible
+		take {
+			"from"  => $start,
+			"to"    => $output.chars - $len,
+			"color" => $color,
+		} if defined $color;
+
 	};
 
 	# Remove the ANSI color sequences from the output text
