@@ -269,6 +269,10 @@ method run-code(Str $source) {
 	];
 }
 
+my $pc;
+my $stdout = "";
+my $stderr = "";
+
 =begin comment
 
 Runs expression using Perl 6 REPL and returns the output
@@ -277,9 +281,29 @@ Runs expression using Perl 6 REPL and returns the output
 method eval-repl-expr(Str $expr) {
 
 	my $t0 = now;
-	#my Str $output = qqx{$*EXECUTABLE $filename 2>&1};
-	my Str $output = $expr;
+
+	unless defined $pc {
+		$pc = Proc::Async.new( $*EXECUTABLE, :w );
+
+		my $so = $pc.stdout;
+		my $se = $pc.stderr;
+
+		$so.act: { say "Output:\n$_\n---"; $stdout ~= $_; };
+		$se.act: { say "Input:\n$_\n---"; $stderr ~= $_ };
+
+		my $pm = $pc.start;
+	}
+
+	my $ppr = $pc.print( "$expr\n" );
+	await $ppr;
+
 	my $duration = sprintf("%.3f", now - $t0);
+
+	my Str $output = $stdout ~ $stderr;
+
+	# done processing
+	#$pc.close-stdin;
+	#my $ps = await $pm;
 
 	my %result = %(
 		'output'   => $output,
