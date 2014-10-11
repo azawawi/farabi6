@@ -86,14 +86,19 @@
 
 	<div class="ui large vertical styled very wide right sidebar" id="repl_sidebar">
 		<div class="ui header">Perl 6 REPL</div>
-		<div class="ui form">
-			<div class="field">
-				<label>History:</label>
-				<textarea rows="24" col="80"></textarea>
+		<div class="ui segment">
+			<div class="ui disabled inverted dimmer">
+				<div class="ui loader"></div>
 			</div>
-			<div class="field">
-				<label>Code:</label>
-				<input type="text" />
+			<div class="ui form">
+				<div class="field">
+					<label>History:</label>
+					<textarea rows="24" col="80" id="repl_history"></textarea>
+				</div>
+				<div class="field">
+					<label>Expression:</label>
+					<input type="text" id="repl_expr" />
+				</div>
 			</div>
 		</div>
 	</div>

@@ -74,8 +74,10 @@ method run(Str $host, Int $port) is export {
 				Farabi6::Util.get-parameter(%env<psgi.input>, 'something'));
 		} elsif $uri eq '/run/rakudo' {
 			return Farabi6::Editor.run-code(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
-				'rakudo'); 		
+				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source')); 		
+		} elsif $uri eq '/eval_repl_expr' {
+			return Farabi6::Editor.eval-repl-expr(
+				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'expr')); 
 		} else {
 			$filename = $uri.substr(1);
 		}

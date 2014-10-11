@@ -173,10 +173,10 @@ method rosettacode-search(Str $something) {
 
 =begin comment
 
-Runs code using the requested runtime and returns the output
+Runs code using a Perl 6 runtime and returns the output
 
 =end comment
-method run-code(Str $source, Str $runtime) {
+method run-code(Str $source) {
 
 	# Create a temporary file that holds the POD string
 	my ($filename,$filehandle) = tempfile(:!unlink);
@@ -269,6 +269,28 @@ method run-code(Str $source, Str $runtime) {
 	];
 }
 
+=begin comment
 
+Runs expression using Perl 6 REPL and returns the output
+
+=end comment
+method eval-repl-expr(Str $expr) {
+
+	my $t0 = now;
+	#my Str $output = qqx{$*EXECUTABLE $filename 2>&1};
+	my Str $output = $expr;
+	my $duration = sprintf("%.3f", now - $t0);
+
+	my %result = %(
+		'output'   => $output,
+		'duration' => $duration,
+	);
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[ to-json(%result) ],
+	];
 }
 
+}
