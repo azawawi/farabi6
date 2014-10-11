@@ -185,7 +185,7 @@ method run-code(Str $source, Str $runtime) {
 	# Run code using rakudo Perl 6
 	my $t0 = now;
 	my Str $output = qqx{$*EXECUTABLE $filename 2>&1};
-	my $duration = now - $t0;
+	my $duration = sprintf("%.3f", now - $t0);
 
 	# Remove temp file
 	unlink $filehandle;
