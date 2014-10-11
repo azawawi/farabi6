@@ -176,7 +176,9 @@ method rosettacode-search(Str $something) {
 Runs code using a Perl 6 runtime and returns the output
 
 =end comment
-method run-code(Str $source) {
+method run-code(Str $source, $args = '') {
+
+	#TODO check source and runtime-args parameters
 
 	# Create a temporary file that holds the POD string
 	my ($filename,$filehandle) = tempfile(:!unlink);
@@ -184,7 +186,8 @@ method run-code(Str $source) {
 
 	# Run code using rakudo Perl 6
 	my $t0 = now;
-	my Str $output = qqx{$*EXECUTABLE $filename 2>&1};
+
+	my Str $output = qqx{$*EXECUTABLE $args $filename 2>&1};
 	my $duration = sprintf("%.3f", now - $t0);
 
 	# Remove temp file
@@ -255,6 +258,16 @@ method run-code(Str $source) {
 	#TODO configurable from runtime configuratooor :)
 	#TODO safe command argument...
 	#TODO safe runtime arguments...
+
+	if    $args eq '--profile' 
+	   && $output ~~ /Wrote\sprofiler\soutput\sto\s(.+?\.html)/
+	{
+		say "Found $/[0]";
+
+		my $profile-html-file = $/[0].Str;
+		my $t = slurp($profile-html-file);
+		say $t.chars if $t;
+	}
 
 	my %result = %(
 		'output'   => $output,
