@@ -280,30 +280,13 @@ Runs expression using Perl 6 REPL and returns the output
 =end comment
 method eval-repl-expr(Str $expr) {
 
+	#TODO investigate why perl6 does not invoke its REPL when invoked from an outside process
+	# See dead code below the method please
+
+	# do a simple eval for now
 	my $t0 = now;
-
-	unless defined $pc {
-		$pc = Proc::Async.new( $*EXECUTABLE, :w );
-
-		my $so = $pc.stdout;
-		my $se = $pc.stderr;
-
-		$so.act: { say "Output:\n$_\n---"; $stdout ~= $_; };
-		$se.act: { say "Input:\n$_\n---"; $stderr ~= $_ };
-
-		my $pm = $pc.start;
-	}
-
-	my $ppr = $pc.print( "$expr\n" );
-	await $ppr;
-
+	my $output = EVAL $expr;
 	my $duration = sprintf("%.3f", now - $t0);
-
-	my Str $output = $stdout ~ $stderr;
-
-	# done processing
-	#$pc.close-stdin;
-	#my $ps = await $pm;
 
 	my %result = %(
 		'output'   => $output,
@@ -316,5 +299,31 @@ method eval-repl-expr(Str $expr) {
 		[ to-json(%result) ],
 	];
 }
+
+# DEAD CODE for later investigation
+#	my $t0 = now;
+#
+#	unless defined $pc {
+#		$pc = Proc::Async.new( $*EXECUTABLE, :w );
+#
+#		my $so = $pc.stdout;
+#		my $se = $pc.stderr;
+#
+#		$so.act: { say "Output:\n$_\n---"; $stdout ~= $_; };
+#		$se.act: { say "Input:\n$_\n---"; $stderr ~= $_ };
+#
+#		my $pm = $pc.start;
+#	}
+#
+#	my $ppr = $pc.print( "$expr\n" );
+#	await $ppr;
+#
+#	my $duration = sprintf("%.3f", now - $t0);
+#
+#	my Str $output = $stdout ~ $stderr;
+#
+#	# done processing
+#	#$pc.close-stdin;
+#	#my $ps = await $pm;
 
 }
