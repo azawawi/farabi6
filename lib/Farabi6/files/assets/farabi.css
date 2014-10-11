@@ -17,6 +17,14 @@
 	color: #999; 
 }
 
+.hide {
+	display: none;
+}
+
+.run_code {
+	z-index: 1;
+}
+
 /* ANSI escape code font styles */
 .ansi-bold {
 	font-weight: bold;

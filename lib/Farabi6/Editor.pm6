@@ -183,7 +183,9 @@ method run-code(Str $source, Str $runtime) {
 	spurt $filehandle, $source;
 
 	# Run code using rakudo Perl 6
+	my $t0 = now;
 	my Str $output = qqx{$*EXECUTABLE $filename 2>&1};
+	my $duration = now - $t0;
 
 	# Remove temp file
 	unlink $filehandle;
@@ -257,6 +259,7 @@ method run-code(Str $source, Str $runtime) {
 	my %result = %(
 		'output'   => $output,
 		'ranges'   => @ranges,
+		'duration' => $duration,
 	);
 
 	[
