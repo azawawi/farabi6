@@ -17,6 +17,13 @@
 	color: #999; 
 }
 
+#toggle_actions_sidebar {
+	position: fixed;
+	left: 0px;
+	top: 50px;
+	z-index: 500;
+}
+
 .hide {
 	display: none;
 }

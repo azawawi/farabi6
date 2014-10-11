@@ -34,7 +34,7 @@
 
 	<h3 class="header item">Farabi6: The Perl 6 Editor</h3>
 
-	<div class="ui large vertical inverted sidebar menu" id="left_menu_sidebar">
+	<div class="ui large vertical inverted sidebar menu" id="actions_sidebar">
 		<div class="item">
 			<div class="ui small inverted header">File</div>
 			<div class="menu">
@@ -62,6 +62,7 @@
 		<div class="item">
 			<div class="ui small inverted header">Tools</div>
 			<div class="menu">
+				<a class="item repl_button">REPL (Alt-R)</a>
 				<a class="item show_pod_button">Show POD (F9)</a>
 				<a class="item options_button">Options</a>
 			</div>
@@ -79,9 +80,22 @@
 		</div>
 	</div>
 
-	<div class="ui black launch right attached button" id="toggle_left_menu_sidebar">
+	<div class="ui black right attached tiny button" id="toggle_actions_sidebar">
 		<i class="icon list layout"></i>
-		<span class="text">Menu</span>
+	</div>
+
+	<div class="ui large vertical styled very wide right sidebar" id="repl_sidebar">
+		<div class="ui header">Perl 6 REPL</div>
+		<div class="ui form">
+			<div class="field">
+				<label>History:</label>
+				<textarea rows="24" col="80"></textarea>
+			</div>
+			<div class="field">
+				<label>Code:</label>
+				<input type="text" />
+			</div>
+		</div>
 	</div>
 
       <div class="ui one column grid" id="editors">
