@@ -47,7 +47,9 @@ method run(Str $host, Int $port) is export {
 		
 		my Str $filename;
 		my Str $uri = %env<REQUEST_URI>;
-		$uri ~~= s/\?.*$//;
+
+		# Remove the query string part
+		$uri ~~= s/(\?.*)$//;
 
 		# Handle files and routes :)
 		if $uri eq '/' {
@@ -82,6 +84,11 @@ method run(Str $host, Int $port) is export {
 			return Farabi6::Editor.run-code(
 				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
 				'--profile');
+		} elsif $uri ~~ '/profile/results'
+		{
+			# Return profile HTML results if found
+			my $id = $/[0].Str if %env<QUERY_STRING> ~~ /^id\=(.+)$/;
+			return Farabi6::Editor.profile-results($id);
 		} else {
 			$filename = $uri.substr(1);
 		}

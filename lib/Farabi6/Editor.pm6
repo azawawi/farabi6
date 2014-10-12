@@ -8,6 +8,9 @@ use URI::Escape;
 
 use Farabi6::Util;
 
+
+my Str @profiles_to_unlink;
+
 =begin comment
 
 Syntax checks the current editor document for any problems using
@@ -85,9 +88,7 @@ method open-file(Str $file-name is copy) {
 	try {
 		# expand ~ into $HOME
 		$file-name  ~~= s/\~/{%*ENV{'HOME'}}/;
-		my $fh = open $file-name, :bin;
-		$text = $fh.slurp;
-		$fh.close;
+		$text = slurp $file-name;
 		$status = 200;
 
 		CATCH {
@@ -259,20 +260,23 @@ method run-code(Str $source, $args = '') {
 	#TODO safe command argument...
 	#TODO safe runtime arguments...
 
+	my $profile-id = '';
 	if    $args eq '--profile' 
-	   && $output ~~ /Wrote\sprofiler\soutput\sto\s(.+?\.html)/
+	   && $output ~~ /Wrote\sprofiler\soutput\sto\s(profile\-(.+?)\.html)/
 	{
-		say "Found $/[0]";
+		my Str $profile-file = $/[0].Str;
+		$profile-id = $/[0][0].Str;
 
-		my $profile-html-file = $/[0].Str;
-		my $t = slurp($profile-html-file);
-		say $t.chars if $t;
+		# Schedule file for cleanup at END
+		say "Found $profile-file. Scheduling for cleanup at END";
+		@profiles_to_unlink.push($profile-file);
 	}
 
 	my %result = %(
-		'output'   => $output,
-		'ranges'   => @ranges,
-		'duration' => $duration,
+		'output'     => $output,
+		'ranges'     => @ranges,
+		'duration'   => $duration,
+		'profile_id' => $profile-id,
 	);
 
 	[
@@ -282,9 +286,10 @@ method run-code(Str $source, $args = '') {
 	];
 }
 
-my $pc;
-my $stdout = "";
-my $stderr = "";
+# DEAD CODE for later investigation
+#my $pc;
+#my $stdout = "";
+#my $stderr = "";
 
 =begin comment
 
@@ -338,5 +343,44 @@ method eval-repl-expr(Str $expr) {
 #	# done processing
 #	#$pc.close-stdin;
 #	#my $ps = await $pm;
+
+=begin comment
+
+Returns the profile HTML file that is generated with
+the perl6 --profile command to be downloaded by the user
+
+=end comment
+method profile-results(Str $id) {
+
+	my $file-name = "profile-{$id}.html";
+	if defined($id) && $file-name.IO ~~ :f
+	{
+		say "Serving $file-name to user";
+		# Found a valid profile HTML file with a valid id
+		return
+			[
+				200,
+				[ 'Content-Type' => 'text/html' ],
+				[ slurp $file-name ],
+			] ;
+	} else {
+		# Not found or invalid id
+		return
+			[
+				404,
+				[ 'Content-Type' => 'text/plain' ],
+				[ "Not found" ],
+			];
+	}
+}
+
+# Cleanup on server exit
+END {
+	say "Cleaning up profile HTMLs";
+	for @profiles_to_unlink -> $profile {
+		say "Deleting $profile";
+		unlink $profile;
+	}
+}
 
 }
