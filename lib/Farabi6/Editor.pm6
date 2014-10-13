@@ -374,6 +374,37 @@ method profile-results(Str $id) {
 	}
 }
 
+=begin comment
+
+Run panda search pattern and return the results as JSON
+
+=end comment
+method module-search(Str $pattern = '') {
+
+	# Start stopwatch
+	my $t0 = now;
+
+	# Invoke panda search pattern
+	my Str $output = qqx{panda search $pattern};
+
+	# Stop stopwatch and calculate the duration
+	my $duration = sprintf("%.3f", now - $t0);
+
+	# PSGI response
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					'output'   => $output,
+					'duration' => $duration,
+				)
+			)
+		],
+	];
+}
+
 # Cleanup on server exit
 END {
 	say "Cleaning up profile HTMLs";

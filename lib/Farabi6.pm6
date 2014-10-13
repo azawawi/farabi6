@@ -84,6 +84,10 @@ method run(Str $host, Int $port) is export {
 			return Farabi6::Editor.run-code(
 				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
 				'--profile');
+		} elsif $uri eq '/module/search'
+		{
+			return Farabi6::Editor.module-search(
+				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
 		} elsif $uri ~~ '/profile/results'
 		{
 			# Return profile HTML results if found
