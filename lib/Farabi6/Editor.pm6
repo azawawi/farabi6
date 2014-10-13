@@ -9,7 +9,11 @@ use URI::Escape;
 use Farabi6::Util;
 
 
+# Profile HTML files to unlink (i.e. delete)
 my Str @profiles_to_unlink;
+
+# Cache Panda projects.json (Array of hashes)
+my $modules;
 
 =begin comment
 
@@ -379,13 +383,46 @@ method profile-results(Str $id) {
 Run panda search pattern and return the results as JSON
 
 =end comment
-method module-search(Str $pattern = '') {
+method module-search(Str $search-pattern) {
 
 	# Start stopwatch
 	my $t0 = now;
 
-	# Invoke panda search pattern
-	my Str $output = qqx{panda search $pattern};
+	# An empty pattern means match all
+	my $pattern = ($search-pattern eq '')
+		?? '.+'
+		!! $search-pattern;
+
+	unless defined $modules
+	{
+		# Since we do not have any cached modules,
+		# we need to build one
+		say "Building module list (once)";
+
+		# Find panda/projects.json
+		my @dirs = $*SPEC.splitdir($*EXECUTABLE);
+		my $projects-json = $*SPEC.catdir(
+			@dirs[0..*-3],
+			'languages', 'perl6', 'site', 'panda', 'projects.json'
+		);
+
+		if $projects-json.IO ~~ :f
+		{
+			say "Found project metadata: {$projects-json}";
+			$modules = from-json($projects-json.IO.slurp);
+			say "Parsed {$modules.elems} modules(s) from $projects-json";
+		}
+	}
+
+	# filter modules by name using given pattern
+	my @results = gather
+	{
+		for @$modules -> $module
+		{
+			take $module
+				if $module{"name"} ~~ /$pattern/ || $module{"description"} ~~ /pattern/
+		}
+	}
 
 	# Stop stopwatch and calculate the duration
 	my $duration = sprintf("%.3f", now - $t0);
@@ -397,7 +434,7 @@ method module-search(Str $pattern = '') {
 		[
 			to-json(
 				%(
-					'output'   => $output,
+					'results'  => @results,
 					'duration' => $duration,
 				)
 			)
