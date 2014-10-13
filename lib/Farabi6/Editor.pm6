@@ -415,14 +415,27 @@ method module-search(Str $search-pattern) {
 	}
 
 	# filter modules by name using given pattern
-	my @results = gather
+	constant $MAX_SIZE = 20;
+	my $count = 0;
+	my @results = gather for @$modules -> $module
 	{
-		for @$modules -> $module
+		my $name = $module{"name"};
+		my $desc = $module{"description"};
+		if   $name ~~ m:i/<$pattern>/
+		  || $desc ~~ m:i/<$pattern>/
 		{
-			take $module
-				if $module{"name"} ~~ /$pattern/ || $module{"description"} ~~ /pattern/
+			take {
+				"name" => $name,
+				"desc" => $desc,
+			};
+			$count++;
+			if $count >= $MAX_SIZE {
+				last;
+			}
 		}
 	}
+
+	say "Matched {@results.elems} module(s)";
 
 	# Stop stopwatch and calculate the duration
 	my $duration = sprintf("%.3f", now - $t0);

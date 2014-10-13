@@ -111,9 +111,6 @@
 	<div class="ui large vertical styled very wide right sidebar" id="module_search_sidebar">
 		<div class="ui header">Module Search</div>
 		<div class="ui segment">
-			<div class="ui disabled inverted dimmer">
-				<div class="ui loader"></div>
-			</div>
 			<div class="ui form">
 				<div class="field">
 					<div class="ui icon input">
@@ -123,7 +120,13 @@
 				</div>
 				<div class="field">
 					<label>Matched Modules:</label>
-					<textarea rows="24" col="80" class="mousetrap" id="module_search_results"></textarea>
+					<div class="ui segment">
+						<div class="ui disabled inverted dimmer">
+							<div class="ui loader"></div>
+						</div>
+						<div class="ui selection list" id="module_search_results">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
