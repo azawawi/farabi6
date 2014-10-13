@@ -419,15 +419,22 @@ method module-search(Str $search-pattern) {
 	my $count = 0;
 	my @results = gather for @$modules -> $module
 	{
-		my $name = $module{"name"};
-		my $desc = $module{"description"};
+		my $name = $module{"name"}        // '';
+		my $desc = $module{"description"} // '';
+		my $url  = $module{"source-url"}  // '#';
+
+		$url = $url.subst(/^git/, 'https');
+		$url = $url.subst(/\.git$/, '');
+
 		if   $name ~~ m:i/<$pattern>/
 		  || $desc ~~ m:i/<$pattern>/
 		{
 			take {
 				"name" => $name,
 				"desc" => $desc,
+				"url"  => $url,
 			};
+
 			$count++;
 			if $count >= $MAX_SIZE {
 				last;
