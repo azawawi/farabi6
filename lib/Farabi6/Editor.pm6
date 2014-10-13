@@ -385,13 +385,12 @@ Run panda search pattern and return the results as JSON
 =end comment
 method module-search(Str $search-pattern) {
 
+	# Trim the pattern and make sure we dont fail on undefined
+	my $pattern = $search-pattern // '';
+	$pattern = $pattern.trim;
+
 	# Start stopwatch
 	my $t0 = now;
-
-	# An empty pattern means match all
-	my $pattern = ($search-pattern eq '')
-		?? '.+'
-		!! $search-pattern;
 
 	unless defined $modules
 	{
@@ -426,8 +425,9 @@ method module-search(Str $search-pattern) {
 		$url = $url.subst(/^git/, 'https');
 		$url = $url.subst(/\.git$/, '');
 
-		if   $name ~~ m:i/<$pattern>/
-		  || $desc ~~ m:i/<$pattern>/
+		if    $pattern eq ''
+		   || $name    ~~ m:i/$pattern/
+		   || $desc    ~~ m:i/$pattern/
 		{
 			take {
 				"name" => $name,
@@ -454,7 +454,7 @@ method module-search(Str $search-pattern) {
 		[
 			to-json(
 				%(
-					'results'  => @results,
+					'results'  => sort @results,
 					'duration' => $duration,
 				)
 			)
