@@ -63,6 +63,7 @@
 		<div class="item">
 			<div class="ui small inverted header">Tools</div>
 			<div class="menu">
+				<a class="item module_search_button">Module Search (Alt-M)</a>
 				<a class="item repl_button">REPL (Alt-R)</a>
 				<a class="item show_pod_button">Show POD (F9)</a>
 				<a class="item options_button">Options</a>
@@ -98,7 +99,28 @@
 				</div>
 				<div class="field">
 					<label>Expression:</label>
-					<input type="text" id="repl_expr" class="mousetrap"/>
+					<input type="text" class="mousetrap" id="repl_expr" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui large vertical styled very wide right sidebar" id="module_search_sidebar">
+		<div class="ui header">Module Search</div>
+		<div class="ui segment">
+			<div class="ui disabled inverted dimmer">
+				<div class="ui loader"></div>
+			</div>
+			<div class="ui form">
+				<div class="field">
+					<div class="ui icon input">
+						<input type="text" class="mousetrap" id="module_search_query" placeholder="Search..."/>
+						<i class="search icon"></i>
+					</div>
+				</div>
+				<div class="field">
+					<label>Matched Modules:</label>
+					<textarea rows="24" col="80" class="mousetrap" id="module_search_results"></textarea>
 				</div>
 			</div>
 		</div>
