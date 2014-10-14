@@ -105,7 +105,7 @@ method run(Str $host, Int $port) is export {
 		my $contents;
 		if ($filename.IO ~~ :e) {
 			$status = 200;
-			$contents = slurp $filename, :enc('ASCII');
+			$contents = $filename.IO.slurp(:enc('ASCII'));
 		} 
 
 		unless ($contents) {

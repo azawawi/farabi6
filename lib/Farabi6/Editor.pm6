@@ -92,7 +92,7 @@ method open-file(Str $file-name is copy) {
 	try {
 		# expand ~ into $HOME
 		$file-name  ~~= s/\~/{%*ENV{'HOME'}}/;
-		$text = slurp $file-name;
+		$text = $file-name.IO.slurp;
 		$status = 200;
 
 		CATCH {
@@ -365,7 +365,7 @@ method profile-results(Str $id) {
 			[
 				200,
 				[ 'Content-Type' => 'text/html' ],
-				[ slurp $file-name ],
+				[ $file-name.IO.slurp ],
 			] ;
 	} else {
 		# Not found or invalid id
@@ -383,10 +383,10 @@ method profile-results(Str $id) {
 Run panda search pattern and return the results as JSON
 
 =end comment
-method module-search(Str $search-pattern) {
+method module-search(Str $pattern is copy) {
 
 	# Trim the pattern and make sure we dont fail on undefined
-	my $pattern = $search-pattern // '';
+	$pattern = $pattern // '';
 	$pattern = $pattern.trim;
 
 	# Start stopwatch
@@ -454,7 +454,7 @@ method module-search(Str $search-pattern) {
 		[
 			to-json(
 				%(
-					'results'  => sort(@results),
+					'results'  => @results.sort,
 					'duration' => $duration,
 				)
 			)
