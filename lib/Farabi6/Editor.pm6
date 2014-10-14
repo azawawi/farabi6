@@ -45,14 +45,17 @@ method syntax-check(Str $source) {
 		}
 	}
 
-	my %result = 
-		'problems' => @problems,
-		'output'   => $output;
-
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
-		[ to-json(%result) ],
+		[
+			to-json(
+				%(
+					'problems' => @problems,
+					'output'   => $output
+				)
+			)
+		],
 	];
 }
 
@@ -198,67 +201,8 @@ method run-code(Str $source, $args = '') {
 	# Remove temp file
 	unlink $filehandle;
 
-	my %ANSI_COLORS = %(
-		# Styles
-		0	=> "ansi-reset",
-		1	=> "ansi-bold",
-		4	=> "ansi-underline",
-
-		# Foreground colors
-		30	=> "ansi-fg-black",
-		31	=> "ansi-fg-red",
-		32	=> "ansi-fg-green",
-		33	=> "ansi-fg-yellow",
-		34	=> "ansi-fg-blue",
-		35	=> "ansi-fg-magenta",
-		36	=> "ansi-fg-cyan",
-		37	=> "ansi-fg-white",
-
-		# Background colors
-		40	=> "ansi-bg-black",
-		41	=> "ansi-bg-red",
-		42	=> "ansi-bg-green",
-		43	=> "ansi-bg-yellow",
-		44	=> "ansi-bg-blue",
-		45	=> "ansi-bg-magenta",
-		46	=> "ansi-bg-cyan",
-		47	=> "ansi-bg-white",
-	);
-
-	# Create color ranges from the ANSI color sequences in the output text
-	my @ranges = gather {
-		my $colors;
-		my $start;
-		my $len    =  0;
-		while $output ~~ m:c/ \x1B \[ [(\d+)\;?]+ m / {
-
-			# Take the marked text range if possible
-			take {
-				"from"  => $start,
-				"to"    => $/.from - $len,
-				"colors" => $colors,
-			} if defined $colors;
-
-			# Decode colors into a simple CSS class name
-			$colors = (map { %ANSI_COLORS{$_}  }, $/[0].list).Str;
-
-			# Since we're going to remove ANSI colors
-			# we need to shift positions to the left
-			$start = $/.from - $len;
-			$len   += $/.chars;
-		}
-
-		# Take the **remaining** marked text range if possible
-		take {
-			"from"   => $start,
-			"to"     => $output.chars - $len,
-			"colors" => $colors,
-		} if defined $colors;
-
-	};
-
-	# Remove the ANSI color sequences from the output text
-	$output ~~ s:g/ \x1B \[ [(\d+)\;?]+ m //;
+	# ANSI colors
+	my @ranges = Farabi6::Util.find-ansi-color-ranges($output);
 
 	#TODO configurable from runtime configuratooor :)
 	#TODO safe command argument...
@@ -310,15 +254,17 @@ method eval-repl-expr(Str $expr) {
 	my $output = EVAL $expr;
 	my $duration = sprintf("%.3f", now - $t0);
 
-	my %result = %(
-		'output'   => $output,
-		'duration' => $duration,
-	);
-
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
-		[ to-json(%result) ],
+		[
+			to-json(
+				%(
+					'output'   => $output,
+					'duration' => $duration,
+				)
+			) 
+		],
 	];
 }
 
@@ -462,8 +408,47 @@ method module-search(Str $pattern is copy) {
 	];
 }
 
+=begin comment
+
+Run command and process ANSI colors if any if found
+
+=end comment
+method run-command(Str $command)
+{
+	#TODO validate $command
+
+	# Start stopwatch
+	my $t0 = now;
+
+	my Str $output = qqx{$command};
+
+	# ANSI colors
+	my @ranges = Farabi6::Util.find-ansi-color-ranges($output);
+
+	# Stop stopwatch and calculate the duration
+	my $duration = sprintf("%.3f", now - $t0);
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					'output'   => $output,
+					'ranges'   => @ranges,
+					'duration' => $duration,
+				)
+			)
+		],
+	];
+}
+
 # Cleanup on server exit
 END {
+	# Profile HTML files to delete?
+	return unless @profiles_to_unlink;
+
+	# Cleanup
 	say "Cleaning up profile HTMLs";
 	for @profiles_to_unlink -> $profile {
 		say "Deleting $profile";

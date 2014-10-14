@@ -88,7 +88,20 @@ method run(Str $host, Int $port) is export {
 		{
 			return Farabi6::Editor.module-search(
 				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
-		} elsif $uri ~~ '/profile/results'
+		}
+		elsif $uri eq '/git/diff'
+		{
+			return Farabi6::Editor.run-command('git diff --color');
+		}
+		elsif $uri eq '/git/log'
+		{
+			return Farabi6::Editor.run-command('git log --color');
+		}
+		elsif $uri eq '/git/status'
+		{
+			return Farabi6::Editor.run-command('git status');
+		}
+		elsif $uri ~~ '/profile/results'
 		{
 			# Return profile HTML results if found
 			my $id = $/[0].Str if %env<QUERY_STRING> ~~ /^id\=(.+)$/;
