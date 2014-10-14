@@ -454,7 +454,7 @@ method module-search(Str $search-pattern) {
 		[
 			to-json(
 				%(
-					'results'  => sort @results,
+					'results'  => sort(@results),
 					'duration' => $duration,
 				)
 			)
