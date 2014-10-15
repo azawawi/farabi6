@@ -49,7 +49,7 @@ method run(Str $host, Int $port) is export {
 		my Str $uri = %env<REQUEST_URI>;
 
 		# Remove the query string part
-		$uri ~~= s/(\?.*)$//;
+		$uri ~~ s/ '?' .* $ //;
 
 		# Handle files and routes :)
 		if $uri eq '/' {
