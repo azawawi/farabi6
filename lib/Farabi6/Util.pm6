@@ -147,7 +147,7 @@ method find-ansi-color-ranges($output is rw) {
 		my $colors;
 		my $start;
 		my $len    =  0;
-		while $output ~~ m:c/ \x1B \[ [(\d+)\;?]+ m / {
+		while $output ~~ m:c/ \x1B '[' [ (\d+) ';'? ]+ 'm' / {
 
 			# Take the marked text range if possible
 			take {
@@ -177,9 +177,9 @@ method find-ansi-color-ranges($output is rw) {
 	# Remove the ANSI color sequences from the output text
 	$output ~~ s:g/
 		\x1B
-		\[
-		[ (\d+) ';'? ]+
-		m
+		'['
+		[ [ \d+ ]? ';'? ]+
+		'm'
 	//;
 
 	return @ranges;
