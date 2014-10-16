@@ -445,14 +445,14 @@ method run-command(Str $command)
 
 # Cleanup on server exit
 END {
-	# Profile HTML files to delete?
-	return unless @profiles_to_unlink;
-
-	# Cleanup
-	say "Cleaning up profile HTMLs";
-	for @profiles_to_unlink -> $profile {
-		say "Deleting $profile";
-		unlink $profile;
+	# Any profile html files to delete?
+	if @profiles_to_unlink
+	{
+		# Delete them
+		say "Cleaning up profile HTMLs...";
+		for @profiles_to_unlink -> $profile {
+			unlink $profile;
+		}
 	}
 }
 
