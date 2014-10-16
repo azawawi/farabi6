@@ -20,13 +20,6 @@ To install it using Panda (a module management tool bundled with Rakudo Star):
     farabi6
     # Open http://localhost:3030 in your browser
 
-To install it using ufo (A tool to create your Perl 6 project Makefile for you):
-
-	ufo              # Create Makefile
-	make
-	make test
-	make install
-
 You can also change the host name and port using the following command:
 
     farabi6 --host=localhost --port=4040
