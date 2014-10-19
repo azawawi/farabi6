@@ -7,7 +7,6 @@ use Test;
 plan 6;
 
 use Farabi6;
-
 ok 1, "'use Farabi6' worked!";
 ok Farabi6.new, "Farabi6.new worked";
 
