@@ -326,7 +326,8 @@ method profile-results(Str $id) {
 
 =begin comment
 
-Run panda search pattern and return the results as JSON
+Return module search matched results against the given pattern
+in JSON format
 
 =end comment
 method module-search(Str $pattern is copy) {
@@ -436,6 +437,41 @@ method run-command(Str $command)
 				%(
 					'output'   => $output,
 					'ranges'   => @ranges,
+					'duration' => $duration,
+				)
+			)
+		],
+	];
+}
+
+=begin comment
+
+Return help search matched results against the given pattern
+in JSON format
+
+=end comment
+method help-search(Str $pattern is copy) {
+
+	# Trim the pattern and make sure we dont fail on undefined
+	$pattern = $pattern // '';
+	$pattern = $pattern.trim;
+
+	# Start stopwatch
+	my $t0 = now;
+
+	my @results = ();
+
+	# Stop stopwatch and calculate the duration
+	my $duration = sprintf("%.3f", now - $t0);
+
+	# PSGI response
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					'results'  => @results.sort,
 					'duration' => $duration,
 				)
 			)

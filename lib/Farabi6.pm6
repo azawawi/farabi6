@@ -101,6 +101,11 @@ method run(Str $host, Int $port) is export {
 		{
 			return Farabi6::Editor.run-command('git status');
 		}
+		elsif $uri eq '/help/search'
+		{
+			return Farabi6::Editor.help-search(
+				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
+		}
 		elsif $uri ~~ '/profile/results'
 		{
 			# Return profile HTML results if found

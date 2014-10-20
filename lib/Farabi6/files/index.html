@@ -83,6 +83,7 @@
 		<div class="item">
 			<div class="ui small inverted header">Help</div>
 			<div class="menu">
+				<a class="item help_search_button">Help Search (Alt-H)</a>
 				<a class="item help_button">Getting Started</a>
 				<a class="item" href="http://perl6.org" target="_blank">Official Perl 6 Language Website</a>
 				<a class="item" href="http://doc.perl6.org" target="_blank">Perl 6 Documentation</a>
@@ -133,6 +134,30 @@
 							<div class="ui loader"></div>
 						</div>
 						<div class="ui selection list" id="module_search_results">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui large vertical styled very wide right sidebar" id="help_search_sidebar">
+		<div class="ui header">Help Search</div>
+		<div class="ui segment">
+			<div class="ui form">
+				<div class="field">
+					<div class="ui icon input">
+						<input type="text" class="mousetrap" id="help_search_pattern" placeholder="Search..."/>
+						<i class="search icon"></i>
+					</div>
+				</div>
+				<div class="field">
+					<label>Matched Topics:</label>
+					<div class="ui segment">
+						<div class="ui disabled inverted dimmer">
+							<div class="ui loader"></div>
+						</div>
+						<div class="ui selection list" id="help_search_results">
 						</div>
 					</div>
 				</div>
