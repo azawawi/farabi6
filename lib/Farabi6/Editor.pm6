@@ -15,6 +15,9 @@ my Str @profiles_to_unlink;
 # Cache Panda projects.json (Array of hashes)
 my $modules;
 
+# Cache p6doc index.data (Hash of help topics strings)
+my %help_index;
+
 =begin comment
 
 Syntax checks the current editor document for any problems using
@@ -401,7 +404,7 @@ method module-search(Str $pattern is copy) {
 		[
 			to-json(
 				%(
-					'results'  => @results.sort,
+					'results'  => @results.sort(-> $a, $b { uc($a) leg uc($b) }),
 					'duration' => $duration,
 				)
 			)
@@ -459,7 +462,44 @@ method help-search(Str $pattern is copy) {
 	# Start stopwatch
 	my $t0 = now;
 
-	my @results = ();
+	unless %help_index {
+		my $index-file = '/home/azawawi/rakudo/install/languages/perl6/site/bin/index.data';
+		unless $index-file.IO ~~ :f
+		{
+			say "Building index.data... Please wait";
+
+			# run p6doc-index build to build the index.data file
+			my Str $dummy = qqx{p6doc-index build};
+		}
+
+		if $index-file.IO ~~ :f
+		{
+			say "Loading index.data... Please wait";
+			%help_index = EVAL $index-file.IO.slurp;
+		}
+		else
+		{
+			say "Cannot find $index-file";
+		}
+	}
+
+	constant $MAX_SIZE = 20;
+	my $count = 0;
+	my @results = gather for %help_index.keys -> $topic
+	{
+		if $topic ~~ m:i/$pattern/ {
+			take {
+				"name" => $topic,
+				"desc" => "",
+				"url"  => "#",
+			};
+
+			$count++;
+			if $count >= $MAX_SIZE {
+				last;
+			}
+		}
+	}
 
 	# Stop stopwatch and calculate the duration
 	my $duration = sprintf("%.3f", now - $t0);
@@ -471,7 +511,7 @@ method help-search(Str $pattern is copy) {
 		[
 			to-json(
 				%(
-					'results'  => @results.sort,
+					'results'  => @results.sort(-> $a, $b { uc($a) leg uc($b) }),
 					'duration' => $duration,
 				)
 			)
