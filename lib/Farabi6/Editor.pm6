@@ -490,7 +490,7 @@ method help-search(Str $pattern is copy) {
 		if $topic ~~ m:i/$pattern/ {
 			take {
 				"name" => $topic,
-				"desc" => "",
+				"desc" => %help_index{$topic}[0].words[0],
 				"url"  => "#",
 			};
 
