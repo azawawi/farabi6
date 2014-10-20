@@ -2,11 +2,6 @@
 use v6;
 
 BEGIN {
-	# Just in case we're installed on rakudo star.
-	# This will create a duplicate ~/.perl6/lib entry for now
-	# But hey at least it will work :)
-	@*INC.unshift(%*ENV{'HOME'} ~ '/.perl6/lib');
-
 	# The local lib takes priority for now
 	@*INC.unshift('./lib'); 
 }
