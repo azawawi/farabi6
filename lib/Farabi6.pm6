@@ -20,10 +20,10 @@ method run(Str $host, Int $port) is export {
 	
 	# Trap Ctrl-C to properly execute END { } to enable
 	# showing of deprecated messages
-	signal(SIGINT).tap({
-		"Ctrl-C detected".say;
-		die
-	});
+	#signal(SIGINT).tap({
+	#	"Ctrl-C detected".say;
+	#	die
+	#});
 
 	# Development or panda-installed farabi6?
 	my $files-dir = 'lib/Farabi6/files';
