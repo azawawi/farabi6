@@ -129,7 +129,7 @@ method find-file($dir, $pattern) {
 			CATCH {
 				when X::IO::Dir { next; }
 			}
-		} elsif $file-name ~~ m:ignorecase/$pattern/ {
+		} elsif $file-name ~~ m:ignorecase/"$pattern"/ {
 			take {
 				'file' => $path,
 				'name' => $file-name;

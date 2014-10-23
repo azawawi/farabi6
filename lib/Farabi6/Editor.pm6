@@ -376,8 +376,8 @@ method module-search(Str $pattern is copy) {
 		$url = $url.subst(/\.git$/, '');
 
 		if    $pattern eq ''
-		   || $name    ~~ m:i/$pattern/
-		   || $desc    ~~ m:i/$pattern/
+		   || $name    ~~ m:i/"$pattern"/
+		   || $desc    ~~ m:i/"$pattern"/
 		{
 			take {
 				"name" => $name,
@@ -487,7 +487,7 @@ method help-search(Str $pattern is copy) {
 	my $count = 0;
 	my @results = gather for %help_index.keys -> $topic
 	{
-		if $topic ~~ m:i/$pattern/ {
+		if $topic ~~ m:i/"$pattern"/ {
 			take {
 				"name" => $topic,
 				"desc" => %help_index{$topic}[0].words[0],
