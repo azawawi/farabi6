@@ -16,7 +16,7 @@ Runs the Farabi webserver at host:port. If host is empty
 then it listens on all interfaces
 
 =end pod
-method run(Str $host, Int $port) is export {
+method run(Str $host, Int $port, Bool $verbose) is export {
 	
 	# Trap Ctrl-C to properly execute END { } to enable
 	# showing of deprecated messages
@@ -151,7 +151,7 @@ method run(Str $host, Int $port) is export {
 		];
 	}
 
-	my $server = HTTP::Easy::PSGI.new(:host($host), :port($port));
+	my $server = HTTP::Easy::PSGI.new(:host($host), :port($port), :debug($verbose));
 	$server.app($app);
  	$server.run;
 }
