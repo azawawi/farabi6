@@ -463,8 +463,8 @@ method help-search(Str $pattern is copy) {
 	my $t0 = now;
 
 	unless %help_index {
-		my $index-file = '/home/azawawi/rakudo/install/languages/perl6/site/bin/index.data';
-		unless $index-file.IO ~~ :f
+		my $index-file = qx{p6doc-index path-to-index}.chomp;
+		unless $index-file.path ~~ :f
 		{
 			say "Building index.data... Please wait";
 
@@ -472,7 +472,7 @@ method help-search(Str $pattern is copy) {
 			my Str $dummy = qqx{p6doc-index build};
 		}
 
-		if $index-file.IO ~~ :f
+		if $index-file.path ~~ :f
 		{
 			say "Loading index.data... Please wait";
 			%help_index = EVAL $index-file.IO.slurp;
