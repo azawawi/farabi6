@@ -52,67 +52,79 @@ method run(Str $host, Int $port) is export {
 		$uri ~~ s/ '?' .* $ //;
 
 		# Handle files and routes :)
-		if $uri eq '/' {
-			$filename = 'index.html';
-		} elsif $uri eq '/pod_to_html' { 
-			return Farabi6::Editor.pod-to-html(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
-		} elsif $uri eq '/syntax_check' {
-			return Farabi6::Editor.syntax-check(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source')); 
-		} elsif $uri eq '/open_file' {
-			return Farabi6::Editor.open-file(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'filename')); 
-		} elsif $uri eq '/search_file' {
-			return Farabi6::Editor.search-file(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'filename')); 
-		} elsif $uri eq '/open_url' {
-			return Farabi6::Editor.open-url(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'url'));
-		} elsif $uri eq '/rosettacode_rebuild_index' {
-			return Farabi6::Editor.rosettacode-rebuild-index;
-		} elsif $uri eq '/rosettacode_search' {
-			return Farabi6::Editor.rosettacode-search(
-				Farabi6::Util.get-parameter(%env<psgi.input>, 'something'));
-		} elsif $uri eq '/run/rakudo' {
-			return Farabi6::Editor.run-code(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
-		} elsif $uri eq '/eval_repl_expr' {
-			return Farabi6::Editor.eval-repl-expr(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'expr')); 
-		} elsif $uri eq '/profile/rakudo' {
-			return Farabi6::Editor.run-code(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
-				'--profile');
-		} elsif $uri eq '/module/search'
-		{
-			return Farabi6::Editor.module-search(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
-		}
-		elsif $uri eq '/git/diff'
-		{
-			return Farabi6::Editor.run-command('git diff --color');
-		}
-		elsif $uri eq '/git/log'
-		{
-			return Farabi6::Editor.run-command('git log --color');
-		}
-		elsif $uri eq '/git/status'
-		{
-			return Farabi6::Editor.run-command('git status');
-		}
-		elsif $uri eq '/help/search'
-		{
-			return Farabi6::Editor.help-search(
-				Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
-		}
-		elsif $uri ~~ '/profile/results'
-		{
-			# Return profile HTML results if found
-			my $id = $/[0].Str if %env<QUERY_STRING> ~~ /^id\=(.+)$/;
-			return Farabi6::Editor.profile-results($id);
-		} else {
-			$filename = $uri.substr(1);
+
+		given $uri {
+			when '/' {
+				$filename = 'index.html';
+			}
+			when /^ '/assets/' / {
+				$filename = $uri.substr(1);
+			}
+			when '/pod_to_html' {
+				return Farabi6::Editor.pod-to-html(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
+			}
+			when '/syntax_check' {
+				return Farabi6::Editor.syntax-check(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
+			}
+			when '/open_file' {
+				return Farabi6::Editor.open-file(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'filename'));
+			}
+			when '/search_file' {
+				return Farabi6::Editor.search-file(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'filename'));
+			}
+			when '/open_url' {
+				return Farabi6::Editor.open-url(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'url'));
+			}
+			when '/rosettacode_rebuild_index' {
+				return Farabi6::Editor.rosettacode-rebuild-index;
+			}
+			when '/rosettacode_search' {
+				return Farabi6::Editor.rosettacode-search(
+					Farabi6::Util.get-parameter(%env<psgi.input>, 'something'));
+			}
+			when '/run/rakudo' {
+				return Farabi6::Editor.run-code(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
+			}
+			when '/eval_repl_expr' {
+				return Farabi6::Editor.eval-repl-expr(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'expr'));
+			}
+			when '/profile/rakudo' {
+				return Farabi6::Editor.run-code(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'),
+					'--profile');
+			}
+			when '/module/search' {
+				return Farabi6::Editor.module-search(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
+			}
+			when '/git/diff' {
+				return Farabi6::Editor.run-command('git diff --color');
+			}
+			when '/git/log' {
+				return Farabi6::Editor.run-command('git log --color');
+			}
+			when '/git/status' {
+				return Farabi6::Editor.run-command('git status');
+			}
+			when '/help/search' {
+				return Farabi6::Editor.help-search(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
+			}
+			when '/profile/results' {
+				# Return profile HTML results if found
+				my $id = $/[0].Str if %env<QUERY_STRING> ~~ /^id\=(.+)$/;
+				return Farabi6::Editor.profile-results($id);
+			}
+			default {
+				$filename = .substr(1);
+			}
 		}
 
 		# Get the real file from the local filesystem
