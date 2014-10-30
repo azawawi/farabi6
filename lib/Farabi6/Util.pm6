@@ -141,13 +141,12 @@ method find-file($dir, $pattern) {
 }
 
 method find-ansi-color-ranges($output is rw) {
-
 	# Create color ranges from the ANSI color sequences in the output text
 	my @ranges = gather {
 		my $colors;
 		my $start;
 		my $len    =  0;
-		while $output ~~ m:c/ \x1B '[' [ (\d+) ';'? ]+ 'm' / {
+		for $output.comb(/ \x1B '[' [ (\d+) ';'? ]+ 'm' /, :match) -> $/ {
 
 			# Take the marked text range if possible
 			take {
@@ -178,7 +177,7 @@ method find-ansi-color-ranges($output is rw) {
 	$output ~~ s:g/
 		\x1B
 		'['
-		[ [ \d+ ]? ';'? ]+
+		[ [ \d+ ]? ]+ %% ';'
 		'm'
 	//;
 

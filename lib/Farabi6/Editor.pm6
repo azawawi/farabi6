@@ -35,6 +35,9 @@ method syntax-check(Str $source) {
 	# Invoke perl -c $temp_file
 	my Str $output = qqx{$*EXECUTABLE -c $filename 2>&1};
 
+	# ANSI colors
+	my @ranges = Farabi6::Util.find-ansi-color-ranges($output);
+
 	# Remove temp file
 	unlink $filehandle;
 
@@ -55,6 +58,7 @@ method syntax-check(Str $source) {
 			to-json(
 				%(
 					'problems' => @problems,
+					'ranges'   => @ranges,
 					'output'   => $output
 				)
 			)
