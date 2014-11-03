@@ -523,6 +523,115 @@ method help-search(Str $pattern is copy) {
 	];
 }
 
+=begin comment
+
+Start debugging the given source
+
+=end comment
+method debug-start(Str $source)
+{
+	# Start stopwatch
+#	my $t0 = now;
+#	my Str $output = qqx{$command};
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					# 'output'   => $output,
+				)
+			)
+		],
+	];
+}
+
+
+=begin comment
+
+Step in
+
+=end comment
+method debug-step-in()
+{
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					# 'output'   => $output,
+				)
+			)
+		],
+	];
+}
+
+=begin comment
+
+Step out
+
+=end comment
+method debug-step-out()
+{
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					# 'output'   => $output,
+				)
+			)
+		],
+	];
+}
+
+=begin comment
+
+Debug Resume...
+
+=end comment
+method debug-resume()
+{
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					# 'output'   => $output,
+				)
+			)
+		],
+	];
+}
+
+=begin comment
+
+Stop debug mode
+
+=end comment
+method debug-stop()
+{
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					# 'output'   => $output,
+				)
+			)
+		],
+	];
+}
+
 # Cleanup on server exit
 END {
 	# Any profile html files to delete?

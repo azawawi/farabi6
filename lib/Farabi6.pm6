@@ -117,6 +117,22 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 				return Farabi6::Editor.help-search(
 					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
 			}
+			when '/debug/start' {
+				return Farabi6::Editor.debug-start(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
+			}
+			when '/debug/step_in' {
+				return Farabi6::Editor.debug-step-in();
+			}
+			when '/debug/step_out' {
+				return Farabi6::Editor.debug-step-out();
+			}
+			when '/debug/resume' {
+				return Farabi6::Editor.debug-resume();
+			}
+			when '/debug/stop' {
+				return Farabi6::Editor.debug-stop();
+			}
 			when '/profile/results' {
 				# Return profile HTML results if found
 				my $id = $/[0].Str if %env<QUERY_STRING> ~~ /^id\=(.+)$/;
