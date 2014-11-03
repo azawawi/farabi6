@@ -523,6 +523,8 @@ method help-search(Str $pattern is copy) {
 	];
 }
 
+#my $pc;
+
 =begin comment
 
 Start debugging the given source
@@ -530,9 +532,43 @@ Start debugging the given source
 =end comment
 method debug-start(Str $source)
 {
-	# Start stopwatch
-#	my $t0 = now;
-#	my Str $output = qqx{$command};
+	my @dirs = $*SPEC.splitdir($*EXECUTABLE);
+	my $perl6-debug = $*SPEC.catdir(
+		@dirs[0..*-2],
+		'perl6-debug-m'
+	);
+
+	# Prepare Perl 6 source for syntax check
+	my ($filename,$filehandle) = tempfile(:!unlink);
+	spurt $filehandle, $source;
+
+	# Prepare command line
+	my Str $cmd = qq{$perl6-debug $filename 2>&1};
+	say $cmd;
+
+	#TODO Remove temp file on END?
+	##unlink $filehandle;
+
+	#unless defined $pc {
+	#	$pc = Proc::Async.new( $*EXECUTABLE, :w );
+	#
+	#	my $so = $pc.stdout;
+	#	my $se = $pc.stderr;
+	#
+	#	$so.act: { say "Output:\n$_\n---"; $stdout ~= $_; };
+	#	$se.act: { say "Input:\n$_\n---"; $stderr ~= $_ };
+	#
+	#	my $pm = $pc.start;
+	#}
+	#
+	#my $ppr = $pc.print( "$expr\n" );
+	#await $ppr;
+	#
+	#my Str $output = $stdout ~ $stderr;
+
+	## done processing
+	#$pc.close-stdin;
+	#my $ps = await $pm;
 
 	[
 		200,
