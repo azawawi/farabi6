@@ -44,20 +44,16 @@ $so.act: {
 				
 				if $line ~~ / $ANSI_BOLD_YELLOW .+? $ANSI_RESET /
 				{
-				say $line;
-				say $/;
 					take {
 						line     => $line_count,
 						start    => $/.from,
 						end      => $/.to - 11,
 					};
-					#say "Line #$row, Column from $col_start..$col_end";
-					#last;
 				} 
 				$line_count++;
 			}
 		};
-		
+
 		say "result: $_" for @results;
 	}
 	
