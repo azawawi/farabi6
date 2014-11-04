@@ -13,46 +13,55 @@ my $stdout = "";
 my $stderr = "";
 $so.act: {
 	my $response = $_;
-	if $response ~~ /'+' \s+ (.+?) \s+ '(' (\d+) \s+ '-' \s+ (\d+) ')'/ {
-		my ($file, $from, $to) = ~$0, ~$1, ~$2;
-		say $file;
+	
+	my $ANSI_BLUE        = / \x1B '[34m' /;
+	my $ANSI_RESET       = / \x1B '[0m' /;
+	my $ANSI_BOLD_YELLOW = / \x1B '[1;33m' /;
 
-		# Create color ranges from the ANSI color sequences in the output text
-		my @ranges = gather {
-			my $colors;
-			my $start;
-			my $len    =  0;
-			for $response.comb(/ \x1B '[' [ (\d+) ';'? ]+ 'm' /, :match) -> $/ {
-
-				# Take the marked text range if possible
-				take {
-					"from"  => $start,
-					"to"    => $/.from - $len,
-					"colors" => $colors,
-				} if defined $colors;
-
-				# Decode colors into a simple CSS class name
-				$colors = $/[0].list.Str;
-
-				# Since we're going to remove ANSI colors
-				# we need to shift positions to the left
-				$start = $/.from - $len;
-				$len   += $/.chars;
+	my ($file, $from, $to);
+	
+	if $response ~~ /^ $ANSI_BLUE 
+		'+' \s+
+		(.+?)    #file name
+		\s+
+		'(' 
+			(\d+) 	# from line
+			\s+ 
+			'-' 
+			\s+ 
+			(\d+) 	# to line
+		')'
+		$ANSI_RESET (.+?) $ /
+	{
+		my ($file, $from, $to, $code) = ~$0, ~$1, ~$2, ~$3;
+		say "\nfile: $file, from: $from, to: $to";
+		
+		my ($row, $col_start, $col_end);
+		my $line_count = $from;
+		my @results = gather {
+			for $code.split(/$ANSI_BLUE '|' \s+ $ANSI_RESET/) -> $line
+			{
+				
+				if $line ~~ / $ANSI_BOLD_YELLOW .+? $ANSI_RESET /
+				{
+				say $line;
+				say $/;
+					take {
+						line     => $line_count,
+						start    => $/.from,
+						end      => $/.to - 11,
+					};
+					#say "Line #$row, Column from $col_start..$col_end";
+					#last;
+				} 
+				$line_count++;
 			}
-
-			# Take the **remaining** marked text range if possible
-			take {
-				"from"   => $start,
-				"to"     => $response.chars - $len,
-				"colors" => $colors,
-			} if defined $colors;
-
 		};
 		
-		say $_ for @ranges;
-
+		say "result: $_" for @results;
 	}
-	say "Output:\n$_\n---"; $stdout ~= $_; 
+	
+	#say "Output:\n$_\n---"; $stdout ~= $_; 
 }
 $se.act: {
 	say "Input:\n$_\n---"; $stderr ~= $_ 
