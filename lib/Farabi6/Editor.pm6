@@ -561,6 +561,7 @@ method start-debugging-session(Str $source)
 		pc      => $pc,
 		results => [],
 	);
+	my %session = 
 
 	my $so = $pc.stdout;
 	my $se = $pc.stderr;
@@ -594,7 +595,7 @@ method start-debugging-session(Str $source)
 
 			my ($row, $col_start, $col_end);
 			my $line_count = $from;
-			my @results = gather {
+			my $results = gather {
 				for $code.split(/$ANSI_BLUE '|' \s+ $ANSI_RESET/) -> $line
 				{
 
@@ -610,10 +611,13 @@ method start-debugging-session(Str $source)
 				}
 			};
 
+			say "result_session_id: '$result_session_id'";
 			my $session = %debug_sessions{$result_session_id};
-			%$session<results> = @results;
+			%$session<results> = @$results;
+			
+			say "session is: \n" ~ $session;
 
-			say "result: $_" for @results;
+			say "result: $_" for @$results;
 		}
 	}
 	$se.act: {
@@ -636,7 +640,7 @@ Step in
 method debug-step-in(Str $debug-session-id is copy, Str $source)
 {
 say %debug_sessions;
-say "debug-session-id = $debug-session-id";
+say "debug-session-id = '$debug-session-id'";
 	my $session = %debug_sessions{$debug-session-id};
 	if $session.defined
 	{
@@ -675,16 +679,18 @@ Step in
 method debug-status(Str $debug-session-id)
 {
 
-say "debug-session-id = $debug-session-id";
+say "debug-session-id = '$debug-session-id'";
 say %debug_sessions;
 
+	my $results;
 	my $session = %debug_sessions{$debug-session-id};
-	my @results;
-	
 	if $session.defined {
-		@results = %$session<results>;
+		$results = %$session<results>;
+		say $results;
+		say "Session is defined!";
 	} else {
-		@results = [];
+		$results = [];
+		say "Session is not defined!";
 	}
 	
 	say %$session;
@@ -697,7 +703,7 @@ say %debug_sessions;
 			to-json(
 				%(
 					'id'         => $debug-session-id,
-					'results'    => @results,
+					'results'    => $results,
 				)
 			)
 		],
