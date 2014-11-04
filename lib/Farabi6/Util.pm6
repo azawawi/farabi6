@@ -31,6 +31,21 @@ constant %ANSI_COLORS = %(
 	47	=> "ansi-bg-white",
 );
 
+# Adapted from https://github.com/tadzik/Bailador/blob/master/lib/Bailador/Request.pm
+method params($psgi_input)
+{
+	return {} unless $psgi_input;
+
+	my %ret;
+	for $psgi_input.decode.split('&') -> $p 
+	{
+		my $pair = $p.split('=', 2);
+		%ret{$pair[0]} = uri_unescape $pair[1];
+	}
+
+	return %ret;
+}
+	
 method get-parameter(Str $input, Str $name) {
 	# TODO more generic parameter parsing
 	my $value = $input;

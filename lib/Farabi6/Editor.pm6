@@ -524,7 +524,7 @@ method help-search(Str $pattern is copy) {
 }
 
 my %debug_sessions;
-my $debug_session_id;
+my $debug_session_id = 0;
 
 =begin comment
 
@@ -553,11 +553,14 @@ method start-debugging-session(Str $source)
 	# Start debugging the temporary script
 	my $pc = Proc::Async.new( "perl6-debug-m", [$filename], :w );
 
-	my $result_session_id = $debug_session_id;
+	my Str $result_session_id = ~$debug_session_id;
+	$debug_session_id++;
 	
 	# Record debug session
-	%debug_sessions{$result_session_id} = $pc;
-	$debug_session_id++;
+	%debug_sessions{$result_session_id} = (
+		pc      => $pc,
+		results => [],
+	);
 
 	my $so = $pc.stdout;
 	my $se = $pc.stderr;
@@ -607,7 +610,8 @@ method start-debugging-session(Str $source)
 				}
 			};
 
-			%debug_sessions<$result_session_id><'results'> = @results;
+			my $session = %debug_sessions{$result_session_id};
+			%$session<results> = @results;
 
 			say "result: $_" for @results;
 		}
@@ -617,7 +621,9 @@ method start-debugging-session(Str $source)
 	}
 
 	my $pm = $pc.start;
-
+	
+	say %debug_sessions;
+	
 	return $result_session_id,
 }
 
@@ -627,13 +633,26 @@ method start-debugging-session(Str $source)
 Step in
 
 =end comment
-method debug-step-in(Str $debug-session-id, Str $source)
+method debug-step-in(Str $debug-session-id is copy, Str $source)
 {
-	unless $debug-session-id
+say %debug_sessions;
+say "debug-session-id = $debug-session-id";
+	my $session = %debug_sessions{$debug-session-id};
+	if $session.defined
+	{
+		# Valid session, let us print to it
+		my $pc = %$session<pc>;
+		say $pc;
+		my $ppr = $pc.print("\n");
+		await $ppr;
+	}
+	else
 	{
 		$debug-session-id = self.start-debugging-session($source);
+		$session = %debug_sessions{$debug-session-id};
 	}
 	
+
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
@@ -641,7 +660,44 @@ method debug-step-in(Str $debug-session-id, Str $source)
 			to-json(
 				%(
 					'id'         => $debug-session-id,
-					'results'    => %debug_sessions<$debug-session-id><'results'>,
+					'results'    => %$session<results>,
+				)
+			)
+		],
+	];
+}
+
+=begin comment
+
+Step in
+
+=end comment
+method debug-status(Str $debug-session-id)
+{
+
+say "debug-session-id = $debug-session-id";
+say %debug_sessions;
+
+	my $session = %debug_sessions{$debug-session-id};
+	my @results;
+	
+	if $session.defined {
+		@results = %$session<results>;
+	} else {
+		@results = [];
+	}
+	
+	say %$session;
+
+	return 
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[
+			to-json(
+				%(
+					'id'         => $debug-session-id,
+					'results'    => @results,
 				)
 			)
 		],
