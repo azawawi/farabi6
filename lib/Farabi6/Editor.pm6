@@ -523,14 +523,15 @@ method help-search(Str $pattern is copy) {
 	];
 }
 
-#my $pc;
+my %debug_sessions;
+my $debug_session_id;
 
 =begin comment
 
-Start debugging the given source
+Start a debugging session with the given source code string
 
 =end comment
-method debug-start(Str $source)
+method start-debugging-session(Str $source)
 {
 	my @dirs = $*SPEC.splitdir($*EXECUTABLE);
 	my $perl6-debug = $*SPEC.catdir(
@@ -549,38 +550,75 @@ method debug-start(Str $source)
 	#TODO Remove temp file on END?
 	##unlink $filehandle;
 
-	#unless defined $pc {
-	#	$pc = Proc::Async.new( $*EXECUTABLE, :w );
-	#
-	#	my $so = $pc.stdout;
-	#	my $se = $pc.stderr;
-	#
-	#	$so.act: { say "Output:\n$_\n---"; $stdout ~= $_; };
-	#	$se.act: { say "Input:\n$_\n---"; $stderr ~= $_ };
-	#
-	#	my $pm = $pc.start;
-	#}
-	#
-	#my $ppr = $pc.print( "$expr\n" );
-	#await $ppr;
-	#
-	#my Str $output = $stdout ~ $stderr;
+	# Start debugging the temporary script
+	my $pc = Proc::Async.new( "perl6-debug-m", [$filename], :w );
 
-	## done processing
-	#$pc.close-stdin;
-	#my $ps = await $pm;
+	my $result_session_id = $debug_session_id;
+	
+	# Record debug session
+	%debug_sessions{$result_session_id} = $pc;
+	$debug_session_id++;
 
-	[
-		200,
-		[ 'Content-Type' => 'application/json' ],
-		[
-			to-json(
-				%(
-					# 'output'   => $output,
-				)
-			)
-		],
-	];
+	my $so = $pc.stdout;
+	my $se = $pc.stderr;
+
+	my $stdout = "";
+	my $stderr = "";
+	$so.act: {
+		my $response = $_;
+
+		my $ANSI_BLUE        = / \x1B '[34m' /;
+		my $ANSI_RESET       = / \x1B '[0m' /;
+		my $ANSI_BOLD_YELLOW = / \x1B '[1;33m' /;
+
+		my ($file, $from, $to);
+
+		if $response ~~ /^ $ANSI_BLUE 
+			'+' \s+
+			(.+?)    #file name
+			\s+
+			'(' 
+				(\d+) 	# from line
+				\s+ 
+				'-' 
+				\s+ 
+				(\d+) 	# to line
+			')'
+			$ANSI_RESET (.+?) $ /
+		{
+			my ($file, $from, $to, $code) = ~$0, ~$1, ~$2, ~$3;
+			say "\nfile: $file, from: $from, to: $to";
+
+			my ($row, $col_start, $col_end);
+			my $line_count = $from;
+			my @results = gather {
+				for $code.split(/$ANSI_BLUE '|' \s+ $ANSI_RESET/) -> $line
+				{
+
+					if $line ~~ / $ANSI_BOLD_YELLOW .+? $ANSI_RESET /
+					{
+						take {
+							line     => $line_count,
+							start    => $/.from,
+							end      => $/.to - 11,
+						};
+					} 
+					$line_count++;
+				}
+			};
+
+			%debug_sessions<$result_session_id><'results'> = @results;
+
+			say "result: $_" for @results;
+		}
+	}
+	$se.act: {
+		say "Input:\n$_\n---"; $stderr ~= $_
+	}
+
+	my $pm = $pc.start;
+
+	return $result_session_id,
 }
 
 
@@ -589,16 +627,21 @@ method debug-start(Str $source)
 Step in
 
 =end comment
-method debug-step-in()
+method debug-step-in(Str $debug-session-id, Str $source)
 {
-
+	unless $debug-session-id
+	{
+		$debug-session-id = self.start-debugging-session($source);
+	}
+	
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
 		[
 			to-json(
 				%(
-					# 'output'   => $output,
+					'id'         => $debug-session-id,
+					'results'    => %debug_sessions<$debug-session-id><'results'>,
 				)
 			)
 		],

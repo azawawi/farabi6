@@ -117,12 +117,11 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 				return Farabi6::Editor.help-search(
 					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'pattern'));
 			}
-			when '/debug/start' {
-				return Farabi6::Editor.debug-start(
-					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
-			}
 			when '/debug/step_in' {
-				return Farabi6::Editor.debug-step-in();
+				return Farabi6::Editor.debug-step-in(
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'debug_session_id'),
+					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source')
+				);
 			}
 			when '/debug/step_out' {
 				return Farabi6::Editor.debug-step-out();
