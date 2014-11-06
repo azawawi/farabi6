@@ -545,7 +545,6 @@ method start-debugging-session(Str $source)
 
 	# Prepare command line
 	my Str $cmd = qq{$perl6-debug $filename 2>&1};
-	say $cmd;
 
 	#TODO Remove temp file on END?
 	##unlink $filehandle;
@@ -557,11 +556,10 @@ method start-debugging-session(Str $source)
 	$debug_session_id++;
 	
 	# Record debug session
-	%debug_sessions{$result_session_id} = (
+	%debug_sessions{$result_session_id} = %(
 		pc      => $pc,
 		results => [],
 	);
-	my %session = 
 
 	my $so = $pc.stdout;
 	my $se = $pc.stderr;
@@ -591,11 +589,10 @@ method start-debugging-session(Str $source)
 			$ANSI_RESET (.+?) $ /
 		{
 			my ($file, $from, $to, $code) = ~$0, ~$1, ~$2, ~$3;
-			say "\nfile: $file, from: $from, to: $to";
 
 			my ($row, $col_start, $col_end);
 			my $line_count = $from;
-			my $results = gather {
+			my @results = gather {
 				for $code.split(/$ANSI_BLUE '|' \s+ $ANSI_RESET/) -> $line
 				{
 
@@ -611,22 +608,15 @@ method start-debugging-session(Str $source)
 				}
 			};
 
-			say "result_session_id: '$result_session_id'";
 			my $session = %debug_sessions{$result_session_id};
-			%$session<results> = @$results;
-			
-			say "session is: \n" ~ $session;
-
-			say "result: $_" for @$results;
+			%$session<results> = @results;
 		}
 	}
 	$se.act: {
-		say "Input:\n$_\n---"; $stderr ~= $_
+		$stderr ~= $_
 	}
 
 	my $pm = $pc.start;
-	
-	say %debug_sessions;
 	
 	return $result_session_id,
 }
@@ -639,14 +629,12 @@ Step in
 =end comment
 method debug-step-in(Str $debug-session-id is copy, Str $source)
 {
-say %debug_sessions;
-say "debug-session-id = '$debug-session-id'";
 	my $session = %debug_sessions{$debug-session-id};
+	
 	if $session.defined
 	{
 		# Valid session, let us print to it
 		my $pc = %$session<pc>;
-		say $pc;
 		my $ppr = $pc.print("\n");
 		await $ppr;
 	}
@@ -656,7 +644,6 @@ say "debug-session-id = '$debug-session-id'";
 		$session = %debug_sessions{$debug-session-id};
 	}
 	
-
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
@@ -679,22 +666,14 @@ Step in
 method debug-status(Str $debug-session-id)
 {
 
-say "debug-session-id = '$debug-session-id'";
-say %debug_sessions;
-
 	my $results;
 	my $session = %debug_sessions{$debug-session-id};
 	if $session.defined {
 		$results = %$session<results>;
-		say $results;
-		say "Session is defined!";
 	} else {
 		$results = [];
-		say "Session is not defined!";
 	}
 	
-	say %$session;
-
 	return 
 	[
 		200,
