@@ -586,30 +586,39 @@ method start-debugging-session(Str $source)
 				\s+ 
 				(\d+) 	# to line
 			')'
-			$ANSI_RESET (.+?) $ /
+			$ANSI_RESET \n (.+?) $ /
 		{
 			my ($file, $from, $to, $code) = ~$0, ~$1, ~$2, ~$3;
 
 			my ($row, $col_start, $col_end);
+			
+			say "from: $from, to: $to";
 			my $line_count = $from;
 			my @results = gather {
+			say "'$code'";
 				for $code.split(/$ANSI_BLUE '|' \s+ $ANSI_RESET/) -> $line
 				{
 
 					if $line ~~ / $ANSI_BOLD_YELLOW .+? $ANSI_RESET /
 					{
 						take {
-							line     => $line_count,
+							line     => $line_count-1,
 							start    => $/.from,
 							end      => $/.to - 11,
 						};
-					} 
+						} else {
+						say "Not taken: $line_count => '$line'";
+						}
 					$line_count++;
 				}
 			};
 
 			my $session = %debug_sessions{$result_session_id};
 			%$session<results> = @results;
+			
+			say $session;
+			
+			say "=" x 80;
 		}
 	}
 	$se.act: {
@@ -666,8 +675,11 @@ Step in
 method debug-status(Str $debug-session-id)
 {
 
+	say "debug-session-id = '$debug-session-id'";
 	my $results;
 	my $session = %debug_sessions{$debug-session-id};
+	
+	say $session;
 	if $session.defined {
 		$results = %$session<results>;
 	} else {

@@ -17,6 +17,12 @@
 	color: #999; 
 }
 
+.active-debug-range {
+	background-color : red;
+	font-weight      : bold;
+	opacity: 0.5;
+}
+
 #toggle_actions_sidebar {
 	position: fixed;
 	left: 0px;
