@@ -275,32 +275,6 @@ method eval-repl-expr(Str $expr) {
 	];
 }
 
-# DEAD CODE for later investigation
-#	my $t0 = now;
-#
-#	unless defined $pc {
-#		$pc = Proc::Async.new( $*EXECUTABLE, :w );
-#
-#		my $so = $pc.stdout;
-#		my $se = $pc.stderr;
-#
-#		$so.act: { say "Output:\n$_\n---"; $stdout ~= $_; };
-#		$se.act: { say "Input:\n$_\n---"; $stderr ~= $_ };
-#
-#		my $pm = $pc.start;
-#	}
-#
-#	my $ppr = $pc.print( "$expr\n" );
-#	await $ppr;
-#
-#	my $duration = sprintf("%.3f", now - $t0);
-#
-#	my Str $output = $stdout ~ $stderr;
-#
-#	# done processing
-#	#$pc.close-stdin;
-#	#my $ps = await $pm;
-
 =begin comment
 
 Returns the profile HTML file that is generated with
@@ -558,6 +532,7 @@ method start-debugging-session(Str $source)
 	# Record debug session
 	%debug_sessions{$result_session_id} = %(
 		pc      => $pc,
+		pm      => 0,
 		results => [],
 		stdout  => '',
 		stderr  => '',
@@ -634,8 +609,9 @@ method start-debugging-session(Str $source)
 		%$session<stderr> ~= $_;
 	}
 
-	my $pm = $pc.start;
-	
+	my $session = %debug_sessions{$result_session_id};
+	%$session<pm> =  $pc.start;
+
 	return $result_session_id,
 }
 
@@ -652,9 +628,22 @@ method debug-step-in(Str $debug-session-id is copy, Str $source)
 	if $session.defined
 	{
 		# Valid session, let us print to it
-		my $pc = %$session<pc>;
-		my $ppr = $pc.print("\n");
-		await $ppr;
+		if $session<pm>.status == Planned
+		{
+			my $pc = %$session<pc>;
+			my $ppr = $pc.print("\n");
+			await $ppr;
+		} else
+		{
+			# Remove the invalid session
+			$session:delete;
+
+			# Reset debug session
+			$debug-session-id = '-1';
+
+			# Add a user friendly message to signify the demise of a promise :)
+			%$session<stdout> ~= "\nDebugging Finished";
+		}
 	}
 	else
 	{
