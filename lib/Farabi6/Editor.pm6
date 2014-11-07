@@ -569,13 +569,20 @@ method start-debugging-session(Str $source)
 	$so.act: {
 		my $response = $_;
 
-		my $ANSI_BLUE        = / \x1B '[34m' /;
-		my $ANSI_RESET       = / \x1B '[0m' /;
-		my $ANSI_BOLD_YELLOW = / \x1B '[1;33m' /;
+		my $ESC               = "\x1B";
+		my $ANSI_BLUE        = / $ESC '[34m' /;
+		my $ANSI_RESET       = / $ESC '[0m' /;
+		my $ANSI_BOLD_YELLOW = / $ESC '[1;33m' /;
+		my $ANSI_MAGENTA     = / $ESC '[35m' /;
 
 		my ($file, $from, $to);
 
-		if $response ~~ /^ $ANSI_BLUE 
+		my $session = %debug_sessions{$result_session_id};
+
+		if $response ~~ /^ $ANSI_MAGENTA '>>>' \s+ 'LOADING' (.+?) $ /
+		{
+			"Loading $0".say;
+		} elsif $response ~~ /^ $ANSI_BLUE
 			'+' \s+
 			(.+?)    #file name
 			\s+
@@ -591,8 +598,8 @@ method start-debugging-session(Str $source)
 			my ($file, $from, $to, $code) = ~$0, ~$1, ~$2, ~$3;
 
 			my $line_count = $from;
-			my @results = gather {
-			say "'$code'";
+			my @results = gather
+			{
 				for $code.split(/$ANSI_BLUE '|' \s+ $ANSI_RESET/) -> $line
 				{
 
@@ -609,10 +616,17 @@ method start-debugging-session(Str $source)
 				}
 			};
 
-			my $session = %debug_sessions{$result_session_id};
 			%$session<results> = @results;
+		}
+		elsif $response ~~ / ^ $ANSI_BLUE '>' \s+ $ANSI_RESET $ /
+		{
+			say "Found debug prompt...";
+		} else
+		{
 			%$session<stdout> ~= $_;
 		}
+
+		$_;
 	}
 
 	$se.act: {
