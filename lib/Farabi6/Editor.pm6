@@ -602,7 +602,8 @@ method start-debugging-session(Str $source)
 					if $line ~~ / $ANSI_BOLD_YELLOW .+? $ANSI_RESET /
 					{
 						take {
-							line     => $line_count-1,
+							line     => $line_count-2,  # Subtract one line for the empty space from the split
+														# Subtract one line to make it zero-based
 							start    => $/.from,
 							end      => $/.to - 11,
 						};
