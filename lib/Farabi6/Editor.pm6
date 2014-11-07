@@ -559,13 +559,13 @@ method start-debugging-session(Str $source)
 	%debug_sessions{$result_session_id} = %(
 		pc      => $pc,
 		results => [],
+		stdout  => '',
+		stderr  => '',
 	);
 
 	my $so = $pc.stdout;
 	my $se = $pc.stderr;
 
-	my $stdout = "";
-	my $stderr = "";
 	$so.act: {
 		my $response = $_;
 
@@ -604,22 +604,20 @@ method start-debugging-session(Str $source)
 							start    => $/.from,
 							end      => $/.to - 11,
 						};
-						} else {
-						say "Not taken: $line_count => '$line'";
-						}
+					}
 					$line_count++;
 				}
 			};
 
 			my $session = %debug_sessions{$result_session_id};
 			%$session<results> = @results;
-
-			$stdout ~= $_;
+			%$session<stdout> ~= $_;
 		}
 	}
 
 	$se.act: {
-		$stderr ~= $_;
+		my $session = %debug_sessions{$result_session_id};
+		%$session<stderr> ~= $_;
 	}
 
 	my $pm = $pc.start;
@@ -672,26 +670,24 @@ Step in
 method debug-status(Str $debug-session-id)
 {
 
-	say "debug-session-id = '$debug-session-id'";
-	my $results;
 	my $session = %debug_sessions{$debug-session-id};
-	
-	say $session;
+	my ($stdout, $stderr, $ranges) = ('', '', []);
 	if $session.defined {
-		$results = %$session<results>;
-	} else {
-		$results = [];
+		$stdout = %$session<stdout>;
+		$stderr = %$session<stderr>;
+		$ranges = %$session<results>;
 	}
-	
-	return 
+
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
 		[
 			to-json(
 				%(
-					'id'         => $debug-session-id,
-					'results'    => $results,
+					'id'      => $debug-session-id,
+					'stdout'  => $stdout,
+					'stderr'  => $stderr,
+					'ranges'  => $ranges;
 				)
 			)
 		],
