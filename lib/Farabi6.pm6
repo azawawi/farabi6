@@ -52,6 +52,7 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		$uri ~~ s/ '?' .* $ //;
 
 		# Handle files and routes :)
+		my %params = Farabi6::Util.params(%env<psgi.input>);
 
 		given $uri {
 			when '/' {
@@ -123,20 +124,27 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 				);
 			}
 			when '/debug/step_in' {
-				my %params = Farabi6::Util.params(%env<psgi.input>);
 				return Farabi6::Editor.debug-step-in(
 					%params<id>,
 					%params<source>
 				);
 			}
 			when '/debug/step_out' {
-				return Farabi6::Editor.debug-step-out();
+				return Farabi6::Editor.debug-step-out(
+					%params<id>,
+					%params<source>
+				);
 			}
 			when '/debug/resume' {
-				return Farabi6::Editor.debug-resume();
+				return Farabi6::Editor.debug-resume(
+					%params<id>,
+					%params<source>
+				);
 			}
 			when '/debug/stop' {
-				return Farabi6::Editor.debug-stop();
+				return Farabi6::Editor.debug-stop(
+					%params<id>
+				);
 			}
 			when '/profile/results' {
 				# Return profile HTML results if found

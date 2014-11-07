@@ -702,16 +702,45 @@ method debug-status(Str $debug-session-id)
 Step out
 
 =end comment
-method debug-step-out()
+method debug-step-out(Str $debug-session-id is copy, Str $source)
 {
 
+	my $session = %debug_sessions{$debug-session-id};
+	
+	if $session.defined
+	{
+		# Valid session, let us print to it
+		if $session<pm>.status == Planned
+		{
+			my $pc = %$session<pc>;
+			my $ppr = $pc.print("so\n");
+			await $ppr;
+		} else
+		{
+			# Remove the invalid session
+			$session:delete;
+
+			# Reset debug session
+			$debug-session-id = '-1';
+
+			# Add a user friendly message to signify the demise of a promise :)
+			%$session<stdout> ~= "\nDebugging Finished";
+		}
+	}
+	else
+	{
+		$debug-session-id = self.start-debugging-session($source);
+		$session = %debug_sessions{$debug-session-id};
+	}
+	
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
 		[
 			to-json(
 				%(
-					# 'output'   => $output,
+					'id'         => $debug-session-id,
+					'results'    => %$session<results>,
 				)
 			)
 		],
@@ -723,16 +752,45 @@ method debug-step-out()
 Debug Resume...
 
 =end comment
-method debug-resume()
+method debug-resume(Str $debug-session-id is copy, Str $source)
 {
 
+	my $session = %debug_sessions{$debug-session-id};
+	
+	if $session.defined
+	{
+		# Valid session, let us print to it
+		if $session<pm>.status == Planned
+		{
+			my $pc = %$session<pc>;
+			my $ppr = $pc.print("rt\n");  # Run until the next breakpoint or an exception is thrown
+			await $ppr;
+		} else
+		{
+			# Remove the invalid session
+			$session:delete;
+
+			# Reset debug session
+			$debug-session-id = '-1';
+
+			# Add a user friendly message to signify the demise of a promise :)
+			%$session<stdout> ~= "\nDebugging Finished";
+		}
+	}
+	else
+	{
+		$debug-session-id = self.start-debugging-session($source);
+		$session = %debug_sessions{$debug-session-id};
+	}
+	
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
 		[
 			to-json(
 				%(
-					# 'output'   => $output,
+					'id'         => $debug-session-id,
+					'results'    => %$session<results>,
 				)
 			)
 		],
@@ -744,19 +802,21 @@ method debug-resume()
 Stop debug mode
 
 =end comment
-method debug-stop()
+method debug-stop(Str $debug-session-id is copy)
 {
+
+	my $session = %debug_sessions{$debug-session-id};
+
+	if $session.defined
+	{
+		# Remove the session
+		$session:delete;
+	}
 
 	[
 		200,
 		[ 'Content-Type' => 'application/json' ],
-		[
-			to-json(
-				%(
-					# 'output'   => $output,
-				)
-			)
-		],
+		[ '' ]
 	];
 }
 
