@@ -590,9 +590,6 @@ method start-debugging-session(Str $source)
 		{
 			my ($file, $from, $to, $code) = ~$0, ~$1, ~$2, ~$3;
 
-			my ($row, $col_start, $col_end);
-			
-			say "from: $from, to: $to";
 			my $line_count = $from;
 			my @results = gather {
 			say "'$code'";
@@ -616,14 +613,13 @@ method start-debugging-session(Str $source)
 
 			my $session = %debug_sessions{$result_session_id};
 			%$session<results> = @results;
-			
-			say $session;
-			
-			say "=" x 80;
+
+			$stdout ~= $_;
 		}
 	}
+
 	$se.act: {
-		$stderr ~= $_
+		$stderr ~= $_;
 	}
 
 	my $pm = $pc.start;
