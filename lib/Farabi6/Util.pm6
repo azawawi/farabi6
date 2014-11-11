@@ -34,7 +34,7 @@ constant %ANSI_COLORS = %(
 # Adapted from https://github.com/tadzik/Bailador/blob/master/lib/Bailador/Request.pm
 method params($psgi_input)
 {
-	return {} unless $psgi_input;
+	return %() unless $psgi_input;
 
 	my %ret;
 	for $psgi_input.decode.split('&') -> $p 
