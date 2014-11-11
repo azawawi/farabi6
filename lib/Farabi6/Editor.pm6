@@ -30,7 +30,7 @@ method syntax-check(Str $source) {
 
 	# Prepare Perl 6 source for syntax check
 	my ($filename,$filehandle) = tempfile(:!unlink);
-	spurt $filehandle, $source;
+	$filehandle.print($source);
 
 	# Invoke perl -c $temp_file
 	my Str $output = qqx{$*EXECUTABLE -c $filename 2>&1};
@@ -197,7 +197,7 @@ method run-code(Str $source, $args = '') {
 
 	# Create a temporary file that holds the POD string
 	my ($filename,$filehandle) = tempfile(:!unlink);
-	spurt $filehandle, $source;
+	$filehandle.print($source);
 
 	# Run code using rakudo Perl 6
 	my $t0 = now;
