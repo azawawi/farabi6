@@ -258,7 +258,26 @@ method eval-repl-expr(Str $expr) {
 
 	# do a simple eval for now
 	my $t0 = now;
-	my $output = EVAL $expr;
+	my $output;
+	try {
+		$output = EVAL $expr;
+
+		CATCH {
+			my $duration = sprintf("%.3f", now - $t0);
+			return [
+				200,
+				[ 'Content-Type' => 'application/json' ],
+				[
+					to-json(
+						%(
+							'output'    => ~$_,
+							'duration'  => $duration,
+						)
+					)
+				]
+			];
+		}
+	}
 	my $duration = sprintf("%.3f", now - $t0);
 
 	[
