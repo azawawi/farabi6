@@ -4,6 +4,9 @@ Farabi6
 This is a fun Perl 6 port of the Farabi Modern Perl Editor http://metacpan.org/module/Farabi.
 The idea here is to experiment with a Perl 6 in-browser editor running over Rakudo Perl 6. 
 
+Please use rakudo Perl 6 MoarVM backend because it is the most compatible at the
+time of this writing.
+
 Have fun!
 
 ## Installation
