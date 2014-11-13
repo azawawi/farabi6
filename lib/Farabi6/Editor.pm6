@@ -241,11 +241,6 @@ method run-code(Str $source, $args = '') {
 	];
 }
 
-# DEAD CODE for later investigation
-#my $pc;
-#my $stdout = "";
-#my $stderr = "";
-
 =begin comment
 
 Runs expression using Perl 6 REPL and returns the output
