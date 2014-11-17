@@ -241,6 +241,7 @@ method run-code(Str $source, $args = '') {
 	];
 }
 
+
 =begin comment
 
 Runs expression using Perl 6 REPL and returns the output
@@ -831,6 +832,35 @@ method debug-stop(Str $debug-session-id is copy)
 		200,
 		[ 'Content-Type' => 'application/json' ],
 		[ '' ]
+	];
+}
+
+=begin comment
+
+Runs 'prove -e perl6' and returns the output
+
+=end comment
+method run-tests {
+
+	# Run code using rakudo Perl 6
+	my $t0 = now;
+
+	my Str $output = qqx{prove -e perl6 2>&1};
+	my $duration = sprintf("%.3f", now - $t0);
+
+	# ANSI colors
+	my @ranges = Farabi6::Util.find-ansi-color-ranges($output);
+
+	my %result = %(
+		'output'     => $output,
+		'ranges'     => @ranges,
+		'duration'   => $duration,
+	);
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[ to-json(%result) ],
 	];
 }
 

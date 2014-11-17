@@ -92,6 +92,9 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 				return Farabi6::Editor.run-code(
 					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'source'));
 			}
+			when '/run_tests' {
+				return Farabi6::Editor.run-tests;
+			}
 			when '/eval_repl_expr' {
 				return Farabi6::Editor.eval-repl-expr(
 					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'expr'));
