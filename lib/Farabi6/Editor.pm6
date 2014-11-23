@@ -876,6 +876,7 @@ method trim-trailing-whitespace(Str $source)
 
 	my %result = %(
 		'output'     => $output,
+		'changed'    => $output ne $source,
 	);
 
 	[
