@@ -864,6 +864,27 @@ method run-tests {
 	];
 }
 
+=begin doc
+
+Trim the trailing whitespace of the provided source code
+
+=end doc
+method trim-trailing-whitespace(Str $source)
+{
+	# Trim trailing whitespace
+	my Str $output = $source.lines.map({ $_.subst(/\s+$/,"") }).join("\n");
+
+	my %result = %(
+		'output'     => $output,
+	);
+
+	[
+		200,
+		[ 'Content-Type' => 'application/json' ],
+		[ to-json(%result) ],
+	];
+}
+
 # Cleanup on server exit
 END {
 	# Any profile html files to delete?

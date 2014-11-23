@@ -95,6 +95,9 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 			when '/run_tests' {
 				return Farabi6::Editor.run-tests;
 			}
+			when '/trim_trailing_whitespace' {
+				return Farabi6::Editor.trim-trailing-whitespace(%params<source>);
+			}
 			when '/eval_repl_expr' {
 				return Farabi6::Editor.eval-repl-expr(
 					Farabi6::Util.get-parameter(%env<psgi.input>.decode, 'expr'));
