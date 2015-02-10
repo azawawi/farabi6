@@ -101,7 +101,7 @@ method open-file(Str $file-name is copy) {
 	my ($status, $text);
 	try {
 		# expand ~ into $HOME
-		$file-name  ~~= s/\~/{%*ENV{'HOME'}}/;
+		$file-name .= subst('~', %*ENV<HOME>);
 		$text = $file-name.IO.slurp;
 		$status = 200;
 
