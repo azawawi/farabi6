@@ -28,9 +28,9 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 			'languages', 'perl6', 'site', 'lib', 'Farabi6', 'files'
 		);
 
-		# Workaround to catdir bug under win32
+		# Workaround to 'C:rakudo' catdir bug under win32
 		if $*OS eq 'mswin32' {
-			$files-dir = $files-dir.subst("C:rakudo", "C:\\rakudo");
+			$files-dir = $files-dir.subst(/ :i (<[a..z]> ':') <![\\]>/, {$0 ~ '\\'});
 		}
 
 	}
