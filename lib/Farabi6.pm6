@@ -27,6 +27,12 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 			@dirs[0..*-3], 
 			'languages', 'perl6', 'site', 'lib', 'Farabi6', 'files'
 		);
+
+		# Workaround to catdir bug under win32
+		if $*OS eq 'mswin32' {
+			$files-dir = $files-dir.subst("C:rakudo", "C:\\rakudo");
+		}
+
 	}
 
 	# Make sure files contains farabi.js
