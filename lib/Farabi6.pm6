@@ -22,17 +22,22 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 	my $files-dir = 'lib/Farabi6/files';
 	unless "$files-dir/assets/farabi.js".IO ~~ :e {
 		say "Switching to panda-installed farabi6";
-		my @dirs = $*SPEC.splitdir($*EXECUTABLE);
-		$files-dir = $*SPEC.catdir(
-			@dirs[0..*-3], 
-			'languages', 'perl6', 'site', 'lib', 'Farabi6', 'files'
-		);
+
+		# Find farabi.js in @*INC
+		for @*INC -> $f {
+			my $root-dir = $*SPEC.catdir($f, 'Farabi6', 'files');
+			if $*SPEC.catdir( $root-dir, 'assets', 'farabi.js' ).IO ~~ :e {
+				$files-dir = $root-dir;
+				last;
+			}
+		}
 
 		# Workaround to 'C:rakudo' catdir bug under win32
 		if $*OS eq 'mswin32' {
 			$files-dir = $files-dir.subst(/ :i (<[a..z]> ':') <![\\]>/, {$0 ~ '\\'});
 		}
 
+		say "Found Farabi6 root dir @ $files-dir after looping on @*INC";
 	}
 
 	# Make sure files contains farabi.js
