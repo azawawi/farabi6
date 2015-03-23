@@ -18,6 +18,14 @@ then it listens on all interfaces
 =end pod
 method run(Str $host, Int $port, Bool $verbose) is export {
 
+	if $verbose {
+		say "Enabling Ctrl-C handler. This may cause high CPU usage";
+		signal(SIGINT).tap({
+			"Ctrl-C detected".say;
+			die
+		});
+	}
+
 	# Development or panda-installed farabi6?
 	my $files-dir = 'lib/Farabi6/files';
 	unless "$files-dir/assets/farabi.js".IO ~~ :e {
