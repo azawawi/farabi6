@@ -19,11 +19,18 @@ then it listens on all interfaces
 method run(Str $host, Int $port, Bool $verbose) is export {
 
 	if $verbose {
-		say "Enabling Ctrl-C handler. This may cause high CPU usage";
-		signal(SIGINT).tap({
-			"Ctrl-C detected".say;
-			die
-		});
+		EVAL q:to/END/;
+			# Ctrl-C handler only works on moar-based perl6
+			say "Enabling Ctrl-C handler. This may cause high CPU usage";
+			signal(SIGINT).tap({
+				"Ctrl-C detected".say;
+				die
+			});
+		END
+
+		CATCH {
+			when X::Comp { say "Ctrl-C handler only works on moar-based perl6" }
+		}
 	}
 
 	# Development or panda-installed farabi6?
