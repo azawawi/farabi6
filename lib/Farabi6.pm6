@@ -189,7 +189,7 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		my $contents;
 		if ($filename.IO ~~ :e) {
 			$status = 200;
-			$contents = $filename.IO.slurp(:enc('ASCII'));
+			$contents = $filename.IO.slurp(:bin);
 		} 
 
 		unless ($contents) {
