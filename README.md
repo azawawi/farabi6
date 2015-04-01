@@ -14,14 +14,14 @@ Have fun!
 To run it from the local directory:
 
     bin/farabi6
-    # Open http://localhost:3030 in your browser
+    # farabi6 will try to open http://localhost:3030 in your browser
 
 To install it using Panda (a module management tool bundled with Rakudo Star):
 
     panda update
     panda install Farabi6
     farabi6
-    # Open http://localhost:3030 in your browser
+    # farabi6 will try to open http://localhost:3030 in your browser
 
 You can also change the host name and port using the following command:
 

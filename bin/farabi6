@@ -8,6 +8,6 @@ BEGIN {
 
 use Farabi6;
 
-sub MAIN(Str :$host = '', Int :$port = 3030, Bool :$verbose = False) {
+sub MAIN(Str :$host = 'localhost', Int :$port = 3030, Bool :$verbose = False) {
 	Farabi6.run($host, $port, $verbose);
 }

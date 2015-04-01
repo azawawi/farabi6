@@ -5,6 +5,7 @@ class Farabi6 {
 # External
 use HTTP::Easy::PSGI;
 use URI;
+use Browser::Open;
 
 # Internal
 use Farabi6::Editor;
@@ -203,6 +204,16 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 			[ 'Content-Type' => $mime-type ], 
 			[ $contents ] 
 		];
+	}
+
+	start {
+		# Give the server some time to start up
+		sleep 1;
+
+		# Open the farabi6 website in your browser
+		my $url = "http://$host:$port";
+		say "Trying to open $url in your default browser";
+		open_browser($url);
 	}
 
 	my $server = HTTP::Easy::PSGI.new(:host($host), :port($port), :debug($verbose));

@@ -2,7 +2,7 @@
 	"name"        : "Farabi6",
 	"version"     : "*",
 	"description" : "Perl 6 in-browser Editor",
-	"depends"     : [ "File::Temp", "HTTP::Easy", "JSON::Tiny", "Pod::To::HTML", "URI", "p6doc", "Debugger::UI::CommandLine" ],
+	"depends"     : [ "File::Temp", "HTTP::Easy", "JSON::Tiny", "Pod::To::HTML", "URI", "p6doc", "Debugger::UI::CommandLine", "Browser::Open" ],
 	"provides"    : {
 		"Farabi6"         : "lib/Farabi6.pm6",
 		"Farabi6::Editor" : "lib/Farabi6/Editor.pm6",
