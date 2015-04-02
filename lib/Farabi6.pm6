@@ -183,11 +183,13 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		{
 			# CompUnitRepo installlation
 			#TODO optimize a bit after we get it running
-			my $file = $*SPEC.catdir('blib/lib/Farabi6/files', $filename);
+			my $file = "blib/lib/Farabi6/files/$filename";
 			my @installations = @*INC.grep(CompUnitRepo::Local::Installation);
 			my @binaries = @installations>>.files('bin/farabi6');
 			my @files = @binaries[0]<files>.keys.grep({ $_ ~~ $file });
 			my $basedir = @binaries[0]<files><bin/farabi6>.IO.dirname;
+			$basedir = "C:$basedir"
+				if $basedir ~~ /^ '\\' / && $*KERNEL.name eq 'win32';
 			$filename = $*SPEC.catdir($basedir, @binaries[0]<files>{@files[0]})
 				if $basedir.defined && @files.elems > 0;
 		}
