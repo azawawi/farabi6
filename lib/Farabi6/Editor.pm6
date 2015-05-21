@@ -42,7 +42,7 @@ method syntax-check(Str $source) {
 	unlink $filehandle;
 
 	my @problems;
-	unless $output ~~ /^Syntax OK/ {
+	unless $output ~~ /^'Syntax OK'/ {
 		if $output ~~ m/\n(.+?)at\s.+?\:(\d+)/ {
 			push @problems, {
 				'description'   => ~$/[0],
