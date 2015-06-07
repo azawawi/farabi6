@@ -34,28 +34,32 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		}
 	}
 
-	# Development or panda-installed farabi6?
-	my Str $inst_type;
-	if "lib/Farabi6/files/assets/farabi.js".IO ~~ :e
-	{
-		$inst_type = 'local';
-	}
-	else
-	{
-		# Make sure farabi.js in CompUnitRepo
-		my @installations = @*INC.grep(CompUnitRepo::Local::Installation);
-		my @binaries = @installations>>.files('bin/farabi6');
-		my @files = @binaries[0]<files>.keys.grep({ $_ ~~ / 'blib/lib/Farabi6/files/assets/farabi.js' $ / });
+	my $files-dir = 'lib/Farabi6/files';
+	unless "$files-dir/assets/farabi.js".IO ~~ :e {
+		say "Switching to panda-installed farabi6";
 
-		$inst_type = 'compunitrepo'
-			if @files.elems > 0;
+		# Find farabi.js in @*INC
+		for @*INC -> $f {
+			my $root-dir = $*SPEC.catdir($f, 'Farabi6', 'files');
+			if $*SPEC.catdir( $root-dir, 'assets', 'farabi.js' ).IO ~~ :e {
+				$files-dir = $root-dir;
+				last;
+			}
+		}
+
+		# Workaround to 'C:rakudo' catdir bug under win32
+		if $*OS eq 'mswin32' {
+			$files-dir = $files-dir.subst(/ :i (<[a..z]> ':') <![\\]>/, {$0 ~ '\\'});
+		}
+
+		say "Found Farabi6 root dir @ $files-dir after looping on @*INC";
 	}
 
 	# Make sure files contains farabi.js
-	die "farabi.js is not found in local directory nor CompUnitRepo. Please reinstall Farabi6." 
-		unless $inst_type.defined;
+	die "farabi.js is not found in {$files-dir}/assets" 
+		unless $*SPEC.catdir($files-dir, 'assets', 'farabi.js').IO ~~ :e;
 
-	say "Farabi6 is serving files from $inst_type at http://$host:$port";
+	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
 	{
    		return [400,['Content-Type' => 'text/plain'],['']] if %env<REQUEST_METHOD> eq '';
@@ -177,28 +181,8 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 			}
 		}
 
+		$filename = $*SPEC.catdir($files-dir, $filename);
 		my Str $mime-type = Farabi6::Util.find-mime-type($filename);
-
-		if $inst_type eq 'compunitrepo'
-		{
-			# CompUnitRepo installlation
-			#TODO optimize a bit after we get it running
-			my $file = "blib/lib/Farabi6/files/$filename";
-			my @installations = @*INC.grep(CompUnitRepo::Local::Installation);
-			my @binaries = @installations>>.files('bin/farabi6');
-			my @files = @binaries[0]<files>.keys.grep({ $_ ~~ $file });
-			my $basedir = @binaries[0]<files><bin/farabi6>.IO.dirname;
-			$basedir = "C:$basedir"
-				if $basedir ~~ /^ '\\' / && $*KERNEL.name eq 'win32';
-			$filename = $*SPEC.catdir($basedir, @binaries[0]<files>{@files[0]})
-				if $basedir.defined && @files.elems > 0;
-		}
-		else
-		{
-			# local git folder installation
-			# Get the real file from the local filesystem
-			$filename = $*SPEC.catdir('lib/Farabi6/files', $filename);
-		}
 
 		my Int $status;
 		my $contents;
