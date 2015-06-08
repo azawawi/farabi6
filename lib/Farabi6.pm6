@@ -48,7 +48,7 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		}
 
 		# Workaround to 'C:rakudo' catdir bug under win32
-		if $*OS eq 'mswin32' {
+		if $*DISTRO.name eq 'mswin32' {
 			$files-dir = $files-dir.subst(/ :i (<[a..z]> ':') <![\\]>/, {$0 ~ '\\'});
 		}
 
