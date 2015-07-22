@@ -3,7 +3,6 @@ perl6:
     - latest
     - 2015.06
     - 2015.05
-    - 2015.03
 
 install:
     - rakudobrew build-panda
