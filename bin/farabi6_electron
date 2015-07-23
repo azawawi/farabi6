@@ -15,7 +15,15 @@ my $json_bridge_server;
 # that will handle remote procedure calls
 class My::JSON::RPC::Bridge {
 
-   # method without params
+   method init {
+     say "Got an init request from main.js";
+     return %(
+       width     => 1024,
+       height    => 400,
+       dev_tools => False,
+     );
+   }
+
    method stop {
      say "Stopping main Perl 6 process";
      $pc.kill;
@@ -23,7 +31,6 @@ class My::JSON::RPC::Bridge {
      return;
    }
 
-   # method with named params
    method sum (  :$a!, :$b! ) { 
      say "Got a call from Javascript land";
      return $a + $b;
