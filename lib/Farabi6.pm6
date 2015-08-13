@@ -39,7 +39,8 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		say "Switching to panda-installed farabi6";
 
 		# Find farabi.js in @*INC
-		for @*INC -> $f {
+		for @*INC -> $f is copy {
+			$f = $f.subst(/^ \w+ '#'/,"");
 			my $root-dir = $*SPEC.catdir($f, 'Farabi6', 'files');
 			if $*SPEC.catdir( $root-dir, 'assets', 'farabi.js' ).IO ~~ :e {
 				$files-dir = $root-dir;
