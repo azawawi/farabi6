@@ -75,7 +75,7 @@ method search-file(Str $file-name) {
 
 	# Find file inside current directory exluding .svn and .git folders
 	my @search-results = Farabi6::Util.find-file(
-		cwd,
+		$*CWD,
 		$file-name
 	);
 
