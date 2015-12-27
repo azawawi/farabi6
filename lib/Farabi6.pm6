@@ -1,4 +1,5 @@
 use v6;
+use MONKEY-SEE-NO-EVAL;
 
 class Farabi6 {
 

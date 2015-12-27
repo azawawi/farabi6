@@ -1,4 +1,5 @@
 use v6;
+use MONKEY-SEE-NO-EVAL;
 
 class Farabi6::Editor {
 
@@ -651,7 +652,7 @@ method debug-step-in(Str $debug-session-id is copy, Str $source)
 		} else
 		{
 			# Remove the invalid session
-			$session:delete;
+			%debug_sessions{$debug-session-id}:delete;
 
 			# Reset debug session
 			$debug-session-id = '-1';
@@ -733,7 +734,7 @@ method debug-step-out(Str $debug-session-id is copy, Str $source)
 		} else
 		{
 			# Remove the invalid session
-			$session:delete;
+			%debug_sessions{$debug-session-id}:delete;
 
 			# Reset debug session
 			$debug-session-id = '-1';
@@ -783,7 +784,7 @@ method debug-resume(Str $debug-session-id is copy, Str $source)
 		} else
 		{
 			# Remove the invalid session
-			$session:delete;
+			%debug_sessions{$debug-session-id}:delete;
 
 			# Reset debug session
 			$debug-session-id = '-1';
@@ -825,7 +826,7 @@ method debug-stop(Str $debug-session-id is copy)
 	if $session.defined
 	{
 		# Remove the session
-		$session:delete;
+		%debug_sessions{$debug-session-id}:delete;
 	}
 
 	[

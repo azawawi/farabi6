@@ -1,11 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 
-BEGIN {
-	# The local lib takes priority for now
-	@*INC.unshift('./lib'); 
-}
-
+use lib 'lib';
 use Farabi6;
 
 sub MAIN(Str :$host = 'localhost', Int :$port = 3030, Bool :$verbose = False) {
