@@ -193,7 +193,7 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 
 		CATCH {
 			default {
-				say "Failed at $uri";
+				say $_.gist;
 				return [500,['Content-Type' => 'text/plain'],['']];
 			}
 		}
