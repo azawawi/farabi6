@@ -35,10 +35,11 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 		}
 	}
 
-	my $files-dir = $*SPEC.catdir( %?RESOURCES.repo.subst(/ ^ 'file#' /, ""), "Farabi6", "files" );
-
-	die "Cannot find farabi.js" unless "$files-dir/assets/farabi.js".IO ~~ :e;
-	say "Found Farabi6 root dir @ $files-dir";
+	my $files-dir = $*SPEC.catdir(
+		%?RESOURCES.repo.subst(/ ^ 'file#' /, ""),
+		"Farabi6",
+		"files"
+	);
 
 	# Make sure files contains farabi.js
 	die "farabi.js is not found in {$files-dir}/assets" 
@@ -47,7 +48,7 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 	say "Farabi6 is serving files from {$files-dir} at http://$host:$port";
 	my $app = sub (%env)
 	{
-   		return [400,['Content-Type' => 'text/plain'],['']] if %env<REQUEST_METHOD> eq '';
+		return [400,['Content-Type' => 'text/plain'],['']] if %env<REQUEST_METHOD> eq '';
 		
 		my Str $filename;
 		my Str $uri = %env<REQUEST_URI>;
@@ -176,28 +177,37 @@ method run(Str $host, Int $port, Bool $verbose) is export {
 			$contents = $filename.IO.slurp(:bin);
 		} 
 
+		$contents = $contents.decode if $contents.defined;
+
 		unless ($contents) {
 			$status = 404;
 			$mime-type = 'text/plain';
 			$contents = "Not found $uri";	
 		}
 		
-		[ 
+		return [
 			$status, 
 			[ 'Content-Type' => $mime-type ], 
 			[ $contents ] 
 		];
+
+		CATCH {
+			default {
+				say "Failed at $uri";
+				return [500,['Content-Type' => 'text/plain'],['']];
+			}
+		}
 	}
 
-	start {
-		# Give the server some time to start up
-		sleep 1;
-
-		# Open the farabi6 website in your browser
-		my $url = "http://$host:$port";
-		say "Trying to open $url in your default browser";
-		open_browser($url);
-	}
+#	start {
+#		# Give the server some time to start up
+#		sleep 1;
+#
+#		# Open the farabi6 website in your browser
+#		my $url = "http://$host:$port";
+#		say "Trying to open $url in your default browser";
+#		open_browser($url);
+#	}
 
 	my $server = HTTP::Easy::PSGI.new(:host($host), :port($port), :debug($verbose));
 	$server.app($app);
