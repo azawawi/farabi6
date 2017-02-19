@@ -1,4 +1,5 @@
 {
+	"perl"        : "6.*",
 	"name"        : "Farabi6",
 	"version"     : "*",
 	"description" : "Perl 6 in-browser Editor",
