@@ -1,8 +1,22 @@
 language: perl6
+
+os:
+  - linux
+  - osx
+
 perl6:
-    - latest
-    - 2015.12
+  - 2016.11
+  - latest
+
+before_install:
+  - echo $TRAVIS_OS_NAME
 
 install:
-    - rakudobrew build-panda
-    - panda install File::Temp HTTP::Easy JSON::Tiny Pod::To::HTML p6doc Debugger::UI::CommandLine Browser::Open
+  - rakudobrew build zef
+  - zef --depsonly install .
+  - zef install Test::META
+  - zef build .
+
+script:
+    - AUTHOR_TESTING=1 prove -ve "perl6 -Ilib"
+    - zef install .

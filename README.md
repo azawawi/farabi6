@@ -18,11 +18,10 @@ $ bin/farabi6
 ```
 
 
-To install it using Panda (a module management tool bundled with Rakudo Star):
+To install it using zef (a module management tool bundled with Rakudo Star):
 
 ```
-$ panda update
-$ panda install Farabi6
+$ zef install Farabi6
 $ farabi6
   # farabi6 will try to open http://localhost:3030 in your browser
 ```
