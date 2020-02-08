@@ -3,7 +3,7 @@ use v6;
 use IO::Capture::Simple;
 
 my $save_ctx;
-my $comp = nqp::getcomp('perl6');
+my $comp = nqp::getcomp('Raku') || nqp::getcomp('perl6');
 while 1
 {
 	my $code = prompt("> ");
